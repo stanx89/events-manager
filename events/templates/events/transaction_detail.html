@@ -1,0 +1,157 @@
+{% extends 'events/base.html' %}
+
+{% block title %}Transaction Details{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1 class="mb-0">
+            <i class="fas fa-receipt me-2"></i>Transaction Details
+        </h1>
+        <p class="text-muted">Transaction ID: {{ transaction.transaction_id }}</p>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'events:transaction_list' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to List
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>Transaction Information
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-5">Transaction ID:</dt>
+                            <dd class="col-sm-7">
+                                <code>{{ transaction.transaction_id }}</code>
+                            </dd>
+                            
+                            <dt class="col-sm-5">Amount:</dt>
+                            <dd class="col-sm-7">
+                                <strong class="text-success h5">${{ transaction.amount|floatformat:2 }}</strong>
+                            </dd>
+                            
+                            <dt class="col-sm-5">Payment Method:</dt>
+                            <dd class="col-sm-7">
+                                <span class="badge bg-secondary">{{ transaction.get_method_display }}</span>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-5">Date Recorded:</dt>
+                            <dd class="col-sm-7">{{ transaction.created_at|date:"F d, Y" }}</dd>
+                            
+                            <dt class="col-sm-5">Time:</dt>
+                            <dd class="col-sm-7">{{ transaction.created_at|time:"g:i A" }}</dd>
+                            
+                            <dt class="col-sm-5">Last Updated:</dt>
+                            <dd class="col-sm-7">{{ transaction.updated_at|date:"M d, Y g:i A" }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pledge Information -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-user me-2"></i>Related Pledge Information
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-5">Pledge Holder:</dt>
+                            <dd class="col-sm-7">
+                                <a href="{% url 'events:pledge_detail' transaction.pledge.id %}">
+                                    {{ transaction.pledge.name }}
+                                </a>
+                            </dd>
+                            
+                            <dt class="col-sm-5">Event ID:</dt>
+                            <dd class="col-sm-7">
+                                <span class="badge bg-light text-dark">{{ transaction.pledge.event_id }}</span>
+                            </dd>
+                            
+                            <dt class="col-sm-5">Mobile Number:</dt>
+                            <dd class="col-sm-7">
+                                <a href="tel:{{ transaction.pledge.mobile_number }}">{{ transaction.pledge.mobile_number }}</a>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-5">Total Pledge:</dt>
+                            <dd class="col-sm-7">
+                                <strong class="text-primary">${{ transaction.pledge.pledge|floatformat:2 }}</strong>
+                            </dd>
+                            
+                            <dt class="col-sm-5">Total Paid:</dt>
+                            <dd class="col-sm-7">
+                                <strong class="text-success">${{ transaction.pledge.amount_paid|floatformat:2 }}</strong>
+                            </dd>
+                            
+                            <dt class="col-sm-5">Status:</dt>
+                            <dd class="col-sm-7">
+                                <span class="badge bg-{% if transaction.pledge.status == 'completed' %}success{% elif transaction.pledge.status == 'partial' %}warning{% elif transaction.pledge.status == 'pending' %}info{% elif transaction.pledge.status == 'new' %}primary{% else %}secondary{% endif %}">
+                                    {{ transaction.pledge.get_status_display }}
+                                </span>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-bolt me-2"></i>Quick Actions
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'events:pledge_detail' transaction.pledge.id %}" class="btn btn-primary">
+                        <i class="fas fa-user me-2"></i>View Pledge Details
+                    </a>
+                    <a href="{% url 'events:transaction_create' %}?pledge_id={{ transaction.pledge.id }}" class="btn btn-success">
+                        <i class="fas fa-plus me-2"></i>Record Another Payment
+                    </a>
+                    <a href="{% url 'events:message_create' %}?pledge_id={{ transaction.pledge.id }}" class="btn btn-info">
+                        <i class="fas fa-envelope me-2"></i>Send Message
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-chart-bar me-2"></i>Payment Summary
+                </h6>
+            </div>
+            <div class="card-body text-center">
+                {% with balance=transaction.pledge.pledge|floatformat:2|add:"-"|add:transaction.pledge.amount_paid|floatformat:2 %}
+                    <h4 class="mb-1 {% if balance <= 0 %}text-success{% else %}text-warning{% endif %}">
+                        ${{ balance }}
+                    </h4>
+                    <small class="text-muted">Remaining Balance</small>
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

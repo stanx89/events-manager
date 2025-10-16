@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Events Management System{% endblock %}</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-gray-100 min-h-screen font-sans antialiased">
+    <!-- Material Navigation -->
+    <nav class="material-nav">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="{% url 'events:index' %}" class="nav-logo flex items-center text-white font-medium text-xl">
+                        <span class="material-icons mr-3 text-2xl">event</span>Events Manager
+                    </a>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-2">
+                    <a href="{% url 'events:index' %}" class="material-nav-item flex items-center">
+                        <span class="material-icons mr-2 text-lg">dashboard</span>Dashboard
+                    </a>
+                    <a href="{% url 'events:pledge_list' %}" class="material-nav-item flex items-center">
+                        <span class="material-icons mr-2 text-lg">handshake</span>Pledges
+                    </a>
+                    <a href="{% url 'events:transaction_list' %}" class="material-nav-item flex items-center">
+                        <span class="material-icons mr-2 text-lg">payments</span>Transactions
+                    </a>
+                    <a href="{% url 'events:message_list' %}" class="material-nav-item flex items-center">
+                        <span class="material-icons mr-2 text-lg">message</span>Messages
+                    </a>
+                </div>
+                
+                <!-- Material Actions Dropdown -->
+                <div class="relative">
+                    <button type="button" class="material-nav-item flex items-center dropdown-toggle" onclick="toggleDropdown()">
+                        <span class="material-icons mr-2 text-lg">settings</span>Actions
+                        <span class="material-icons ml-1 text-lg">keyboard_arrow_down</span>
+                    </button>
+                    
+                    <div id="dropdown-menu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-material-lg z-50 overflow-hidden">
+                        <div class="py-2">
+                            <a href="#" onclick="openModal('{% url 'events:pledge_create' %}?modal=1')" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-800 transition-all duration-200 border-l-4 border-transparent hover:border-blue-500">
+                                <span class="material-icons mr-3 text-blue-500">volunteer_activism</span>New Pledge
+                            </a>
+                            <a href="#" onclick="openModal('{% url 'events:transaction_create' %}?modal=1')" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-green-50 hover:text-green-800 transition-all duration-200 border-l-4 border-transparent hover:border-green-500">
+                                <span class="material-icons mr-3 text-green-500">payments</span>New Transaction
+                            </a>
+                            <a href="{% url 'events:message_create' %}" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-800 transition-all duration-200 border-l-4 border-transparent hover:border-purple-500">
+                                <span class="material-icons mr-3 text-purple-500">message</span>New Message
+                            </a>
+                            <hr class="my-2 border-gray-200">
+                            <a href="{% url 'events:bulk_message_send' %}" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-800 transition-all duration-200 border-l-4 border-transparent hover:border-orange-500">
+                                <span class="material-icons mr-3 text-orange-500">campaign</span>Bulk Messages
+                            </a>
+                            <a href="{% url 'events:export_pledges_csv' %}" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-800 transition-all duration-200 border-l-4 border-transparent hover:border-teal-500">
+                                <span class="material-icons mr-3 text-teal-500">download</span>Export Pledges
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button type="button" class="material-nav-item p-2" onclick="toggleMobileMenu()">
+                        <span class="material-icons">menu</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Navigation -->
+            <div id="mobile-menu" class="hidden md:hidden pb-3">
+                <a href="{% url 'events:index' %}" class="material-nav-item block">
+                    <span class="material-icons mr-3">dashboard</span>Dashboard
+                </a>
+                <a href="{% url 'events:pledge_list' %}" class="material-nav-item block">
+                    <span class="material-icons mr-3">handshake</span>Pledges
+                </a>
+                <a href="{% url 'events:transaction_list' %}" class="material-nav-item block">
+                    <span class="material-icons mr-3">payments</span>Transactions
+                </a>
+                <a href="{% url 'events:message_list' %}" class="material-nav-item block">
+                    <span class="material-icons mr-3">message</span>Messages
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex justify-center py-6">
+        <div class="w-7/10 max-w-none" style="width: 70%;">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Material Modal Container -->
+    <div id="modal-container" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-900 opacity-50" onclick="closeModal()"></div>
+            </div>
+            <div id="modal-content" class="relative bg-white rounded-2xl text-left overflow-hidden shadow-material-lg transform transition-all sm:max-w-2xl sm:w-full">
+                <!-- Modal content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdown-menu');
+            dropdown.classList.toggle('hidden');
+        }
+        
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('dropdown-menu');
+            const button = document.querySelector('.dropdown-toggle');
+            
+            if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+
+        // Transaction Modal Functions
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+        
+        function handlePaymentMethodChange() {
+            const methodField = document.querySelector('select[name="method"]');
+            const transactionIdField = document.querySelector('input[name="transaction_id"]');
+            const transactionHint = document.getElementById('transaction-hint');
+            
+            if (!methodField || !transactionIdField) return;
+            
+            if (methodField.value === 'cash') {
+                const uuid = generateUUID();
+                transactionIdField.value = uuid;
+                transactionIdField.readOnly = true;
+                transactionIdField.style.backgroundColor = '#f0fdf4';
+                transactionIdField.style.color = '#16a34a';
+                transactionIdField.style.fontWeight = '600';
+                
+                if (transactionHint) {
+                    transactionHint.innerHTML = '<i class="fas fa-check-circle text-green-600 mr-1"></i>Auto-generated UUID for cash payment';
+                    transactionHint.className = 'mt-1 text-sm text-green-600';
+                }
+            } else {
+                transactionIdField.value = '';
+                transactionIdField.readOnly = false;
+                transactionIdField.style.backgroundColor = '';
+                transactionIdField.style.color = '';
+                transactionIdField.style.fontWeight = '';
+                
+                if (transactionHint) {
+                    transactionHint.innerHTML = 'Enter the unique reference from payment provider';
+                    transactionHint.className = 'mt-1 text-sm text-gray-500';
+                }
+            }
+        }
+        
+        // Helper functions for form validation
+        function showFieldError(field, message) {
+            clearFieldError(field);
+            
+            // Add error styling to field
+            field.classList.add('border-red-500', 'focus:border-red-500', 'focus:ring-red-500');
+            field.classList.remove('border-gray-300', 'focus:border-green-500', 'focus:ring-green-500');
+            
+            // Create error message element
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'field-error';
+            errorDiv.innerHTML = message;
+            
+            // For Material Design forms, insert within the field-container
+            const fieldContainer = field.closest('.field-container');
+            if (fieldContainer) {
+                // Insert after the input-field div but before any existing field-hint
+                const inputField = fieldContainer.querySelector('.input-field');
+                const existingHint = fieldContainer.querySelector('.field-hint');
+                
+                if (inputField && existingHint) {
+                    // Insert before the hint
+                    fieldContainer.insertBefore(errorDiv, existingHint);
+                } else if (inputField) {
+                    // Insert after the input-field
+                    inputField.insertAdjacentElement('afterend', errorDiv);
+                } else {
+                    // Fallback: insert at the end of container
+                    fieldContainer.appendChild(errorDiv);
+                }
+            } else {
+                // Fallback for non-Material Design forms
+                const parent = field.closest('.relative') || field.parentElement;
+                parent.insertAdjacentElement('afterend', errorDiv);
+            }
+            
+            // Focus the field with error
+            field.focus();
+            field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        function clearFieldError(field) {
+            // Remove error styling
+            field.classList.remove('border-red-500', 'focus:border-red-500', 'focus:ring-red-500');
+            field.classList.add('border-gray-300');
+            
+            // Remove any existing error messages for this field
+            const fieldContainer = field.closest('.field-container');
+            if (fieldContainer) {
+                // Remove error messages within the field container
+                const errorMessages = fieldContainer.querySelectorAll('.field-error');
+                errorMessages.forEach(error => {
+                    // Only remove dynamically created errors (not server-side Django errors)
+                    if (!error.innerHTML.includes('{{') && !error.hasAttribute('data-server-error')) {
+                        error.remove();
+                    }
+                });
+            } else {
+                // Fallback for non-Material Design forms
+                const parent = field.closest('.relative') || field.parentElement;
+                const nextElement = parent.nextElementSibling;
+                if (nextElement && nextElement.classList.contains('field-error')) {
+                    nextElement.remove();
+                }
+            }
+        }
+        
+        function clearAllFieldErrors() {
+            const form = document.getElementById('transaction-form');
+            if (form) {
+                // Remove all error messages
+                const errorMessages = form.querySelectorAll('.field-error');
+                errorMessages.forEach(error => error.remove());
+                
+                // Reset field styling
+                const fields = form.querySelectorAll('input, select');
+                fields.forEach(field => {
+                    field.classList.remove('border-red-500', 'focus:border-red-500', 'focus:ring-red-500');
+                    field.classList.add('border-gray-300');
+                });
+            }
+        }
+
+        function submitTransaction() {
+            console.log('submitTransaction called from base template');
+            const form = document.getElementById('transaction-form');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            if (!form || !submitBtn) {
+                showFieldError(form || document.body, 'Form elements not found');
+                return;
+            }
+            
+            // Clear previous errors
+            clearAllFieldErrors();
+            
+            // Get form fields
+            const amount = form.querySelector('input[name="amount"]');
+            const method = form.querySelector('select[name="method"]');
+            const transactionId = form.querySelector('input[name="transaction_id"]');
+            const pledge = form.querySelector('select[name="pledge"]');
+            
+            let hasErrors = false;
+            
+            // Validate pledge (if visible)
+            if (pledge && pledge.offsetParent !== null && !pledge.value) {
+                showFieldError(pledge, 'Please select a pledge');
+                hasErrors = true;
+            }
+            
+            // Validate amount
+            if (!amount || !amount.value || parseFloat(amount.value) <= 0) {
+                showFieldError(amount, 'Please enter a valid amount greater than 0');
+                hasErrors = true;
+            }
+            
+            // Validate payment method
+            if (!method || !method.value) {
+                showFieldError(method, 'Please select a payment method');
+                hasErrors = true;
+            }
+            
+            // Validate transaction ID
+            if (!transactionId || !transactionId.value.trim()) {
+                showFieldError(transactionId, 'Please enter a transaction ID');
+                hasErrors = true;
+            }
+            
+            // Stop if there are validation errors
+            if (hasErrors) {
+                return;
+            }
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.querySelector('.btn-content').classList.add('hidden');
+            submitBtn.querySelector('.btn-loading').classList.remove('hidden');
+            
+            // Prepare form data and URL
+            const formData = new FormData(form);
+            
+            // Get the current URL parameters to determine the correct endpoint
+            const urlParams = new URLSearchParams(window.location.search);
+            let url = '/transactions/create/?modal=1';  // Default transaction create URL
+            
+            // Check if we have a pledge_id in the URL
+            if (urlParams.has('pledge_id')) {
+                url += '&pledge_id=' + encodeURIComponent(urlParams.get('pledge_id'));
+            }
+            
+            console.log('Submitting transaction to:', url);
+            
+            // Submit via AJAX
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                }
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        console.error('Error response:', text);
+                        throw new Error(`HTTP ${response.status}: ${text.substring(0, 100)}...`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Response data:', data);
+                if (data.success) {
+                    // Show success notification
+                    showSuccessMessage('Transaction added successfully!');
+                    closeModal();
+                    setTimeout(() => window.location.reload(), 1500);
+                } else {
+                    // Handle form errors - update modal content
+                    if (data.html) {
+                        document.getElementById('modal-content').innerHTML = data.html;
+                        attachModalFormListeners();
+                    } else {
+                        // Show general error
+                        showErrorMessage(data.message || 'Form validation failed');
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting transaction:', error);
+                showErrorMessage('Error submitting transaction: ' + error.message);
+            })
+            .finally(() => {
+                // Reset loading state
+                const currentSubmitBtn = document.getElementById('submit-btn');
+                if (currentSubmitBtn) {
+                    currentSubmitBtn.disabled = false;
+                    const btnContent = currentSubmitBtn.querySelector('.btn-content');
+                    const btnLoading = currentSubmitBtn.querySelector('.btn-loading');
+                    if (btnContent) btnContent.classList.remove('hidden');
+                    if (btnLoading) btnLoading.classList.add('hidden');
+                }
+            });
+        }
+
+        function submitMessage() {
+            console.log('submitMessage called from base template');
+            const form = document.getElementById('message-form');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            if (!form || !submitBtn) {
+                showFieldError(form || document.body, 'Form elements not found');
+                return;
+            }
+            
+            // Clear previous errors
+            clearAllFieldErrors();
+            
+            // Get form fields
+            const method = form.querySelector('select[name="method"]');
+            const message = form.querySelector('textarea[name="message"]');
+            
+            let hasErrors = false;
+            
+            // Validate method
+            if (!method || !method.value) {
+                showFieldError(method, 'Please select a method');
+                hasErrors = true;
+            }
+            
+            // Validate message
+            if (!message || !message.value.trim()) {
+                showFieldError(message, 'Please enter a message');
+                hasErrors = true;
+            }
+            
+            // Stop if there are validation errors
+            if (hasErrors) {
+                return;
+            }
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.querySelector('.btn-content').classList.add('hidden');
+            submitBtn.querySelector('.btn-loading').classList.remove('hidden');
+            
+            // Prepare form data and URL
+            const formData = new FormData(form);
+            
+            // Get pledge_id from the URL path (for pledge detail page) or URL parameters
+            let pledgeId = null;
+            const urlPath = window.location.pathname;
+            const pledgeDetailMatch = urlPath.match(/\/pledges\/(\d+)\//);
+            if (pledgeDetailMatch) {
+                pledgeId = pledgeDetailMatch[1];
+            } else {
+                const urlParams = new URLSearchParams(window.location.search);
+                pledgeId = urlParams.get('pledge_id');
+            }
+            
+            let url = '/messages/create/?modal=1';  // Default message create URL
+            
+            // Add pledge_id if available
+            if (pledgeId) {
+                url += '&pledge_id=' + encodeURIComponent(pledgeId);
+            }
+            
+            console.log('Submitting message to:', url);
+            
+            // Submit via AJAX
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                }
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        console.error('Error response:', text);
+                        throw new Error(`HTTP ${response.status}: ${text.substring(0, 100)}...`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Response data:', data);
+                if (data.success) {
+                    // Show success notification
+                    showSuccessMessage('Message sent successfully!');
+                    closeModal();
+                    setTimeout(() => window.location.reload(), 1500);
+                } else {
+                    // Handle form errors - update modal content
+                    if (data.html) {
+                        document.getElementById('modal-content').innerHTML = data.html;
+                        attachModalFormListeners();
+                    } else {
+                        // Show general error
+                        showErrorMessage(data.message || 'Form validation failed');
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting message:', error);
+                showErrorMessage('Error submitting message: ' + error.message);
+            })
+            .finally(() => {
+                // Reset loading state
+                const currentSubmitBtn = document.getElementById('submit-btn');
+                if (currentSubmitBtn) {
+                    currentSubmitBtn.disabled = false;
+                    const btnContent = currentSubmitBtn.querySelector('.btn-content');
+                    const btnLoading = currentSubmitBtn.querySelector('.btn-loading');
+                    if (btnContent) btnContent.classList.remove('hidden');
+                    if (btnLoading) btnLoading.classList.add('hidden');
+                }
+            });
+        }
+
+        // Function to attach event listeners to modal forms
+        function attachModalFormListeners() {
+            // Handle pledge forms
+            const pledgeForm = document.getElementById('pledge-form');
+            const pledgeSubmitBtn = document.getElementById('submit-btn');
+            
+            if (pledgeForm && !pledgeForm.dataset.listenersAttached) {
+                // Mark as processed to avoid duplicate listeners
+                pledgeForm.dataset.listenersAttached = 'true';
+                
+                // Phone number formatting
+                const phoneInput = pledgeForm.querySelector('input[name*="mobile_number"]');
+                if (phoneInput) {
+                    phoneInput.addEventListener('input', function(e) {
+                        let value = e.target.value.replace(/\D/g, '');
+                        if (value.startsWith('255')) {
+                            e.target.value = '+' + value;
+                        } else if (value.startsWith('0') && value.length > 1) {
+                            e.target.value = '+255' + value.substring(1);
+                        }
+                    });
+                }
+                
+                // Form submission
+                pledgeForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    console.log('Pledge form submit intercepted');
+                    
+                    // Add loading state
+                    pledgeForm.classList.add('form-loading');
+                    if (pledgeSubmitBtn) pledgeSubmitBtn.disabled = true;
+                    
+                    // Submit form using AJAX
+                    submitModalForm(this);
+                });
+            }
+            
+            // Handle transaction forms
+            const transactionForm = document.getElementById('transaction-form');
+            if (transactionForm && !transactionForm.dataset.listenersAttached) {
+                console.log('Attaching transaction form listeners');
+                transactionForm.dataset.listenersAttached = 'true';
+                
+                // Attach payment method change listener
+                const methodField = transactionForm.querySelector('select[name="method"]');
+                if (methodField) {
+                    methodField.addEventListener('change', handlePaymentMethodChange);
+                    // Check initial value
+                    if (methodField.value) {
+                        handlePaymentMethodChange();
+                    }
+                }
+                
+                // Form submission
+                transactionForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    console.log('Transaction form submit intercepted');
+                    submitTransaction();
+                    return false;
+                });
+            }
+            
+            // Handle message forms
+            const messageForm = document.getElementById('message-form');
+            if (messageForm && !messageForm.dataset.listenersAttached) {
+                console.log('Attaching message form listeners');
+                messageForm.dataset.listenersAttached = 'true';
+                
+                // Form submission
+                messageForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    console.log('Message form submit intercepted');
+                    submitMessage();
+                    return false;
+                });
+            }
+        }
+
+        // Modal Functions
+        function openModal(url) {
+            console.log('Opening modal with URL:', url);
+            const modal = document.getElementById('modal-container');
+            const modalContent = document.getElementById('modal-content');
+            
+            if (!modal || !modalContent) {
+                console.error('Modal elements not found');
+                return;
+            }
+            
+            // Show modal
+            modal.classList.remove('hidden');
+            modalContent.innerHTML = '<div class="p-6 text-center"><i class="fas fa-spinner fa-spin text-2xl text-blue-600"></i><p class="mt-2 text-gray-600">Loading...</p></div>';
+            
+            // Load content via AJAX
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    console.log('Modal content loaded successfully');
+                    modalContent.innerHTML = html;
+                    // Re-attach event listeners for dynamically loaded content
+                    attachModalFormListeners();
+                })
+                .catch(error => {
+                    console.error('Error loading modal content:', error);
+                    modalContent.innerHTML = '<div class="p-6"><h3 class="text-lg font-medium text-red-600">Error loading content</h3><p class="text-gray-600 mt-2">Please try again or refresh the page.</p></div>';
+                });
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('modal-container');
+            modal.classList.add('hidden');
+        }
+        
+        // Handle form submission in modal
+        function submitModalForm(formElement) {
+            const formData = new FormData(formElement);
+            const url = formElement.action || window.location.pathname;
+            
+            console.log('Submitting form to:', url);
+            
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Form response:', data);
+                if (data.success) {
+                    closeModal();
+                    // Show success message
+                    if (data.message) {
+                        alert(data.message);
+                    }
+                    // Refresh the page or redirect
+                    if (data.redirect) {
+                        window.location.href = data.redirect;
+                    } else {
+                        window.location.reload();
+                    }
+                } else {
+                    // Update modal with form errors
+                    document.getElementById('modal-content').innerHTML = data.html;
+                    // Re-attach event listeners after updating content
+                    attachModalFormListeners();
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting form:', error);
+                alert('An error occurred while submitting the form. Please try again.');
+                // Remove loading state on error
+                const form = document.getElementById('pledge-form');
+                const submitBtn = document.getElementById('submit-btn');
+                if (form) form.classList.remove('form-loading');
+                if (submitBtn) submitBtn.disabled = false;
+            })
+            .finally(() => {
+                // Always remove loading state
+                const form = document.getElementById('pledge-form');
+                const submitBtn = document.getElementById('submit-btn');
+                if (form) form.classList.remove('form-loading');
+                if (submitBtn) submitBtn.disabled = false;
+            });
+        }
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Notification functions
+        function showSuccessMessage(message) {
+            showNotification(message, 'success');
+        }
+        
+        function showErrorMessage(message) {
+            showNotification(message, 'error');
+        }
+        
+        function showNotification(message, type) {
+            type = type || 'info';
+            const notification = document.createElement('div');
+            
+            // Set CSS classes based on type
+            let bgClass = 'bg-blue-500';
+            let iconName = 'info';
+            if (type === 'success') {
+                bgClass = 'bg-green-500';
+                iconName = 'check_circle';
+            }
+            if (type === 'error') {
+                bgClass = 'bg-red-500';
+                iconName = 'error';
+            }
+            
+            notification.className = `fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg text-white max-w-sm transform transition-all duration-300 ${bgClass}`;
+            
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <span class="material-icons mr-2">${iconName}</span>
+                    <span>${message}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" class="ml-3 text-white opacity-80 hover:opacity-100">
+                        <span class="material-icons text-lg">close</span>
+                    </button>
+                </div>
+            `;
+            
+            // Add slide-in animation
+            notification.style.transform = 'translateX(100%)';
+            document.body.appendChild(notification);
+            
+            // Trigger animation
+            setTimeout(function() {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Auto remove after 5 seconds
+            setTimeout(function() {
+                if (notification.parentNode) {
+                    notification.style.transform = 'translateX(100%)';
+                    setTimeout(function() {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 300);
+                }
+            }, 5000);
+        }
+    </script>
+
+    <style>
+        /* Material Design Navigation Styles */
+        .material-nav {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #6366f1 100%);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+        
+        .material-nav::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            pointer-events: none;
+        }
+        
+        .material-nav-item {
+            color: white !important;
+            padding: 12px 16px;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 10;
+            text-decoration: none;
+        }
+        
+        .material-nav-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+            color: white !important;
+        }
+        
+        .material-nav-item:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+        }
+        
+        .nav-logo {
+            color: white !important;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 10;
+            text-decoration: none;
+        }
+        
+        .nav-logo:hover {
+            color: white !important;
+            text-decoration: none;
+        }
+        
+        /* Dropdown Styles */
+        .shadow-material-lg {
+            box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Form Loading State */
+        .form-loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        
+        .form-loading * {
+            cursor: wait !important;
+        }
+    </style>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

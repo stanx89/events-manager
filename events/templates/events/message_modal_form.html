@@ -1,0 +1,423 @@
+<!-- Message Modal Form -->
+<!-- Header -->
+<header class="modal-header">
+            <div class="header-content">
+                <div class="title-section">
+                    <div class="icon-container">
+                        <span class="material-icons">message</span>
+                    </div>
+                    <h1 class="modal-title">{{ title|default:"Send New Message" }}</h1>
+                </div>
+                <button type="button" class="close-btn" onclick="closeModal()">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Body -->
+        <main class="modal-body">
+            <form id="message-form" method="post" action="{% url 'events:message_create' %}?modal=1" novalidate>
+                {% csrf_token %}
+                
+                <!-- Hidden pledge field when pledge_id is provided -->
+                {% if pledge_id %}
+                    {{ form.pledge.as_hidden }}
+                {% endif %}
+                
+                <!-- Form Fields -->
+                <div class="form-grid">
+                    <!-- Message Method -->
+                    <div class="field-container full-width">
+                        <div class="input-field">
+                            {{ form.method }}
+                            <label for="{{ form.method.id_for_label }}" class="field-label">
+                                Method <span class="required">*</span>
+                            </label>
+                            <div class="field-line"></div>
+                        </div>
+                        {% if form.method.errors %}
+                            <div class="field-error">
+                                {{ form.method.errors.0 }}
+                            </div>
+                        {% endif %}
+                        <div class="field-hint">
+                            Choose SMS or WhatsApp for delivery
+                        </div>
+                    </div>
+
+                    <!-- Message Content -->
+                    <div class="field-container full-width">
+                        <div class="input-field textarea-field">
+                            {{ form.message }}
+                            <label for="{{ form.message.id_for_label }}" class="field-label">
+                                Message <span class="required">*</span>
+                            </label>
+                            <div class="field-line"></div>
+                        </div>
+                        {% if form.message.errors %}
+                            <div class="field-error">
+                                {{ form.message.errors.0 }}
+                            </div>
+                        {% endif %}
+                        <div class="field-hint">
+                            Enter your message content. Keep it clear and concise.
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </main>
+
+        <!-- Footer -->
+        <footer class="modal-footer">
+            <button type="button" class="btn btn-text" onclick="closeModal()">
+                Cancel
+            </button>
+            <button type="submit" form="message-form" class="btn btn-filled" id="submit-btn">
+                <span class="btn-content">
+                    {{ submit_text|default:"Send Message" }}
+                </span>
+                <span class="btn-loading">
+                    <span class="material-icons spinner">sync</span>
+                    Sending...
+                </span>
+            </button>
+        </footer>
+
+<style>
+/* CSS Variables */
+:root {
+    --primary: #6750a4;
+    --on-primary: #ffffff;
+    --surface: #fef7ff;
+    --on-surface: #1d1b20;
+    --surface-variant: #e7e0ec;
+    --on-surface-variant: #49454f;
+    --surface-container: #f3edf7;
+    --surface-container-high: #ece6f0;
+    --outline: #79747e;
+    --outline-variant: #cac4d0;
+    --error: #ba1a1a;
+    --success: #146c2e;
+    --shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* Base Styles */
+* {
+    box-sizing: border-box;
+}
+
+/* Modal Styles */
+.modal-dialog {
+    background: var(--surface);
+    border-radius: 28px;
+    box-shadow: 0 8px 32px var(--shadow);
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: modalEnter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalEnter {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Header */
+.modal-header {
+    background: var(--surface-container-high);
+    border-bottom: 1px solid var(--outline-variant);
+    padding: 24px 24px 16px;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.icon-container {
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    background: rgba(103, 80, 164, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+}
+
+.modal-title {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 32px;
+    color: var(--on-surface);
+    margin: 0;
+}
+
+.close-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background: transparent;
+    border: none;
+    color: var(--on-surface-variant);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.close-btn:hover {
+    background: var(--surface-variant);
+}
+
+/* Body */
+.modal-body {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.field-container {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.field-container.full-width {
+    grid-column: 1 / -1;
+}
+
+.input-field {
+    position: relative;
+    background: var(--surface-variant);
+    border-radius: 4px 4px 0 0;
+    transition: background-color 0.2s;
+}
+
+.input-field:focus-within {
+    background: var(--surface-container-high);
+}
+
+.input-field input,
+.input-field select,
+.input-field textarea {
+    width: 100%;
+    height: 56px;
+    padding: 24px 48px 8px 16px;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--on-surface);
+    outline: none;
+    font-family: 'Roboto', sans-serif;
+}
+
+.input-field textarea {
+    height: 120px;
+    resize: vertical;
+    padding-top: 28px;
+}
+
+.field-label {
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--on-surface-variant);
+    pointer-events: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+    font-weight: 400;
+}
+
+.input-field input:focus + .field-label,
+.input-field input:not(:placeholder-shown) + .field-label,
+.input-field select:focus + .field-label,
+.input-field select:not([value=""]) + .field-label,
+.input-field textarea:focus + .field-label,
+.input-field textarea:not(:placeholder-shown) + .field-label {
+    top: 8px;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.field-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--outline);
+    transition: all 0.2s;
+}
+
+.field-line::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    right: 50%;
+    height: 2px;
+    background: var(--primary);
+    transition: all 0.2s;
+}
+
+.input-field:focus-within .field-line::after {
+    left: 0;
+    right: 0;
+}
+
+.required {
+    color: var(--error);
+}
+
+.field-error {
+    color: var(--error);
+    font-size: 12px;
+    line-height: 16px;
+    margin-top: 4px;
+}
+
+.field-hint {
+    color: var(--on-surface-variant);
+    font-size: 12px;
+    line-height: 16px;
+    margin-top: 4px;
+}
+
+/* Select dropdown styling */
+.input-field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2349454f' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 16px center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+}
+
+.input-field select:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236750a4' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+}
+
+/* Footer */
+.modal-footer {
+    background: var(--surface-container-high);
+    border-top: 1px solid var(--outline-variant);
+    padding: 16px 24px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+/* Buttons */
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 24px;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-text {
+    background: transparent;
+    color: var(--primary);
+}
+
+.btn-text:hover {
+    background: rgba(103, 80, 164, 0.08);
+}
+
+.btn-filled {
+    background: var(--primary);
+    color: var(--on-primary);
+    box-shadow: 0 1px 3px var(--shadow);
+}
+
+.btn-filled:hover {
+    box-shadow: 0 3px 6px var(--shadow);
+}
+
+.btn-filled:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-loading {
+    display: none;
+}
+
+.form-loading .btn-content {
+    display: none;
+}
+
+.form-loading .btn-loading {
+    display: flex;
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>

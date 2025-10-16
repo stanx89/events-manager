@@ -1,0 +1,212 @@
+<!-- Simple Transaction Modal Form for Testing -->
+<div style="background: white; padding: 20px; border: 1px solid #ccc; border-radius: 8px; max-width: 500px; margin: 20px auto;">
+    <h3>Record Transaction</h3>
+    
+    <form id="transaction-form" method="post">
+        {% csrf_token %}
+        
+        <!-- Show pledge info if pledge_id is provided -->
+        {% if pledge_id %}
+            {{ form.pledge }}
+            <p><strong>Pledge ID:</strong> {{ pledge_id }}</p>
+        {% else %}
+            <div style="margin-bottom: 15px;">
+                <label for="{{ form.pledge.id_for_label }}">Pledge:</label>
+                {{ form.pledge }}
+            </div>
+        {% endif %}
+        
+        <!-- Amount -->
+        <div style="margin-bottom: 15px;">
+            <label for="{{ form.amount.id_for_label }}">Amount (TSH):</label>
+            {{ form.amount }}
+            {% if form.amount.errors %}
+                <div style="color: red; font-size: 12px;">{{ form.amount.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <!-- Method -->
+        <div style="margin-bottom: 15px;">
+            <label for="{{ form.method.id_for_label }}">Payment Method:</label>
+            {{ form.method }}
+            {% if form.method.errors %}
+                <div style="color: red; font-size: 12px;">{{ form.method.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <!-- Transaction ID -->
+        <div style="margin-bottom: 15px;">
+            <label for="{{ form.transaction_id.id_for_label }}">Transaction ID:</label>
+            {{ form.transaction_id }}
+            {% if form.transaction_id.errors %}
+                <div style="color: red; font-size: 12px;">{{ form.transaction_id.errors.0 }}</div>
+            {% endif %}
+            <div id="transaction-hint" style="font-size: 11px; color: #666;">
+                Enter transaction reference or select cash to auto-generate
+            </div>
+        </div>
+        
+        <!-- Buttons -->
+        <div style="margin-top: 20px;">
+            <button type="button" onclick="testSubmit()" style="background: #16a34a; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">
+                Record Transaction
+            </button>
+            <button type="button" onclick="window.history.back()" style="background: #6b7280; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin-left: 10px;">
+                Cancel
+            </button>
+        </div>
+    </form>
+    
+    <!-- Debug info -->
+    <div id="debug-info" style="margin-top: 20px; padding: 10px; background: #f3f4f6; border-radius: 4px; font-family: monospace; font-size: 12px;"></div>
+</div>
+
+<script>
+// Simple UUID generator
+function generateSimpleUUID() {
+    return 'CASH-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substr(2, 5).toUpperCase();
+}
+
+// Handle method change
+function handleMethodChange() {
+    const methodField = document.querySelector('select[name="method"]');
+    const transactionIdField = document.querySelector('input[name="transaction_id"]');
+    const hint = document.getElementById('transaction-hint');
+    
+    if (methodField && transactionIdField) {
+        if (methodField.value === 'cash') {
+            const uuid = generateSimpleUUID();
+            transactionIdField.value = uuid;
+            transactionIdField.style.backgroundColor = '#f0fdf4';
+            transactionIdField.readOnly = true;
+            if (hint) hint.textContent = 'Auto-generated for cash payment: ' + uuid;
+        } else {
+            transactionIdField.value = '';
+            transactionIdField.style.backgroundColor = '';
+            transactionIdField.readOnly = false;
+            if (hint) hint.textContent = 'Enter transaction reference from payment provider';
+        }
+    }
+}
+
+// Test form submission
+function testSubmit() {
+    const form = document.getElementById('transaction-form');
+    const debugDiv = document.getElementById('debug-info');
+    
+    if (!form) {
+        alert('Form not found!');
+        return;
+    }
+    
+    // Basic validation
+    const amount = form.querySelector('[name="amount"]');
+    const method = form.querySelector('[name="method"]');
+    const transactionId = form.querySelector('[name="transaction_id"]');
+    
+    let errors = [];
+    
+    if (!amount || !amount.value || parseFloat(amount.value) <= 0) {
+        errors.push('Amount is required and must be > 0');
+    }
+    
+    if (!method || !method.value) {
+        errors.push('Payment method is required');
+    }
+    
+    if (!transactionId || !transactionId.value.trim()) {
+        errors.push('Transaction ID is required');
+    }
+    
+    if (errors.length > 0) {
+        alert('Validation errors:\\n' + errors.join('\\n'));
+        return;
+    }
+    
+    // Prepare form data
+    const formData = new FormData(form);
+    
+    // Build URL
+    let url = '{% url "events:transaction_create" %}?modal=1';
+    const pledgeId = '{{ pledge_id|default:"" }}';
+    if (pledgeId) {
+        url += '&pledge_id=' + encodeURIComponent(pledgeId);
+    }
+    
+    // Log debug info
+    const debugInfo = {
+        url: url,
+        method: 'POST',
+        formData: Object.fromEntries(formData.entries()),
+        pledgeId: pledgeId || 'None'
+    };
+    
+    debugDiv.innerHTML = '<strong>Submission Debug:</strong><br>' + JSON.stringify(debugInfo, null, 2);
+    
+    console.log('Submitting transaction:', debugInfo);
+    
+    // Submit
+    fetch(url, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+        }
+    })
+    .then(response => {
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+        
+        debugDiv.innerHTML += '<br><strong>Response Status:</strong> ' + response.status;
+        
+        if (!response.ok) {
+            throw new Error('HTTP ' + response.status + ': ' + response.statusText);
+        }
+        
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            return response.json();
+        } else {
+            return response.text().then(text => {
+                throw new Error('Server returned non-JSON response: ' + text.substring(0, 200));
+            });
+        }
+    })
+    .then(data => {
+        console.log('Response data:', data);
+        debugDiv.innerHTML += '<br><strong>Response Data:</strong><br>' + JSON.stringify(data, null, 2);
+        
+        if (data.success) {
+            alert('✅ SUCCESS: Transaction recorded successfully!');
+            if (data.redirect) {
+                window.location.href = data.redirect;
+            } else {
+                window.location.reload();
+            }
+        } else {
+            alert('❌ ERROR: ' + (data.message || 'Form validation failed'));
+            if (data.html) {
+                console.log('Server returned form HTML with errors');
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Submission error:', error);
+        debugDiv.innerHTML += '<br><strong>Error:</strong> ' + error.message;
+        alert('❌ SUBMISSION ERROR: ' + error.message);
+    });
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    const methodField = document.querySelector('select[name="method"]');
+    if (methodField) {
+        methodField.addEventListener('change', handleMethodChange);
+        // Check initial value
+        if (methodField.value) {
+            handleMethodChange();
+        }
+    }
+});
+</script>

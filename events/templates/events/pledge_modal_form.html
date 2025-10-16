@@ -1,0 +1,516 @@
+<!-- Modal Header -->
+<div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+    <div class="flex items-center justify-between">
+        <div class="flex items-center">
+            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
+                <i class="fas fa-handshake text-white"></i>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900">{{ title|default:"Add New Pledge" }}</h3>
+        </div>
+        <button type="button" class="text-gray-400 hover:text-gray-600" onclick="closeModal()">
+            <i class="fas fa-times text-xl"></i>
+        </button>
+    </div>
+</div>
+
+        <!-- Body -->
+        <main class="modal-body">
+            <form id="pledge-form" method="post" action="{% if pledge %}{% url 'events:pledge_edit' pledge.id %}?modal=1{% else %}{% url 'events:pledge_create' %}?modal=1{% endif %}" novalidate>
+                {% csrf_token %}
+                
+                <!-- Form Fields -->
+                <div class="form-grid">
+                    <!-- Event Selection -->
+                    <div class="field-container">
+                        <div class="input-field">
+                            {{ form.event_id }}
+                            <label for="{{ form.event_id.id_for_label }}" class="field-label">
+                                Event <span class="required">*</span>
+                            </label>
+                            <div class="field-line"></div>
+                        </div>
+                        {% if form.event_id.errors %}
+                            <div class="field-error">
+                                {{ form.event_id.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Pledger Name -->
+                    <div class="field-container">
+                        <div class="input-field">
+                            {{ form.name }}
+                            <label for="{{ form.name.id_for_label }}" class="field-label">
+                                Full Name <span class="required">*</span>
+                            </label>
+                            <div class="field-line"></div>
+                        </div>
+                        {% if form.name.errors %}
+                            <div class="field-error">
+                                {{ form.name.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Mobile Number -->
+                    <div class="field-container">
+                        <div class="input-field">
+                            {{ form.mobile_number }}
+                            <label for="{{ form.mobile_number.id_for_label }}" class="field-label">
+                                Mobile Number <span class="required">*</span>
+                            </label>
+                            <div class="field-line"></div>
+                        </div>
+                        {% if form.mobile_number.errors %}
+                            <div class="field-error">
+                                {{ form.mobile_number.errors.0 }}
+                            </div>
+                        {% else %}
+                            <div class="field-hint">Format: +255712345678</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Pledge Amount -->
+                    <div class="field-container">
+                        <div class="input-field">
+                            <input type="number" 
+                                   name="{{ form.pledge.name }}" 
+                                   id="{{ form.pledge.id_for_label }}"
+                                   value="{{ form.pledge.value|default:'' }}"
+                                   placeholder=" ">
+                            <label for="{{ form.pledge.id_for_label }}" class="field-label">
+                                Pledge Amount <span class="required">*</span>
+                            </label>
+                            <div class="field-line"></div>
+                        </div>
+                        {% if form.pledge.errors %}
+                            <div class="field-error">
+                                {{ form.pledge.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Amount Paid -->
+                    <div class="field-container full-width">
+                        <div class="input-field">
+                            <input type="number" 
+                                   name="{{ form.amount_paid.name }}" 
+                                   id="{{ form.amount_paid.id_for_label }}"
+                                   value="{{ form.amount_paid.value|default:'0.00' }}"
+                                   placeholder=" ">
+                            <label for="{{ form.amount_paid.id_for_label }}" class="field-label">
+                                Amount Paid
+                            </label>
+                        </div>
+                        {% if form.amount_paid.errors %}
+                            <div class="field-error">
+                                {{ form.amount_paid.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- WhatsApp Status -->
+                    <div class="field-container full-width">
+                        <div class="input-field">
+                            {{ form.whatsapp_status }}
+                            <label for="{{ form.whatsapp_status.id_for_label }}" class="field-label">
+                                Is It WhatsApp number?
+                            </label>
+                            <div class="field-line"></div>
+                        </div>
+                        {% if form.whatsapp_status.errors %}
+                            <div class="field-error">
+                                {{ form.whatsapp_status.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </form>
+        </main>
+
+        <!-- Footer -->
+        <footer class="modal-footer">
+            <button type="button" class="btn btn-text" onclick="closeModal()">
+                Cancel
+            </button>
+            <button type="submit" form="pledge-form" class="btn btn-filled" id="submit-btn">
+                <span class="btn-content">
+                    {{ submit_text|default:"Save Pledge" }}
+                </span>
+                <span class="btn-loading">
+                    <span class="material-symbols-outlined spinner">progress_activity</span>
+                    Saving...
+                </span>
+            </button>
+        </footer>
+    </div>
+</div>
+
+<style>
+/* CSS Variables */
+:root {
+    --primary: #6750a4;
+    --on-primary: #ffffff;
+    --surface: #fef7ff;
+    --on-surface: #1d1b20;
+    --surface-variant: #e7e0ec;
+    --on-surface-variant: #49454f;
+    --surface-container: #f3edf7;
+    --surface-container-high: #ece6f0;
+    --outline: #79747e;
+    --outline-variant: #cac4d0;
+    --error: #ba1a1a;
+    --success: #146c2e;
+    --shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* Base Styles */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Modal Styles */
+.modal-container {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 16px;
+}
+
+.modal-dialog {
+    background: var(--surface);
+    border-radius: 28px;
+    box-shadow: 0 8px 32px var(--shadow);
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: modalEnter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalEnter {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Header */
+.modal-header {
+    background: var(--surface-container-high);
+    border-bottom: 1px solid var(--outline-variant);
+    padding: 24px 24px 16px;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.icon-container {
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    background: rgba(103, 80, 164, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+}
+
+.modal-title {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 32px;
+    color: var(--on-surface);
+    margin: 0;
+}
+
+.close-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    border: none;
+    background: transparent;
+    color: var(--on-surface-variant);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.close-button:hover {
+    background: rgba(103, 80, 164, 0.08);
+}
+
+/* Body */
+.modal-body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+/* Form Fields */
+.field-container {
+    position: relative;
+}
+
+.input-field {
+    position: relative;
+    background: var(--surface-variant);
+    border-radius: 4px 4px 0 0;
+    transition: background-color 0.2s;
+}
+
+.input-field:focus-within {
+    background: var(--surface-container-high);
+}
+
+.input-field input,
+.input-field select {
+    width: 100%;
+    height: 56px;
+    padding: 24px 48px 8px 16px;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--on-surface);
+    outline: none;
+}
+
+.amount-input {
+    padding-left: 56px !important;
+}
+
+.field-label {
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--on-surface-variant);
+    pointer-events: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+}
+
+.amount-label {
+    left: 56px;
+}
+
+.input-field input:focus + .field-label,
+.input-field input:not(:placeholder-shown) + .field-label,
+.input-field select:focus + .field-label,
+.input-field select:not([value=""]) + .field-label {
+    top: 8px;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--primary);
+}
+
+.currency-symbol {
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--on-surface-variant);
+    z-index: 1;
+}
+
+.field-icon {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    font-size: 24px;
+    color: var(--on-surface-variant);
+}
+
+.whatsapp-icon {
+    color: var(--success);
+    font-size: 16px;
+    margin-right: 4px;
+}
+
+.field-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--outline);
+    transition: all 0.2s;
+}
+
+.field-line::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    right: 50%;
+    height: 2px;
+    background: var(--primary);
+    transition: all 0.2s;
+}
+
+.input-field:focus-within .field-line::after {
+    left: 0;
+    right: 0;
+}
+
+.required {
+    color: var(--error);
+}
+
+.optional {
+    color: var(--on-surface-variant);
+    font-weight: 400;
+}
+
+.field-error {
+    margin-top: 8px;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--error);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.field-error .material-symbols-outlined {
+    font-size: 16px;
+}
+
+.field-hint {
+    margin-top: 8px;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--on-surface-variant);
+}
+
+/* Footer */
+.modal-footer {
+    background: var(--surface-container);
+    border-top: 1px solid var(--outline-variant);
+    padding: 16px 24px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+}
+
+/* Buttons */
+.btn {
+    height: 40px;
+    padding: 0 24px;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-text {
+    background: transparent;
+    color: var(--primary);
+}
+
+.btn-text:hover {
+    background: rgba(103, 80, 164, 0.08);
+}
+
+.btn-filled {
+    background: var(--primary);
+    color: var(--on-primary);
+    box-shadow: 0 1px 3px var(--shadow);
+}
+
+.btn-filled:hover {
+    box-shadow: 0 3px 6px var(--shadow);
+}
+
+.btn-filled:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-loading {
+    display: none;
+}
+
+.form-loading .btn-content {
+    display: none;
+}
+
+.form-loading .btn-loading {
+    display: flex;
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>
+

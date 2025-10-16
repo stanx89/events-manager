@@ -1,0 +1,198 @@
+{% extends 'events/base.html' %}
+
+{% block title %}{{ title }} - Events Management{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1 class="mb-0">
+            <i class="fas fa-envelope me-2"></i>{{ title }}
+        </h1>
+        <p class="text-muted">Send a message to a pledge holder</p>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'events:message_list' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Messages
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-paper-plane me-2"></i>Message Details
+                </h6>
+            </div>
+            <div class="card-body">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="{{ form.pledge.id_for_label }}" class="form-label">
+                                {{ form.pledge.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.pledge }}
+                            {% if form.pledge.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.pledge.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.method.id_for_label }}" class="form-label">
+                                {{ form.method.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.method }}
+                            {% if form.method.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.method.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.status.id_for_label }}" class="form-label">
+                                {{ form.status.label }}
+                            </label>
+                            {{ form.status }}
+                            {% if form.status.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.status.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="{{ form.message.id_for_label }}" class="form-label">
+                                {{ form.message.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.message }}
+                            {% if form.message.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.message.errors }}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">
+                                <span class="text-muted">
+                                    <span id="char-count">0</span>/500 characters
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-info">
+                            <i class="fas fa-paper-plane me-2"></i>{{ submit_text }}
+                        </button>
+                        <a href="{% url 'events:message_list' %}" class="btn btn-secondary">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>Message Templates
+                </h6>
+            </div>
+            <div class="card-body">
+                <p class="small">Quick message templates:</p>
+                
+                <div class="mb-2">
+                    <button class="btn btn-sm btn-outline-secondary w-100 template-btn" 
+                            data-template="Thank you for your pledge! We have received your commitment and will keep you updated on the progress.">
+                        Thank You Message
+                    </button>
+                </div>
+                
+                <div class="mb-2">
+                    <button class="btn btn-sm btn-outline-secondary w-100 template-btn" 
+                            data-template="This is a friendly reminder about your pledge. Please let us know when you plan to make your payment.">
+                        Payment Reminder
+                    </button>
+                </div>
+                
+                <div class="mb-2">
+                    <button class="btn btn-sm btn-outline-secondary w-100 template-btn" 
+                            data-template="We have received your payment. Thank you for fulfilling your pledge commitment!">
+                        Payment Confirmation
+                    </button>
+                </div>
+                
+                <div class="mb-2">
+                    <button class="btn btn-sm btn-outline-secondary w-100 template-btn" 
+                            data-template="We wanted to update you on the progress of our event. Your support is making a real difference!">
+                        Progress Update
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>Communication Methods
+                </h6>
+            </div>
+            <div class="card-body">
+                <ul class="small">
+                    <li><strong>SMS:</strong> Text message to mobile phone</li>
+                    <li><strong>WhatsApp:</strong> WhatsApp message</li>
+                    <li><strong>Email:</strong> Email notification</li>
+                    <li><strong>Voice Call:</strong> Phone call reminder</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Character counter
+    const messageTextarea = document.getElementById('{{ form.message.id_for_label }}');
+    const charCount = document.getElementById('char-count');
+    
+    function updateCharCount() {
+        const length = messageTextarea.value.length;
+        charCount.textContent = length;
+        
+        if (length > 400) {
+            charCount.className = 'text-warning';
+        } else if (length > 450) {
+            charCount.className = 'text-danger';
+        } else {
+            charCount.className = 'text-muted';
+        }
+    }
+    
+    messageTextarea.addEventListener('input', updateCharCount);
+    updateCharCount(); // Initial count
+    
+    // Template buttons
+    const templateButtons = document.querySelectorAll('.template-btn');
+    templateButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const template = this.getAttribute('data-template');
+            messageTextarea.value = template;
+            updateCharCount();
+        });
+    });
+});
+</script>
+{% endblock %}

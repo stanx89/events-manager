@@ -1,0 +1,605 @@
+{% extends 'events/base.html' %}
+{% load humanize %}
+
+{% block title %}Transactions - Events Management{% endblock %}
+
+{% block content %}
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+    <div>
+        <h1 class="text-3xl font-bold text-gray-900 flex items-center mb-3">
+        </h1>
+    </div>
+    <div class="mt-4 md:mt-0">
+        <button onclick="openModal('{% url 'events:transaction_create' %}?modal=1')" 
+                class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); min-height: 44px;">
+            <span class="material-icons mr-2">add</span>
+            New Transaction
+        </button>
+    </div>
+</div>
+
+<!-- Search Area -->
+<div class="mb-6 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+    <div class="px-4 py-3 bg-gradient-to-r from-green-50 to-emerald-50 border-b border-gray-100">
+        <h5 class="text-base font-semibold text-gray-900 flex items-center">
+            <span class="material-icons mr-2 text-green-600 text-base">search</span>Search Transactions
+        </h5>
+    </div>
+    <div class="p-6">
+        <form method="get" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Search by Name -->
+                <div class="field-container">
+                    <div class="input-field">
+                        <input type="text" 
+                               name="name" 
+                               id="name" 
+                               value="{{ request.GET.name|default:'' }}"
+                               placeholder=" ">
+                        <label for="name" class="field-label">
+                            Pledge Holder Name
+                        </label>
+                        <div class="field-line"></div>
+                    </div>
+                </div>
+                
+                <!-- Search by Transaction ID -->
+                <div class="field-container">
+                    <div class="input-field">
+                        <input type="text" 
+                               name="transaction_id" 
+                               id="transaction_id" 
+                               value="{{ request.GET.transaction_id|default:'' }}"
+                               placeholder=" ">
+                        <label for="transaction_id" class="field-label">
+                            Transaction ID
+                        </label>
+                        <div class="field-line"></div>
+                    </div>
+                </div>
+                
+                <!-- Filter by Method -->
+                <div class="field-container">
+                    <div class="input-field">
+                        <select name="method" id="method" value="{{ request.GET.method|default:'' }}">
+                            <option value=""></option>
+                            <option value="cash" {% if request.GET.method == 'cash' %}selected{% endif %}>💵 Cash</option>
+                            <option value="mobile_money" {% if request.GET.method == 'mobile_money' %}selected{% endif %}>📱 Mobile Money</option>
+                            <option value="bank_transfer" {% if request.GET.method == 'bank_transfer' %}selected{% endif %}>🏦 Bank Transfer</option>
+                            <option value="card" {% if request.GET.method == 'card' %}selected{% endif %}>💳 Card</option>
+                            <option value="cheque" {% if request.GET.method == 'cheque' %}selected{% endif %}>📄 Cheque</option>
+                            <option value="other" {% if request.GET.method == 'other' %}selected{% endif %}>🔄 Other</option>
+                        </select>
+                        <label for="method" class="field-label">
+                            Payment Method
+                        </label>
+                        <div class="field-line"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Date Range Filter -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-gray-100">
+                <!-- Date From -->
+                <div class="field-container">
+                    <div class="input-field">
+                        <input type="date" 
+                               name="date_from" 
+                               id="date_from" 
+                               value="{{ request.GET.date_from|default:'' }}">
+                        <label for="date_from" class="field-label">
+                            From Date
+                        </label>
+                        <div class="field-line"></div>
+                    </div>
+                </div>
+                
+                <!-- Date To -->
+                <div class="field-container">
+                    <div class="input-field">
+                        <input type="date" 
+                               name="date_to" 
+                               id="date_to" 
+                               value="{{ request.GET.date_to|default:'' }}">
+                        <label for="date_to" class="field-label">
+                            To Date
+                        </label>
+                        <div class="field-line"></div>
+                    </div>
+                </div>
+                
+                <!-- Search Button -->
+                <div class="field-container">
+                    <div style="height: 56px; display: flex; align-items: center;">
+                        <button type="submit" class="search-button">
+                            <span class="material-icons mr-2">search</span>
+                            Search
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Material Transactions Table -->
+<div class="md-card">
+    <div class="flex justify-between items-center p-6 border-b border-gray-100">
+        <h2 class="text-xl font-medium text-gray-800 flex items-center">
+            <span class="material-icons text-primary-500 mr-3 text-2xl">payments</span>
+            All Transactions
+        </h2>
+        <div class="flex items-center space-x-4">
+            <div class="text-sm text-gray-600 bg-gray-50 px-3 py-1 rounded-full">
+                {{ page_obj.start_index }}-{{ page_obj.end_index }} of {{ page_obj.paginator.count }} transactions
+            </div>
+        </div>
+    </div>
+    <div>
+        {% if page_obj.object_list %}
+            <div class="overflow-x-auto" style="min-height: 60vh;">
+                <table class="min-w-full">
+                    <thead>
+                        <tr class="border-b border-gray-100 bg-gradient-to-r from-gray-50 to-gray-100">
+                            <th class="px-6 py-4 text-left text-sm font-medium text-gray-700 flex items-center">
+                                <span class="material-icons text-sm mr-2">receipt</span>Transaction ID
+                            </th>
+                            <th class="px-6 py-4 text-left text-sm font-medium text-gray-700">
+                                <div class="flex items-center">
+                                    <span class="material-icons text-sm mr-2">person</span>Pledge Holder
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-right text-sm font-medium text-gray-700">
+                                <div class="flex items-center justify-end">
+                                    <span class="material-icons text-sm mr-2">payments</span>Amount
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-sm font-medium text-gray-700">
+                                <div class="flex items-center">
+                                    <span class="material-icons text-sm mr-2">credit_card</span>Method
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-left text-sm font-medium text-gray-700">
+                                <div class="flex items-center">
+                                    <span class="material-icons text-sm mr-2">schedule</span>Date
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white">
+                        {% for transaction in page_obj.object_list %}
+                        <tr class="border-b border-gray-50 hover:bg-blue-50 hover:shadow-sm transition-all duration-200 {% cycle 'bg-white' 'bg-gray-50' %}">
+                            <td class="px-6 py-1">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-5 w-5 bg-green-100 rounded-full flex items-center justify-center mr-2">
+                                        <span class="material-icons text-green-600 text-xs">receipt</span>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-medium text-gray-900 font-mono">
+                                            <a href="{% url 'events:transaction_detail' transaction.id %}" class="text-primary-600 hover:text-primary-800 transition-colors duration-200">
+                                                {{ transaction.transaction_id|truncatechars:12 }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-1">
+                                <div class="text-xs font-semibold text-gray-900">
+                                    <a href="{% url 'events:pledge_detail' transaction.pledge.id %}" class="text-primary-600 hover:text-primary-800 transition-colors duration-200">
+                                        {{ transaction.pledge.name }}
+                                    </a>
+                                </div>
+                            </td>
+                            <td class="px-6 py-1 text-right">
+                                <div class="text-xs font-semibold text-gray-900">
+                                    {{ transaction.amount|floatformat:2|intcomma }}
+                                </div>
+                            </td>
+                            <td class="px-6 py-1">
+                                <div class="text-xs text-gray-700">
+                                    {{ transaction.get_method_display }}
+                                </div>
+                            </td>
+                            <td class="px-6 py-1">
+                                <div class="text-xs text-gray-700">{{ transaction.created_at|date:"M d, Y" }}</div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot class="bg-gradient-to-r from-gray-50 to-gray-100">
+                        <tr class="border-t border-gray-200">
+                            <th colspan="2" class="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wide">Total</th>
+                            <th class="px-6 py-3 text-right text-sm font-bold text-gray-900">
+                                {{ total_amount|floatformat:2|intcomma }}
+                            </th>
+                            <th colspan="2" class="px-6 py-3"></th>
+                        </tr>
+                    </tfoot>
+            </table>
+        {% else %}
+            <div class="text-center py-16">
+                <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-green-100 to-emerald-200 rounded-full flex items-center justify-center">
+                    <span class="material-icons text-4xl text-green-500">payments</span>
+                </div>
+                <h3 class="text-2xl font-semibold text-gray-700 mb-3">No transactions found</h3>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+
+    
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div class="border-t border-gray-100 px-6 py-4">
+        <nav aria-label="Transactions pagination">
+    <div class="flex items-center justify-center">
+        <div class="flex space-x-2">
+            {% if page_obj.has_previous %}
+                <a href="?page=1{% if request.GET.name %}&name={{ request.GET.name }}{% endif %}{% if request.GET.transaction_id %}&transaction_id={{ request.GET.transaction_id }}{% endif %}{% if request.GET.method %}&method={{ request.GET.method }}{% endif %}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}" 
+                   class="px-3 py-2 text-sm text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                    &laquo; First
+                </a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.name %}&name={{ request.GET.name }}{% endif %}{% if request.GET.transaction_id %}&transaction_id={{ request.GET.transaction_id }}{% endif %}{% if request.GET.method %}&method={{ request.GET.method }}{% endif %}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}" 
+                   class="px-3 py-2 text-sm text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                    Previous
+                </a>
+            {% endif %}
+            
+            <span class="px-3 py-2 text-sm text-white bg-blue-600 border border-blue-600 rounded-md">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+            
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.name %}&name={{ request.GET.name }}{% endif %}{% if request.GET.transaction_id %}&transaction_id={{ request.GET.transaction_id }}{% endif %}{% if request.GET.method %}&method={{ request.GET.method }}{% endif %}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}" 
+                   class="px-3 py-2 text-sm text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                    Next
+                </a>
+                <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.name %}&name={{ request.GET.name }}{% endif %}{% if request.GET.transaction_id %}&transaction_id={{ request.GET.transaction_id }}{% endif %}{% if request.GET.method %}&method={{ request.GET.method }}{% endif %}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}" 
+                   class="px-3 py-2 text-sm text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                    Last &raquo;
+                </a>
+            {% endif %}
+            </div>
+        </div>
+    </nav>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+// Open transaction modal
+function openTransactionModal() {
+    console.log('Opening transaction modal...');
+    const pledgeSelector = document.getElementById('pledge-selector');
+    const selectedPledgeId = pledgeSelector ? pledgeSelector.value : '';
+    
+    if (!selectedPledgeId) {
+        // Highlight the selector and show a gentle reminder
+        pledgeSelector.focus();
+        pledgeSelector.style.borderColor = '#f59e0b';
+        pledgeSelector.style.boxShadow = '0 0 0 2px rgba(245, 158, 11, 0.2)';
+        
+        // Show tooltip
+        const tooltip = document.createElement('div');
+        tooltip.className = 'absolute z-50 bg-yellow-100 border border-yellow-300 text-yellow-800 px-3 py-2 rounded-lg text-sm mt-1';
+        tooltip.innerHTML = '<i class="fas fa-lightbulb mr-1"></i>Please select a pledge first to ensure the transaction is linked correctly.';
+        pledgeSelector.parentElement.appendChild(tooltip);
+        
+        // Remove highlight and tooltip after a few seconds
+        setTimeout(() => {
+            pledgeSelector.style.borderColor = '';
+            pledgeSelector.style.boxShadow = '';
+            if (tooltip.parentElement) {
+                tooltip.remove();
+            }
+        }, 4000);
+        return;
+    }
+    
+    let url = '{% url "events:transaction_create" %}?modal=1';
+    if (selectedPledgeId) {
+        url += '&pledge_id=' + encodeURIComponent(selectedPledgeId);
+    }
+    
+    console.log('Opening modal with URL:', url);
+    openModal(url);
+}
+
+function openTransactionModalForPledge(pledgeId) {
+    console.log('Opening transaction modal for pledge:', pledgeId);
+    const url = '{% url "events:transaction_create" %}?modal=1&pledge_id=' + encodeURIComponent(pledgeId);
+    openModal(url);
+}
+
+// Show transaction help
+function showQuickTransactionHelp() {
+    const helpModal = `
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div class="bg-blue-50 px-6 py-4 border-b border-blue-200 rounded-t-lg">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-question-circle text-white"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900">Transaction Help</h3>
+                    </div>
+                    <button type="button" class="text-gray-400 hover:text-gray-600 transition-colors" onclick="closeModal()">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4 text-sm">
+                    <div>
+                        <h4 class="font-semibold text-gray-900 mb-2">📝 Transaction ID</h4>
+                        <ul class="text-gray-600 space-y-1 ml-4">
+                            <li>• For cash: Auto-generated UUID</li>
+                            <li>• For M-Pesa: Use M-Pesa reference (e.g., QFX7Y8Z9)</li>
+                            <li>• For bank: Use transaction reference</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-900 mb-2">💳 Payment Method</h4>
+                        <ul class="text-gray-600 space-y-1 ml-4">
+                            <li>• Cash, M-Pesa, Tigo Pesa, Airtel Money</li>
+                            <li>• Bank Transfer, Card, Cheque, Other</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-900 mb-2">💰 Amount</h4>
+                        <ul class="text-gray-600 space-y-1 ml-4">
+                            <li>• Enter in Tanzanian Shillings (TSH)</li>
+                            <li>• Use decimal format (e.g., 1500.50)</li>
+                            <li>• Must be greater than 0</li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded-lg">
+                        <p class="text-green-800 text-xs">
+                            <i class="fas fa-lightbulb mr-1"></i>
+                            <strong>Tip:</strong> All transactions are automatically linked to pledges and update pledge status.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 rounded-b-lg">
+                <button type="button" 
+                        class="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" 
+                        onclick="closeModal()">
+                    Got it!
+                </button>
+            </div>
+        </div>
+    `;
+    
+    // Show help modal
+    const modal = document.getElementById('modal-container');
+    const modalContent = document.getElementById('modal-content');
+    
+    if (modal && modalContent) {
+        modalContent.innerHTML = helpModal;
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function showMenu(transactionId) {
+    // Hide all menus first
+    document.querySelectorAll('[id^="menu-"]').forEach(menu => {
+        menu.classList.add('hidden');
+    });
+    
+    // Show the clicked menu
+    const menu = document.getElementById('menu-' + transactionId);
+    if (menu) {
+        // Get the button element
+        const button = menu.previousElementSibling;
+        const rect = button.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        
+        // Check if there's enough space below
+        const spaceBelow = viewportHeight - rect.bottom;
+        const menuHeight = 80; // Approximate menu height
+        
+        if (spaceBelow < menuHeight && rect.top > menuHeight) {
+            // Position menu above the button
+            menu.style.top = 'auto';
+            menu.style.bottom = '100%';
+            menu.style.marginBottom = '4px';
+            menu.style.marginTop = '0';
+        } else {
+            // Position menu below the button
+            menu.style.bottom = 'auto';
+            menu.style.top = '100%';
+            menu.style.marginTop = '4px';
+            menu.style.marginBottom = '0';
+        }
+        
+        menu.classList.remove('hidden');
+    }
+}
+
+// Hide menu when clicking outside
+document.addEventListener('click', function(event) {
+    if (!event.target.closest('[onclick*="showMenu"]') && !event.target.closest('[id^="menu-"]')) {
+        document.querySelectorAll('[id^="menu-"]').forEach(menu => {
+            menu.classList.add('hidden');
+        });
+    }
+});
+</script>
+
+<style>
+.menu-dropdown {
+    top: 100%;
+    margin-top: 4px;
+}
+
+/* Position dropdown upward for last few rows */
+tr:nth-last-child(-n+3) .menu-dropdown {
+    top: auto;
+    bottom: 100%;
+    margin-top: 0;
+    margin-bottom: 4px;
+}
+
+/* Ensure table container doesn't create unnecessary scrollbars */
+.overflow-x-auto {
+    overflow-y: visible;
+}
+
+/* Improve table height utilization */
+.md-card {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.md-card > div:last-child {
+    flex: 1;
+}
+
+/* Material Design Search Form Styling */
+:root {
+    --primary: #6750a4;
+    --on-primary: #ffffff;
+    --surface: #fef7ff;
+    --on-surface: #1d1b20;
+    --surface-variant: #e7e0ec;
+    --on-surface-variant: #49454f;
+    --surface-container: #f3edf7;
+    --surface-container-high: #ece6f0;
+    --outline: #79747e;
+    --outline-variant: #cac4d0;
+    --error: #ba1a1a;
+    --success: #146c2e;
+    --shadow: rgba(0, 0, 0, 0.1);
+}
+
+.field-container {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.input-field {
+    position: relative;
+    background: var(--surface-variant);
+    border-radius: 4px 4px 0 0;
+    transition: background-color 0.2s;
+}
+
+.input-field:focus-within {
+    background: var(--surface-container-high);
+}
+
+.input-field input,
+.input-field select {
+    width: 100%;
+    height: 56px;
+    padding: 24px 48px 8px 16px;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--on-surface);
+    outline: none;
+    font-family: 'Roboto', sans-serif;
+}
+
+.input-field input[type="date"] {
+    padding-right: 16px;
+}
+
+.field-label {
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--on-surface-variant);
+    pointer-events: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+    font-weight: 400;
+}
+
+.input-field input:focus + .field-label,
+.input-field input:not(:placeholder-shown) + .field-label,
+.input-field input[type="date"]:not([value=""]) + .field-label,
+.input-field select:focus + .field-label,
+.input-field select:not([value=""]) + .field-label {
+    top: 8px;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.field-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--outline);
+    transition: all 0.2s;
+}
+
+.field-line::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    right: 50%;
+    height: 2px;
+    background: var(--primary);
+    transition: all 0.2s;
+}
+
+.input-field:focus-within .field-line::after {
+    left: 0;
+    right: 0;
+}
+
+/* Select dropdown styling */
+.input-field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2349454f' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 16px center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+}
+
+.input-field select:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236750a4' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+}
+
+/* Search and Clear Buttons */
+.search-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 24px;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    background: var(--primary);
+    color: var(--on-primary);
+    box-shadow: 0 1px 3px var(--shadow);
+}
+
+.search-button:hover {
+    box-shadow: 0 3px 6px var(--shadow);
+    transform: translateY(-1px);
+}
+</style>
+{% endblock %}

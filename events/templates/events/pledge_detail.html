@@ -1,0 +1,216 @@
+{% extends 'events/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}{{ pledge.name }} - Pledge Details{% endblock %}
+
+{% block content %}
+<!-- Material Design Header -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+    <div>
+        <h1 class="text-4xl font-bold text-gray-900 flex items-center mb-3">
+        </h1>
+    </div>
+    <div class="mt-4 md:mt-0 flex space-x-3">
+        <button onclick="openModal('{% url 'events:pledge_edit' pledge.id %}?modal=1')" 
+                class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            <span class="material-icons mr-1 text-sm">edit</span>Edit Pledge
+        </button>
+        <a href="{% url 'events:pledge_list' %}" 
+           class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium text-sm rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+            <span class="material-icons mr-1 text-sm">arrow_back</span>Back to List
+        </a>
+    </div>
+</div>
+
+<!-- Material Design Pledge Overview -->
+<div class="mb-8">
+    <div>
+        <!-- Material Design Card -->
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+            <div class="px-4 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-100">
+                <h5 class="text-base font-semibold text-gray-900 flex items-center">
+                    <span class="material-icons mr-2 text-blue-600 text-base">info</span>Pledge Information
+                </h5>
+            </div>
+            <div class="p-8">
+                <div class="space-y-4">
+                    <!-- Row 1: Name and Pledge Amount -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 py-1.5 border-b border-gray-100">
+                        <div>
+                            <dt class="text-xs text-gray-500 uppercase tracking-wide">Full Name</dt>
+                            <dd class="text-xs font-semibold text-gray-900">{{ pledge.name }}</dd>
+                        </div>
+                        <div>
+                            <dt class="text-xs text-gray-500 uppercase tracking-wide">Pledge Amount</dt>
+                            <dd class="text-sm font-bold text-gray-900">{{ pledge.pledge|floatformat:2|intcomma }}</dd>
+                        </div>
+                    </div>
+                    
+                    <!-- Row 2: Mobile and Amount Paid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 py-1.5 border-b border-gray-100">
+                        <div>
+                            <dt class="text-xs text-gray-500 uppercase tracking-wide">Mobile Number</dt>
+                            <dd class="text-xs font-semibold text-gray-900">
+                                <a href="tel:{{ pledge.mobile_number }}" class="text-blue-600 hover:text-blue-800 transition-colors duration-200">{{ pledge.mobile_number }}</a>
+                            </dd>
+                        </div>
+                        <div>
+                            <dt class="text-xs text-gray-500 uppercase tracking-wide">Amount Paid</dt>
+                            <dd class="text-sm font-bold text-gray-900">{{ pledge.amount_paid|floatformat:2|intcomma }}</dd>
+                        </div>
+                    </div>
+                    
+                    <!-- Row 3: Status and Balance -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 py-1.5">
+                        <div>
+                            <dt class="text-xs text-gray-500 uppercase tracking-wide">Status</dt>
+                            <dd class="text-xs">
+                                <span class="inline-flex px-1.5 py-0.5 text-xs font-medium rounded-full {% if pledge.status == 'completed' %}bg-green-100 text-green-800{% elif pledge.status == 'partial' %}bg-yellow-100 text-yellow-800{% elif pledge.status == 'pending' %}bg-blue-100 text-blue-800{% elif pledge.status == 'new' %}bg-purple-100 text-purple-800{% else %}bg-gray-100 text-gray-800{% endif %}">
+                                    {{ pledge.get_status_display }}
+                                </span>
+                            </dd>
+                        </div>
+                        <div>
+                            <dt class="text-xs text-gray-500 uppercase tracking-wide">Balance</dt>
+                            <dd class="text-sm font-bold text-gray-900">
+                                {% if pledge.balance %}
+                                    {{ pledge.balance|floatformat:2|intcomma }}
+                                {% else %}
+                                    0.00
+                                {% endif %}
+                            </dd>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Material Transactions Section -->
+<div class="mb-8">
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div class="px-4 py-3 bg-gradient-to-r from-green-50 to-emerald-50 border-b border-gray-100 flex justify-between items-center">
+            <h5 class="text-base font-semibold text-gray-900 flex items-center">
+                <span class="material-icons mr-2 text-green-600 text-base">account_balance_wallet</span>Transaction History
+            </h5>
+            <button onclick="openModal('{% url 'events:transaction_create' %}?pledge_id={{ pledge.id }}&modal=1')" 
+                    class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-medium text-sm rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                <span class="material-icons mr-1 text-sm">add</span>Add Payment
+            </button>
+        </div>
+        <div class="overflow-x-auto">
+            {% if transactions %}
+                <table class="min-w-full">
+                    <thead>
+                        <tr class="border-b border-gray-100 bg-gradient-to-r from-gray-50 to-gray-100">
+                            <th class="px-6 py-4 text-right text-sm font-medium text-gray-700">Amount</th>
+                            <th class="px-6 py-4 text-left text-sm font-medium text-gray-700">Date</th>
+                            <th class="px-6 py-4 text-left text-sm font-medium text-gray-700">Method</th>
+                            <th class="px-6 py-4 text-left text-sm font-medium text-gray-700">Transaction ID</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white">
+                        {% for transaction in transactions %}
+                        <tr class="border-b border-gray-50 hover:bg-blue-50 hover:shadow-sm transition-all duration-200 {% cycle 'bg-white' 'bg-gray-50' %}">
+                            <td class="px-6 py-1 text-right">
+                                <div class="text-xs font-semibold text-gray-900">{{ transaction.amount|floatformat:2 }}</div>
+                            </td>
+                            <td class="px-6 py-1">
+                                <div class="text-xs text-gray-700">{{ transaction.created_at|date:"M d, Y" }}</div>
+                            </td>
+                            <td class="px-6 py-1">
+                                <div class="text-xs text-gray-700">{{ transaction.method }}</div>
+                            </td>
+                            <td class="px-6 py-1">
+                                <div class="text-xs font-medium text-gray-900">
+                                        {{ transaction.transaction_id }}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot class="bg-gradient-to-r from-gray-50 to-gray-100">
+                        <tr class="border-t border-gray-200">
+                            <th class="px-6 py-3 text-right text-sm font-bold text-gray-900">{{ pledge.amount_paid|floatformat:2 }}</th>
+                            <th colspan="3" class="px-6 py-3 text-left text-xs font-semibold text-gray-900 uppercase tracking-wide">Total</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            {% else %}
+                <div class="text-center py-16">
+                    <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-green-100 to-emerald-200 rounded-full flex items-center justify-center">
+                        <span class="material-icons text-4xl text-green-500">account_balance_wallet</span>
+                    </div>
+                    <h6 class="text-2xl font-semibold text-gray-700 mb-3">No payments recorded yet</h6>
+                    <p class="text-gray-500 mb-8 max-w-md mx-auto">Start tracking payments for this pledge to monitor progress and maintain accurate records.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Material Messages Section -->
+<div class="mb-8">
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div class="px-4 py-3 bg-gradient-to-r from-purple-50 to-blue-50 border-b border-gray-100 flex justify-between items-center">
+            <h5 class="text-base font-semibold text-gray-900 flex items-center">
+                <span class="material-icons mr-2 text-purple-600 text-base">message</span>Communication History
+            </h5>
+            <button onclick="openModal('{% url 'events:message_create' %}?pledge_id={{ pledge.id }}&modal=1')" 
+                    class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 text-white font-medium text-sm rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                <span class="material-icons mr-1 text-sm">add</span>Send Message
+            </button>
+        </div>
+        <div class="overflow-x-auto">
+            {% if messages_list %}
+                <table class="min-w-full">
+                    <thead>
+                        <tr class="border-b border-gray-100 bg-gradient-to-r from-gray-50 to-gray-100">
+                            <th class="px-6 py-4 text-left text-sm font-medium text-gray-700">Message</th>
+                            <th class="px-6 py-4 text-left text-sm font-medium text-gray-700">Method</th>
+                            <th class="px-6 py-4 text-left text-sm font-medium text-gray-700">Status</th>
+                            <th class="px-6 py-4 text-left text-sm font-medium text-gray-700">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white">
+                        {% for message in messages_list %}
+                        <tr class="border-b border-gray-50 hover:bg-blue-50 hover:shadow-sm transition-all duration-200 {% cycle 'bg-white' 'bg-gray-50' %}">
+                            <td class="px-6 py-1">
+                                <div class="text-xs text-gray-900 max-w-xs truncate" title="{{ message.message }}">
+                                    {{ message.message|truncatewords:8 }}
+                                </div>
+                            </td>
+                            <td class="px-6 py-1">
+                                <div class="text-xs text-gray-700">{{ message.get_method_display }}</div>
+                            </td>
+                            <td class="px-6 py-1">
+                                <span class="inline-flex items-center px-1.5 py-0.5 text-xs font-medium rounded-full shadow-sm
+                                    {% if message.status == 'delivered' %}bg-gradient-to-r from-green-100 to-green-200 text-green-800
+                                    {% elif message.status == 'sent' %}bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800
+                                    {% elif message.status == 'failed' %}bg-gradient-to-r from-red-100 to-red-200 text-red-800
+                                    {% else %}bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800{% endif %}">
+                                    {{ message.get_status_display }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-1">
+                                <div class="text-xs text-gray-700">{{ message.created_at|date:"M d, Y" }}</div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="text-center py-16">
+                    <div class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-purple-100 to-blue-200 rounded-full flex items-center justify-center">
+                        <span class="material-icons text-4xl text-purple-500">message</span>
+                    </div>
+                    <h6 class="text-2xl font-semibold text-gray-700 mb-3">No messages sent yet</h6>
+                    <p class="text-gray-500 mb-8 max-w-md mx-auto">Start communicating with this pledge holder to send updates, reminders, and thank you messages.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
