@@ -255,6 +255,7 @@ class Messages(models.Model):
     ]
     
     MESSAGE_STATUS = [
+        ('queued', '🕐 Queued'),
         ('pending', '⏳ Pending'),
         ('sent', '📤 Sent'),
         ('delivered', '📥 Delivered'),
@@ -334,3 +335,135 @@ class Messages(models.Model):
         """Mark message as failed."""
         self.status = 'failed'
         self.save()
+
+
+class MessageTemplate(models.Model):
+    """
+    Model representing predefined message templates for different event types.
+    
+    Allows for consistent messaging across different communication scenarios.
+    """
+    
+    TEMPLATE_TYPES = [
+        ('reminder', '🔔 Reminder'),
+        ('new_pledge', '🆕 New Pledge'),
+        ('pledge_completed', '✅ Pledge Completed'),
+        ('card', '💳 Card'),
+        ('thanks', '🙏 Thanks'),
+    ]
+    
+    # Relationship
+    event_id = models.CharField(
+        max_length=100,
+        verbose_name="Event ID",
+        help_text="Event this template belongs to"
+    )
+    
+    # Template Details
+    message = models.TextField(
+        verbose_name="Template Message",
+        help_text="The message template content"
+    )
+    type = models.CharField(
+        max_length=20,
+        choices=TEMPLATE_TYPES,
+        verbose_name="Template Type",
+        help_text="Type/category of this message template"
+    )
+    
+    # Metadata
+    name = models.CharField(
+        max_length=100,
+        verbose_name="Template Name",
+        help_text="Descriptive name for this template"
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name="Is Active",
+        help_text="Whether this template is currently available for use"
+    )
+    
+    # Timestamps
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Created At"
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name="Last Updated"
+    )
+    
+    class Meta:
+        db_table = 'message_templates'
+        verbose_name = 'Message Template'
+        verbose_name_plural = 'Message Templates'
+        ordering = ['event_id', 'type', 'name']
+        indexes = [
+            models.Index(fields=['event_id']),
+            models.Index(fields=['type']),
+            models.Index(fields=['is_active']),
+        ]
+        unique_together = []  # Remove unique constraint since event_id is now default
+    
+    def __str__(self):
+        """String representation of the message template."""
+        return f"{self.event_id} - {self.get_type_display()} - {self.name}"
+    
+    def get_formatted_message(self, pledge=None, **kwargs):
+        """
+        Get formatted message with placeholders replaced.
+        
+        Args:
+            pledge: Pledge object to use for placeholder replacement
+            **kwargs: Additional variables for placeholder replacement
+            
+        Returns:
+            str: Formatted message with placeholders replaced
+        """
+        message = self.message
+        
+        if pledge:
+            replacements = {
+                '{name}': pledge.name,
+                '{pledge_amount}': f"TSH {pledge.pledge:,.2f}",
+                '{amount_paid}': f"TSH {pledge.amount_paid:,.2f}",
+                '{balance}': f"TSH {pledge.balance():,.2f}",
+                '{event_id}': pledge.event_id,
+                '{mobile}': pledge.mobile_number,
+                '{status}': pledge.get_status_display(),
+            }
+            
+            for placeholder, value in replacements.items():
+                message = message.replace(placeholder, str(value))
+        
+        # Apply any additional replacements from kwargs
+        for key, value in kwargs.items():
+            placeholder = f"{{{key}}}"
+            message = message.replace(placeholder, str(value))
+        
+        return message
+    
+    def preview(self, pledge=None):
+        """
+        Generate a preview of this template.
+        
+        Args:
+            pledge: Optional pledge object for realistic preview
+            
+        Returns:
+            str: Preview of the formatted message
+        """
+        if pledge:
+            return self.get_formatted_message(pledge)
+        else:
+            # Use sample data for preview
+            sample_data = {
+                'name': 'John Doe',
+                'pledge_amount': 'TSH 100,000.00',
+                'amount_paid': 'TSH 50,000.00',
+                'balance': 'TSH 50,000.00',
+                'event_id': 'EVENT2025',
+                'mobile': '+255123456789',
+                'status': 'Partial Payment',
+            }
+            return self.get_formatted_message(**sample_data)

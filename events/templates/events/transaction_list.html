@@ -158,11 +158,6 @@
                             </th>
                             <th class="px-6 py-4 text-left text-sm font-medium text-gray-700">
                                 <div class="flex items-center">
-                                    <span class="material-icons text-sm mr-2">credit_card</span>Method
-                                </div>
-                            </th>
-                            <th class="px-6 py-4 text-left text-sm font-medium text-gray-700">
-                                <div class="flex items-center">
                                     <span class="material-icons text-sm mr-2">schedule</span>Date
                                 </div>
                             </th>
@@ -198,11 +193,6 @@
                                 </div>
                             </td>
                             <td class="px-6 py-1">
-                                <div class="text-xs text-gray-700">
-                                    {{ transaction.get_method_display }}
-                                </div>
-                            </td>
-                            <td class="px-6 py-1">
                                 <div class="text-xs text-gray-700">{{ transaction.created_at|date:"M d, Y" }}</div>
                             </td>
                         </tr>
@@ -214,7 +204,7 @@
                             <th class="px-6 py-3 text-right text-sm font-bold text-gray-900">
                                 {{ total_amount|floatformat:2|intcomma }}
                             </th>
-                            <th colspan="2" class="px-6 py-3"></th>
+                            <th class="px-6 py-3"></th>
                         </tr>
                     </tfoot>
             </table>

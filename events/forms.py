@@ -1,5 +1,5 @@
 from django import forms
-from .models import Pledges, Transactions, Messages
+from .models import Pledges, Transactions, Messages, MessageTemplate
 import uuid
 
 
@@ -233,3 +233,29 @@ class TransactionSearchForm(forms.Form):
             'class': 'form-control'
         })
     )
+
+
+class MessageTemplateForm(forms.ModelForm):
+    class Meta:
+        model = MessageTemplate
+        fields = ['type', 'message']
+        
+        widgets = {
+            'type': forms.Select(attrs={
+                'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
+            }),
+            'message': forms.Textarea(attrs={
+                'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500',
+                'rows': 4,
+            }),
+        }
+        
+        labels = {
+            'type': 'Template Type',
+            'message': 'Message Template',
+        }
+        
+        help_texts = {
+            'type': 'The category/type of this message template',
+            'message': 'Use placeholders like {name}, {pledge_amount}, {balance} etc. for dynamic content',
+        }

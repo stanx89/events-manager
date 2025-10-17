@@ -16,7 +16,7 @@
             <span class="material-icons mr-2">add</span>
             Send Message
         </button>
-        <a href="{% url 'events:bulk_message_send' %}" 
+        <a href="{% url 'events:bulk_reminder_send' %}" 
            class="inline-flex items-center px-6 py-3 bg-white border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-medium text-sm rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
             <span class="material-icons mr-2">broadcast_on_personal</span>
             Bulk Send
@@ -49,6 +49,25 @@
                     </div>
                 </div>
                 
+                <!-- Filter by Status - Material Design 3 -->
+                <div class="field-container">
+                    <div class="input-field">
+                        <select name="status" id="status" value="{{ request.GET.status|default:'' }}">
+                            <option value=""></option>
+                            <option value="queued" {% if request.GET.status == 'queued' %}selected{% endif %}>⏳ Queued</option>
+                            <option value="pending" {% if request.GET.status == 'pending' %}selected{% endif %}>🔄 Pending</option>
+                            <option value="sent" {% if request.GET.status == 'sent' %}selected{% endif %}>✅ Sent</option>
+                            <option value="delivered" {% if request.GET.status == 'delivered' %}selected{% endif %}>📨 Delivered</option>
+                            <option value="failed" {% if request.GET.status == 'failed' %}selected{% endif %}>❌ Failed</option>
+                            <option value="read" {% if request.GET.status == 'read' %}selected{% endif %}>👁️ Read</option>
+                        </select>
+                        <label for="status" class="field-label">
+                            Status
+                        </label>
+                        <div class="field-line"></div>
+                    </div>
+                </div>
+                
                 <!-- Filter by Method - Material Design 3 -->
                 <div class="field-container">
                     <div class="input-field">
@@ -65,13 +84,30 @@
                         <div class="field-line"></div>
                     </div>
                 </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+                <!-- Search by Message Content -->
+                <div class="field-container">
+                    <div class="input-field">
+                        <input type="text" 
+                               name="message_content" 
+                               id="message_content" 
+                               value="{{ request.GET.message_content|default:'' }}"
+                               placeholder=" ">
+                        <label for="message_content" class="field-label">
+                            Search Message Content
+                        </label>
+                        <div class="field-line"></div>
+                    </div>
+                </div>
                 
                 <!-- Search Button -->
-                <div class="field-container">
+                <div class="field-container md:col-span-2">
                     <div style="height: 56px; display: flex; align-items: center;">
                         <button type="submit" class="search-button">
                             <span class="material-icons mr-2">search</span>
-                            Search
+                            Search Messages
                         </button>
                     </div>
                 </div>
@@ -231,11 +267,11 @@
     <div class="flex items-center justify-center">
         <div class="flex space-x-2">
             {% if page_obj.has_previous %}
-                <a href="?page=1{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.method %}&method={{ request.GET.method }}{% endif %}" 
+                <a href="?page=1{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.method %}&method={{ request.GET.method }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.message_content %}&message_content={{ request.GET.message_content }}{% endif %}" 
                    class="px-3 py-2 text-sm text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
                     &laquo; First
                 </a>
-                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.method %}&method={{ request.GET.method }}{% endif %}" 
+                <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.method %}&method={{ request.GET.method }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.message_content %}&message_content={{ request.GET.message_content }}{% endif %}" 
                    class="px-3 py-2 text-sm text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
                     Previous
                 </a>
@@ -246,11 +282,11 @@
             </span>
             
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.method %}&method={{ request.GET.method }}{% endif %}" 
+                <a href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.method %}&method={{ request.GET.method }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.message_content %}&message_content={{ request.GET.message_content }}{% endif %}" 
                    class="px-3 py-2 text-sm text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
                     Next
                 </a>
-                <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.method %}&method={{ request.GET.method }}{% endif %}" 
+                <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.method %}&method={{ request.GET.method }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.message_content %}&message_content={{ request.GET.message_content }}{% endif %}" 
                    class="px-3 py-2 text-sm text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
                     Last &raquo;
                 </a>
@@ -283,4 +319,151 @@ document.addEventListener('click', function(event) {
     }
 });
 </script>
+
+<style>
+/* Material Design 3 Field Styles */
+:root {
+    --primary: #6750a4;
+    --on-primary: #ffffff;
+    --surface: #fef7ff;
+    --on-surface: #1d1b20;
+    --on-surface-variant: #49454f;
+    --outline: #79747e;
+    --outline-variant: #cac4d0;
+    --surface-variant: #e7e0ec;
+    --surface-container-high: #ece6f0;
+    --error: #ba1a1a;
+    --shadow: rgba(0, 0, 0, 0.2);
+}
+
+.field-container {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.input-field {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-field input,
+.input-field textarea,
+.input-field select {
+    background: transparent;
+    border: none;
+    border-radius: 4px 4px 0 0;
+    background-color: var(--surface-variant);
+    color: var(--on-surface);
+    font-size: 16px;
+    line-height: 24px;
+    padding: 16px 16px 8px 16px;
+    outline: none;
+    transition: all 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.input-field input:focus,
+.input-field textarea:focus,
+.input-field select:focus {
+    background-color: var(--surface-container-high);
+}
+
+.field-label {
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    color: var(--on-surface-variant);
+    font-size: 16px;
+    line-height: 24px;
+    transition: all 0.2s;
+    pointer-events: none;
+    background: transparent;
+    z-index: 1;
+}
+
+.input-field input:focus + .field-label,
+.input-field textarea:focus + .field-label,
+.input-field select:focus + .field-label,
+.input-field input:not(:placeholder-shown) + .field-label,
+.input-field textarea:not(:placeholder-shown) + .field-label,
+.input-field select:not([value=""]) + .field-label {
+    top: 8px;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--primary);
+}
+
+.field-line {
+    position: relative;
+    height: 1px;
+    background: var(--outline);
+    transition: all 0.2s;
+}
+
+.field-line::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    right: 50%;
+    height: 2px;
+    background: var(--primary);
+    transition: all 0.2s;
+}
+
+.input-field:focus-within .field-line::after {
+    left: 0;
+    right: 0;
+}
+
+/* Select dropdown styling */
+.input-field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2349454f' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 16px center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+}
+
+.input-field select:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236750a4' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+}
+
+/* Search Button Styles */
+.search-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 14px 24px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 28px;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    min-height: 44px;
+}
+
+.search-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.search-button:active {
+    transform: translateY(0);
+}
+
+/* Fix label positioning for filled fields */
+.input-field input:not(:placeholder-shown) + .field-label,
+.input-field select:not([value=""]):not([value=" "]) + .field-label {
+    top: 8px;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--primary);
+}
+</style>
 {% endblock %}

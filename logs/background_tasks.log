@@ -1,0 +1,556 @@
+INFO 2025-10-16 11:33:24,991 tasks 31184 6234730496 Starting bulk send for 1 messages
+INFO 2025-10-16 11:33:27,001 tasks 31184 6234730496 WhatsApp sent to 0713241438: Mambo Vipi...
+INFO 2025-10-16 11:33:27,001 tasks 31184 6234730496 Message 2 sent successfully
+INFO 2025-10-16 11:33:27,507 tasks 31184 6234730496 Completed bulk send for 1 messages
+INFO 2025-10-17 09:45:03,902 tasks 56579 6193065984 Starting background thread for bulk message sending
+INFO 2025-10-17 09:45:03,903 tasks 56579 6226718720 Starting bulk send process for 1 messages
+INFO 2025-10-17 09:45:03,903 tasks 56579 6193065984 Background thread started for 1 messages
+INFO 2025-10-17 09:45:03,906 tasks 56579 6226718720 Message queue statistics:
+INFO 2025-10-17 09:45:03,906 tasks 56579 6226718720   QUEUED: 1 messages
+INFO 2025-10-17 09:45:03,906 tasks 56579 6226718720   SENT: 2 messages
+INFO 2025-10-17 09:45:03,906 tasks 56579 6226718720   TOTAL: 3 messages in queue
+INFO 2025-10-17 09:45:03,906 tasks 56579 6226718720 Processing message 1/1 (ID: 3)
+INFO 2025-10-17 09:45:03,907 tasks 56579 6226718720 Starting to process message 3
+INFO 2025-10-17 09:45:03,910 tasks 56579 6226718720 Retrieved message 3 for Stan Kayombo (0713241438)
+INFO 2025-10-17 09:45:03,916 tasks 56579 6226718720 Updated message 3 status to 'pending'
+INFO 2025-10-17 09:45:05,922 tasks 56579 6226718720 Attempting to send message 3 via sms
+INFO 2025-10-17 09:45:05,922 tasks 56579 6226718720 Attempting SMS send to 0713241438 for Stan Kayombo
+INFO 2025-10-17 09:45:05,923 tasks 56579 6226718720 SMS simulation: Sending to 0713241438
+INFO 2025-10-17 09:45:06,928 tasks 56579 6226718720 SMS sent successfully to 0713241438 (Stan Kayombo)
+INFO 2025-10-17 09:45:06,929 tasks 56579 6226718720 Message 3 sent successfully to Stan Kayombo
+INFO 2025-10-17 09:45:06,933 tasks 56579 6226718720 Updated message 3 final status to 'sent'
+INFO 2025-10-17 09:45:06,935 tasks 56579 6226718720 Bulk progress: 1/1 - Message 3 sent successfully
+INFO 2025-10-17 09:45:06,935 tasks 56579 6226718720 Bulk send completed: 1 sent, 0 failed, 1 total
+INFO 2025-10-17 09:45:06,936 tasks 56579 6226718720 Message queue statistics:
+INFO 2025-10-17 09:45:06,936 tasks 56579 6226718720   SENT: 3 messages
+INFO 2025-10-17 09:45:06,936 tasks 56579 6226718720   TOTAL: 3 messages in queue
+INFO 2025-10-17 09:45:12,400 tasks 56579 6193065984 Starting background thread for bulk message sending
+INFO 2025-10-17 09:45:12,400 tasks 56579 6226718720 Starting bulk send process for 1 messages
+INFO 2025-10-17 09:45:12,400 tasks 56579 6193065984 Background thread started for 1 messages
+INFO 2025-10-17 09:45:12,403 tasks 56579 6226718720 Message queue statistics:
+INFO 2025-10-17 09:45:12,403 tasks 56579 6226718720   QUEUED: 1 messages
+INFO 2025-10-17 09:45:12,403 tasks 56579 6226718720   SENT: 3 messages
+INFO 2025-10-17 09:45:12,404 tasks 56579 6226718720   TOTAL: 4 messages in queue
+INFO 2025-10-17 09:45:12,404 tasks 56579 6226718720 Processing message 1/1 (ID: 4)
+INFO 2025-10-17 09:45:12,404 tasks 56579 6226718720 Starting to process message 4
+INFO 2025-10-17 09:45:12,411 tasks 56579 6226718720 Retrieved message 4 for Stan Kayombo (0713241438)
+INFO 2025-10-17 09:45:12,414 tasks 56579 6226718720 Updated message 4 status to 'pending'
+INFO 2025-10-17 09:45:14,422 tasks 56579 6226718720 Attempting to send message 4 via sms
+INFO 2025-10-17 09:45:14,423 tasks 56579 6226718720 Attempting SMS send to 0713241438 for Stan Kayombo
+INFO 2025-10-17 09:45:14,423 tasks 56579 6226718720 SMS simulation: Sending to 0713241438
+INFO 2025-10-17 09:45:15,426 tasks 56579 6226718720 SMS sent successfully to 0713241438 (Stan Kayombo)
+INFO 2025-10-17 09:45:15,426 tasks 56579 6226718720 Message 4 sent successfully to Stan Kayombo
+INFO 2025-10-17 09:45:15,429 tasks 56579 6226718720 Updated message 4 final status to 'sent'
+INFO 2025-10-17 09:45:15,430 tasks 56579 6226718720 Bulk progress: 1/1 - Message 4 sent successfully
+INFO 2025-10-17 09:45:15,430 tasks 56579 6226718720 Bulk send completed: 1 sent, 0 failed, 1 total
+INFO 2025-10-17 09:45:15,431 tasks 56579 6226718720 Message queue statistics:
+INFO 2025-10-17 09:45:15,431 tasks 56579 6226718720   SENT: 4 messages
+INFO 2025-10-17 09:45:15,431 tasks 56579 6226718720   TOTAL: 4 messages in queue
+INFO 2025-10-17 09:45:56,064 tasks 56579 6193065984 Starting background thread for bulk message sending
+INFO 2025-10-17 09:45:56,065 tasks 56579 6226718720 Starting bulk send process for 1 messages
+INFO 2025-10-17 09:45:56,065 tasks 56579 6193065984 Background thread started for 1 messages
+INFO 2025-10-17 09:45:56,068 tasks 56579 6226718720 Message queue statistics:
+INFO 2025-10-17 09:45:56,068 tasks 56579 6226718720   QUEUED: 1 messages
+INFO 2025-10-17 09:45:56,068 tasks 56579 6226718720   SENT: 4 messages
+INFO 2025-10-17 09:45:56,068 tasks 56579 6226718720   TOTAL: 5 messages in queue
+INFO 2025-10-17 09:45:56,068 tasks 56579 6226718720 Processing message 1/1 (ID: 5)
+INFO 2025-10-17 09:45:56,069 tasks 56579 6226718720 Starting to process message 5
+INFO 2025-10-17 09:45:56,071 tasks 56579 6226718720 Retrieved message 5 for Stan Kayombo (0713241438)
+INFO 2025-10-17 09:45:56,076 tasks 56579 6226718720 Updated message 5 status to 'pending'
+INFO 2025-10-17 09:45:58,081 tasks 56579 6226718720 Attempting to send message 5 via sms
+INFO 2025-10-17 09:45:58,082 tasks 56579 6226718720 Attempting SMS send to 0713241438 for Stan Kayombo
+INFO 2025-10-17 09:45:58,082 tasks 56579 6226718720 SMS simulation: Sending to 0713241438
+INFO 2025-10-17 09:45:59,087 tasks 56579 6226718720 SMS sent successfully to 0713241438 (Stan Kayombo)
+INFO 2025-10-17 09:45:59,087 tasks 56579 6226718720 Message 5 sent successfully to Stan Kayombo
+INFO 2025-10-17 09:45:59,089 tasks 56579 6226718720 Updated message 5 final status to 'sent'
+INFO 2025-10-17 09:45:59,090 tasks 56579 6226718720 Bulk progress: 1/1 - Message 5 sent successfully
+INFO 2025-10-17 09:45:59,090 tasks 56579 6226718720 Bulk send completed: 1 sent, 0 failed, 1 total
+INFO 2025-10-17 09:45:59,091 tasks 56579 6226718720 Message queue statistics:
+INFO 2025-10-17 09:45:59,091 tasks 56579 6226718720   SENT: 5 messages
+INFO 2025-10-17 09:45:59,091 tasks 56579 6226718720   TOTAL: 5 messages in queue
+INFO 2025-10-17 09:49:34,864 tasks 56897 6126202880 Starting background thread for bulk message sending
+INFO 2025-10-17 09:49:34,865 tasks 56897 6159855616 Starting bulk send process for 2 messages
+INFO 2025-10-17 09:49:34,865 tasks 56897 6126202880 Background thread started for 2 messages
+INFO 2025-10-17 09:49:34,867 tasks 56897 6159855616 Message queue statistics:
+INFO 2025-10-17 09:49:34,867 tasks 56897 6159855616   QUEUED: 2 messages
+INFO 2025-10-17 09:49:34,868 tasks 56897 6159855616   SENT: 5 messages
+INFO 2025-10-17 09:49:34,868 tasks 56897 6159855616   TOTAL: 7 messages in queue
+INFO 2025-10-17 09:49:34,868 tasks 56897 6159855616 Processing message 1/2 (ID: 6)
+INFO 2025-10-17 09:49:34,869 tasks 56897 6159855616 Starting to process message 6
+INFO 2025-10-17 09:49:34,871 tasks 56897 6159855616 Retrieved message 6 for Stan Kayombo (0713241438)
+INFO 2025-10-17 09:49:34,875 tasks 56897 6159855616 Updated message 6 status to 'pending'
+INFO 2025-10-17 09:49:36,881 tasks 56897 6159855616 Attempting to send message 6 via sms
+INFO 2025-10-17 09:49:36,882 tasks 56897 6159855616 Attempting SMS send to 0713241438 for Stan Kayombo
+INFO 2025-10-17 09:49:36,882 tasks 56897 6159855616 SMS simulation: Sending to 0713241438
+INFO 2025-10-17 09:49:37,884 tasks 56897 6159855616 SMS sent successfully to 0713241438 (Stan Kayombo)
+INFO 2025-10-17 09:49:37,884 tasks 56897 6159855616 Message 6 sent successfully to Stan Kayombo
+INFO 2025-10-17 09:49:37,891 tasks 56897 6159855616 Updated message 6 final status to 'sent'
+INFO 2025-10-17 09:49:37,893 tasks 56897 6159855616 Bulk progress: 1/2 - Message 6 sent successfully
+INFO 2025-10-17 09:49:38,396 tasks 56897 6159855616 Processing message 2/2 (ID: 7)
+INFO 2025-10-17 09:49:38,397 tasks 56897 6159855616 Starting to process message 7
+INFO 2025-10-17 09:49:38,399 tasks 56897 6159855616 Retrieved message 7 for Stan Kayombo (0713241438)
+INFO 2025-10-17 09:49:38,402 tasks 56897 6159855616 Updated message 7 status to 'pending'
+INFO 2025-10-17 09:49:40,405 tasks 56897 6159855616 Attempting to send message 7 via sms
+INFO 2025-10-17 09:49:40,406 tasks 56897 6159855616 Attempting SMS send to 0713241438 for Stan Kayombo
+INFO 2025-10-17 09:49:40,406 tasks 56897 6159855616 SMS simulation: Sending to 0713241438
+INFO 2025-10-17 09:49:41,412 tasks 56897 6159855616 SMS sent successfully to 0713241438 (Stan Kayombo)
+INFO 2025-10-17 09:49:41,412 tasks 56897 6159855616 Message 7 sent successfully to Stan Kayombo
+INFO 2025-10-17 09:49:41,417 tasks 56897 6159855616 Updated message 7 final status to 'sent'
+INFO 2025-10-17 09:49:41,418 tasks 56897 6159855616 Bulk progress: 2/2 - Message 7 sent successfully
+INFO 2025-10-17 09:49:41,418 tasks 56897 6159855616 Bulk send completed: 2 sent, 0 failed, 2 total
+INFO 2025-10-17 09:49:41,419 tasks 56897 6159855616 Message queue statistics:
+INFO 2025-10-17 09:49:41,419 tasks 56897 6159855616   SENT: 7 messages
+INFO 2025-10-17 09:49:41,420 tasks 56897 6159855616   TOTAL: 7 messages in queue
+INFO 2025-10-17 09:49:50,885 tasks 56897 6126202880 Starting background thread for bulk message sending
+INFO 2025-10-17 09:49:50,886 tasks 56897 6159855616 Starting bulk send process for 1 messages
+INFO 2025-10-17 09:49:50,886 tasks 56897 6126202880 Background thread started for 1 messages
+INFO 2025-10-17 09:49:50,890 tasks 56897 6159855616 Message queue statistics:
+INFO 2025-10-17 09:49:50,890 tasks 56897 6159855616   QUEUED: 1 messages
+INFO 2025-10-17 09:49:50,891 tasks 56897 6159855616   SENT: 7 messages
+INFO 2025-10-17 09:49:50,891 tasks 56897 6159855616   TOTAL: 8 messages in queue
+INFO 2025-10-17 09:49:50,891 tasks 56897 6159855616 Processing message 1/1 (ID: 8)
+INFO 2025-10-17 09:49:50,892 tasks 56897 6159855616 Starting to process message 8
+INFO 2025-10-17 09:49:50,895 tasks 56897 6159855616 Retrieved message 8 for Stan Kayombo (0713241438)
+INFO 2025-10-17 09:49:50,898 tasks 56897 6159855616 Updated message 8 status to 'pending'
+INFO 2025-10-17 09:49:52,903 tasks 56897 6159855616 Attempting to send message 8 via sms
+INFO 2025-10-17 09:49:52,904 tasks 56897 6159855616 Attempting SMS send to 0713241438 for Stan Kayombo
+INFO 2025-10-17 09:49:52,905 tasks 56897 6159855616 SMS simulation: Sending to 0713241438
+INFO 2025-10-17 09:49:53,910 tasks 56897 6159855616 SMS sent successfully to 0713241438 (Stan Kayombo)
+INFO 2025-10-17 09:49:53,911 tasks 56897 6159855616 Message 8 sent successfully to Stan Kayombo
+INFO 2025-10-17 09:49:53,915 tasks 56897 6159855616 Updated message 8 final status to 'sent'
+INFO 2025-10-17 09:49:53,917 tasks 56897 6159855616 Bulk progress: 1/1 - Message 8 sent successfully
+INFO 2025-10-17 09:49:53,917 tasks 56897 6159855616 Bulk send completed: 1 sent, 0 failed, 1 total
+INFO 2025-10-17 09:49:53,918 tasks 56897 6159855616 Message queue statistics:
+INFO 2025-10-17 09:49:53,918 tasks 56897 6159855616   SENT: 8 messages
+INFO 2025-10-17 09:49:53,918 tasks 56897 6159855616   TOTAL: 8 messages in queue
+INFO 2025-10-17 09:50:54,264 tasks 56897 6126202880 Starting background thread for bulk message sending
+INFO 2025-10-17 09:50:54,265 tasks 56897 6159855616 Starting bulk send process for 3 messages
+INFO 2025-10-17 09:50:54,265 tasks 56897 6126202880 Background thread started for 3 messages
+INFO 2025-10-17 09:50:54,268 tasks 56897 6159855616 Message queue statistics:
+INFO 2025-10-17 09:50:54,268 tasks 56897 6159855616   QUEUED: 3 messages
+INFO 2025-10-17 09:50:54,268 tasks 56897 6159855616   SENT: 8 messages
+INFO 2025-10-17 09:50:54,268 tasks 56897 6159855616   TOTAL: 11 messages in queue
+INFO 2025-10-17 09:50:54,268 tasks 56897 6159855616 Processing message 1/3 (ID: 9)
+INFO 2025-10-17 09:50:54,269 tasks 56897 6159855616 Starting to process message 9
+INFO 2025-10-17 09:50:54,272 tasks 56897 6159855616 Retrieved message 9 for Stan Kayombo (+255713241438)
+INFO 2025-10-17 09:50:54,276 tasks 56897 6159855616 Updated message 9 status to 'pending'
+INFO 2025-10-17 09:50:56,281 tasks 56897 6159855616 Attempting to send message 9 via sms
+INFO 2025-10-17 09:50:56,282 tasks 56897 6159855616 Attempting SMS send to +255713241438 for Stan Kayombo
+INFO 2025-10-17 09:50:56,282 tasks 56897 6159855616 SMS simulation: Sending to +255713241438
+INFO 2025-10-17 09:50:57,288 tasks 56897 6159855616 SMS sent successfully to +255713241438 (Stan Kayombo)
+INFO 2025-10-17 09:50:57,289 tasks 56897 6159855616 Message 9 sent successfully to Stan Kayombo
+INFO 2025-10-17 09:50:57,294 tasks 56897 6159855616 Updated message 9 final status to 'sent'
+INFO 2025-10-17 09:50:57,297 tasks 56897 6159855616 Bulk progress: 1/3 - Message 9 sent successfully
+INFO 2025-10-17 09:50:57,802 tasks 56897 6159855616 Processing message 2/3 (ID: 10)
+INFO 2025-10-17 09:50:57,805 tasks 56897 6159855616 Starting to process message 10
+INFO 2025-10-17 09:50:57,808 tasks 56897 6159855616 Retrieved message 10 for Stan Kayombo (+255713241438)
+INFO 2025-10-17 09:50:57,812 tasks 56897 6159855616 Updated message 10 status to 'pending'
+INFO 2025-10-17 09:50:59,818 tasks 56897 6159855616 Attempting to send message 10 via sms
+INFO 2025-10-17 09:50:59,818 tasks 56897 6159855616 Attempting SMS send to +255713241438 for Stan Kayombo
+INFO 2025-10-17 09:50:59,819 tasks 56897 6159855616 SMS simulation: Sending to +255713241438
+INFO 2025-10-17 09:51:00,820 tasks 56897 6159855616 SMS sent successfully to +255713241438 (Stan Kayombo)
+INFO 2025-10-17 09:51:00,821 tasks 56897 6159855616 Message 10 sent successfully to Stan Kayombo
+INFO 2025-10-17 09:51:00,826 tasks 56897 6159855616 Updated message 10 final status to 'sent'
+INFO 2025-10-17 09:51:00,829 tasks 56897 6159855616 Bulk progress: 2/3 - Message 10 sent successfully
+INFO 2025-10-17 09:51:01,331 tasks 56897 6159855616 Processing message 3/3 (ID: 11)
+INFO 2025-10-17 09:51:01,334 tasks 56897 6159855616 Starting to process message 11
+INFO 2025-10-17 09:51:01,336 tasks 56897 6159855616 Retrieved message 11 for Stan Kayombo (0713241438)
+INFO 2025-10-17 09:51:01,340 tasks 56897 6159855616 Updated message 11 status to 'pending'
+INFO 2025-10-17 09:51:03,345 tasks 56897 6159855616 Attempting to send message 11 via sms
+INFO 2025-10-17 09:51:03,346 tasks 56897 6159855616 Attempting SMS send to 0713241438 for Stan Kayombo
+INFO 2025-10-17 09:51:03,346 tasks 56897 6159855616 SMS simulation: Sending to 0713241438
+INFO 2025-10-17 09:51:04,352 tasks 56897 6159855616 SMS sent successfully to 0713241438 (Stan Kayombo)
+INFO 2025-10-17 09:51:04,352 tasks 56897 6159855616 Message 11 sent successfully to Stan Kayombo
+INFO 2025-10-17 09:51:04,356 tasks 56897 6159855616 Updated message 11 final status to 'sent'
+INFO 2025-10-17 09:51:04,357 tasks 56897 6159855616 Bulk progress: 3/3 - Message 11 sent successfully
+INFO 2025-10-17 09:51:04,358 tasks 56897 6159855616 Bulk send completed: 3 sent, 0 failed, 3 total
+INFO 2025-10-17 09:51:04,359 tasks 56897 6159855616 Message queue statistics:
+INFO 2025-10-17 09:51:04,359 tasks 56897 6159855616   SENT: 11 messages
+INFO 2025-10-17 09:51:04,359 tasks 56897 6159855616   TOTAL: 11 messages in queue
+INFO 2025-10-17 09:52:19,737 tasks 56897 6126202880 Starting background thread for bulk message sending
+INFO 2025-10-17 09:52:19,738 tasks 56897 6159855616 Starting bulk send process for 4 messages
+INFO 2025-10-17 09:52:19,738 tasks 56897 6126202880 Background thread started for 4 messages
+INFO 2025-10-17 09:52:19,740 tasks 56897 6159855616 Message queue statistics:
+INFO 2025-10-17 09:52:19,740 tasks 56897 6159855616   QUEUED: 4 messages
+INFO 2025-10-17 09:52:19,741 tasks 56897 6159855616   SENT: 11 messages
+INFO 2025-10-17 09:52:19,741 tasks 56897 6159855616   TOTAL: 15 messages in queue
+INFO 2025-10-17 09:52:19,741 tasks 56897 6159855616 Processing message 1/4 (ID: 12)
+INFO 2025-10-17 09:52:19,741 tasks 56897 6159855616 Starting to process message 12
+INFO 2025-10-17 09:52:19,743 tasks 56897 6159855616 Retrieved message 12 for Noel Jackson (+255713241438)
+INFO 2025-10-17 09:52:19,746 tasks 56897 6159855616 Updated message 12 status to 'pending'
+INFO 2025-10-17 09:52:21,751 tasks 56897 6159855616 Attempting to send message 12 via sms
+INFO 2025-10-17 09:52:21,752 tasks 56897 6159855616 Attempting SMS send to +255713241438 for Noel Jackson
+INFO 2025-10-17 09:52:21,752 tasks 56897 6159855616 SMS simulation: Sending to +255713241438
+INFO 2025-10-17 09:52:22,754 tasks 56897 6159855616 SMS sent successfully to +255713241438 (Noel Jackson)
+INFO 2025-10-17 09:52:22,755 tasks 56897 6159855616 Message 12 sent successfully to Noel Jackson
+INFO 2025-10-17 09:52:22,760 tasks 56897 6159855616 Updated message 12 final status to 'sent'
+INFO 2025-10-17 09:52:22,761 tasks 56897 6159855616 Bulk progress: 1/4 - Message 12 sent successfully
+INFO 2025-10-17 09:52:23,266 tasks 56897 6159855616 Processing message 2/4 (ID: 13)
+INFO 2025-10-17 09:52:23,268 tasks 56897 6159855616 Starting to process message 13
+INFO 2025-10-17 09:52:23,271 tasks 56897 6159855616 Retrieved message 13 for Noel Jackson (+255713241438)
+INFO 2025-10-17 09:52:23,276 tasks 56897 6159855616 Updated message 13 status to 'pending'
+INFO 2025-10-17 09:52:25,281 tasks 56897 6159855616 Attempting to send message 13 via sms
+INFO 2025-10-17 09:52:25,282 tasks 56897 6159855616 Attempting SMS send to +255713241438 for Noel Jackson
+INFO 2025-10-17 09:52:25,282 tasks 56897 6159855616 SMS simulation: Sending to +255713241438
+INFO 2025-10-17 09:52:26,287 tasks 56897 6159855616 SMS sent successfully to +255713241438 (Noel Jackson)
+INFO 2025-10-17 09:52:26,288 tasks 56897 6159855616 Message 13 sent successfully to Noel Jackson
+INFO 2025-10-17 09:52:26,292 tasks 56897 6159855616 Updated message 13 final status to 'sent'
+INFO 2025-10-17 09:52:26,293 tasks 56897 6159855616 Bulk progress: 2/4 - Message 13 sent successfully
+INFO 2025-10-17 09:52:26,798 tasks 56897 6159855616 Processing message 3/4 (ID: 14)
+INFO 2025-10-17 09:52:26,801 tasks 56897 6159855616 Starting to process message 14
+INFO 2025-10-17 09:52:26,804 tasks 56897 6159855616 Retrieved message 14 for Stan Kayombo (+255713241438)
+INFO 2025-10-17 09:52:26,808 tasks 56897 6159855616 Updated message 14 status to 'pending'
+INFO 2025-10-17 09:52:28,813 tasks 56897 6159855616 Attempting to send message 14 via sms
+INFO 2025-10-17 09:52:28,814 tasks 56897 6159855616 Attempting SMS send to +255713241438 for Stan Kayombo
+INFO 2025-10-17 09:52:28,814 tasks 56897 6159855616 SMS simulation: Sending to +255713241438
+INFO 2025-10-17 09:52:29,816 tasks 56897 6159855616 SMS sent successfully to +255713241438 (Stan Kayombo)
+INFO 2025-10-17 09:52:29,816 tasks 56897 6159855616 Message 14 sent successfully to Stan Kayombo
+INFO 2025-10-17 09:52:29,820 tasks 56897 6159855616 Updated message 14 final status to 'sent'
+INFO 2025-10-17 09:52:29,822 tasks 56897 6159855616 Bulk progress: 3/4 - Message 14 sent successfully
+INFO 2025-10-17 09:52:30,327 tasks 56897 6159855616 Processing message 4/4 (ID: 15)
+INFO 2025-10-17 09:52:30,329 tasks 56897 6159855616 Starting to process message 15
+INFO 2025-10-17 09:52:30,331 tasks 56897 6159855616 Retrieved message 15 for Stan Kayombo (0713241438)
+INFO 2025-10-17 09:52:30,333 tasks 56897 6159855616 Updated message 15 status to 'pending'
+INFO 2025-10-17 09:52:32,339 tasks 56897 6159855616 Attempting to send message 15 via sms
+INFO 2025-10-17 09:52:32,339 tasks 56897 6159855616 Attempting SMS send to 0713241438 for Stan Kayombo
+INFO 2025-10-17 09:52:32,339 tasks 56897 6159855616 SMS simulation: Sending to 0713241438
+INFO 2025-10-17 09:52:33,345 tasks 56897 6159855616 SMS sent successfully to 0713241438 (Stan Kayombo)
+INFO 2025-10-17 09:52:33,345 tasks 56897 6159855616 Message 15 sent successfully to Stan Kayombo
+INFO 2025-10-17 09:52:33,350 tasks 56897 6159855616 Updated message 15 final status to 'sent'
+INFO 2025-10-17 09:52:33,351 tasks 56897 6159855616 Bulk progress: 4/4 - Message 15 sent successfully
+INFO 2025-10-17 09:52:33,351 tasks 56897 6159855616 Bulk send completed: 4 sent, 0 failed, 4 total
+INFO 2025-10-17 09:52:33,352 tasks 56897 6159855616 Message queue statistics:
+INFO 2025-10-17 09:52:33,352 tasks 56897 6159855616   SENT: 15 messages
+INFO 2025-10-17 09:52:33,352 tasks 56897 6159855616   TOTAL: 15 messages in queue
+INFO 2025-10-17 09:56:53,927 tasks 57635 6164279296 Starting background thread for bulk message sending
+INFO 2025-10-17 09:56:53,927 tasks 57635 6197932032 Starting bulk send process for 3 messages
+INFO 2025-10-17 09:56:53,927 tasks 57635 6164279296 Background thread started for 3 messages
+INFO 2025-10-17 09:56:53,932 tasks 57635 6197932032 Message queue statistics:
+INFO 2025-10-17 09:56:53,932 tasks 57635 6197932032   QUEUED: 3 messages
+INFO 2025-10-17 09:56:53,932 tasks 57635 6197932032   SENT: 15 messages
+INFO 2025-10-17 09:56:53,932 tasks 57635 6197932032   TOTAL: 18 messages in queue
+INFO 2025-10-17 09:56:53,932 tasks 57635 6197932032 Processing message 1/3 (ID: 16)
+INFO 2025-10-17 09:56:53,935 tasks 57635 6197932032 Starting to process message 16
+INFO 2025-10-17 09:56:53,937 tasks 57635 6197932032 Retrieved message 16 for Noel Jackson (+255713241438)
+INFO 2025-10-17 09:56:53,939 tasks 57635 6197932032 Updated message 16 status to 'pending'
+INFO 2025-10-17 09:56:55,944 tasks 57635 6197932032 Attempting to send message 16 via sms
+INFO 2025-10-17 09:56:55,945 tasks 57635 6197932032 Attempting SMS send to +255713241438 for Noel Jackson
+INFO 2025-10-17 09:56:55,945 tasks 57635 6197932032 SMS simulation: Sending to +255713241438
+INFO 2025-10-17 09:56:56,950 tasks 57635 6197932032 SMS sent successfully to +255713241438 (Noel Jackson)
+INFO 2025-10-17 09:56:56,951 tasks 57635 6197932032 Message 16 sent successfully to Noel Jackson
+INFO 2025-10-17 09:56:56,955 tasks 57635 6197932032 Updated message 16 final status to 'sent'
+INFO 2025-10-17 09:56:56,957 tasks 57635 6197932032 Bulk progress: 1/3 - Message 16 sent successfully
+INFO 2025-10-17 09:56:57,462 tasks 57635 6197932032 Processing message 2/3 (ID: 17)
+INFO 2025-10-17 09:56:57,465 tasks 57635 6197932032 Starting to process message 17
+INFO 2025-10-17 09:56:57,468 tasks 57635 6197932032 Retrieved message 17 for Stan Kayombo (+255713241438)
+INFO 2025-10-17 09:56:57,473 tasks 57635 6197932032 Updated message 17 status to 'pending'
+INFO 2025-10-17 09:56:59,478 tasks 57635 6197932032 Attempting to send message 17 via sms
+INFO 2025-10-17 09:56:59,479 tasks 57635 6197932032 Attempting SMS send to +255713241438 for Stan Kayombo
+INFO 2025-10-17 09:56:59,479 tasks 57635 6197932032 SMS simulation: Sending to +255713241438
+INFO 2025-10-17 09:57:00,483 tasks 57635 6197932032 SMS sent successfully to +255713241438 (Stan Kayombo)
+INFO 2025-10-17 09:57:00,483 tasks 57635 6197932032 Message 17 sent successfully to Stan Kayombo
+INFO 2025-10-17 09:57:00,488 tasks 57635 6197932032 Updated message 17 final status to 'sent'
+INFO 2025-10-17 09:57:00,490 tasks 57635 6197932032 Bulk progress: 2/3 - Message 17 sent successfully
+INFO 2025-10-17 09:57:00,995 tasks 57635 6197932032 Processing message 3/3 (ID: 18)
+INFO 2025-10-17 09:57:00,997 tasks 57635 6197932032 Starting to process message 18
+INFO 2025-10-17 09:57:01,000 tasks 57635 6197932032 Retrieved message 18 for Stan Kayombo (0713241438)
+INFO 2025-10-17 09:57:01,003 tasks 57635 6197932032 Updated message 18 status to 'pending'
+INFO 2025-10-17 09:57:03,009 tasks 57635 6197932032 Attempting to send message 18 via sms
+INFO 2025-10-17 09:57:03,009 tasks 57635 6197932032 Attempting SMS send to 0713241438 for Stan Kayombo
+INFO 2025-10-17 09:57:03,009 tasks 57635 6197932032 SMS simulation: Sending to 0713241438
+INFO 2025-10-17 09:57:04,015 tasks 57635 6197932032 SMS sent successfully to 0713241438 (Stan Kayombo)
+INFO 2025-10-17 09:57:04,015 tasks 57635 6197932032 Message 18 sent successfully to Stan Kayombo
+INFO 2025-10-17 09:57:04,017 tasks 57635 6197932032 Updated message 18 final status to 'sent'
+INFO 2025-10-17 09:57:04,018 tasks 57635 6197932032 Bulk progress: 3/3 - Message 18 sent successfully
+INFO 2025-10-17 09:57:04,019 tasks 57635 6197932032 Bulk send completed: 3 sent, 0 failed, 3 total
+INFO 2025-10-17 09:57:04,020 tasks 57635 6197932032 Message queue statistics:
+INFO 2025-10-17 09:57:04,020 tasks 57635 6197932032   SENT: 18 messages
+INFO 2025-10-17 09:57:04,020 tasks 57635 6197932032   TOTAL: 18 messages in queue
+INFO 2025-10-17 10:02:33,188 tasks 57697 6133018624 Starting background thread for bulk message sending
+INFO 2025-10-17 10:02:33,188 tasks 57697 6166671360 Starting bulk send process for 4 messages
+INFO 2025-10-17 10:02:33,188 tasks 57697 6133018624 Background thread started for 4 messages
+INFO 2025-10-17 10:02:33,191 tasks 57697 6166671360 Message queue statistics:
+INFO 2025-10-17 10:02:33,191 tasks 57697 6166671360   QUEUED: 4 messages
+INFO 2025-10-17 10:02:33,192 tasks 57697 6166671360   SENT: 18 messages
+INFO 2025-10-17 10:02:33,192 tasks 57697 6166671360   TOTAL: 22 messages in queue
+INFO 2025-10-17 10:02:33,192 tasks 57697 6166671360 Processing message 1/4 (ID: 19)
+INFO 2025-10-17 10:02:33,193 tasks 57697 6166671360 Starting to process message 19
+INFO 2025-10-17 10:02:33,196 tasks 57697 6166671360 Retrieved message 19 for Mwanamvua (+255713781920)
+INFO 2025-10-17 10:02:33,199 tasks 57697 6166671360 Updated message 19 status to 'pending'
+INFO 2025-10-17 10:02:35,206 tasks 57697 6166671360 Attempting to send message 19 via sms
+INFO 2025-10-17 10:02:35,207 tasks 57697 6166671360 Attempting SMS send to +255713781920 for Mwanamvua
+INFO 2025-10-17 10:02:35,207 tasks 57697 6166671360 SMS simulation: Sending to +255713781920
+INFO 2025-10-17 10:02:36,209 tasks 57697 6166671360 SMS sent successfully to +255713781920 (Mwanamvua)
+INFO 2025-10-17 10:02:36,209 tasks 57697 6166671360 Message 19 sent successfully to Mwanamvua
+INFO 2025-10-17 10:02:36,214 tasks 57697 6166671360 Updated message 19 final status to 'sent'
+INFO 2025-10-17 10:02:36,216 tasks 57697 6166671360 Bulk progress: 1/4 - Message 19 sent successfully
+INFO 2025-10-17 10:02:36,720 tasks 57697 6166671360 Processing message 2/4 (ID: 20)
+INFO 2025-10-17 10:02:36,722 tasks 57697 6166671360 Starting to process message 20
+INFO 2025-10-17 10:02:36,723 tasks 57697 6166671360 Retrieved message 20 for Noel Jackson (+255713241438)
+INFO 2025-10-17 10:02:36,727 tasks 57697 6166671360 Updated message 20 status to 'pending'
+INFO 2025-10-17 10:02:38,731 tasks 57697 6166671360 Attempting to send message 20 via sms
+INFO 2025-10-17 10:02:38,731 tasks 57697 6166671360 Attempting SMS send to +255713241438 for Noel Jackson
+INFO 2025-10-17 10:02:38,731 tasks 57697 6166671360 SMS simulation: Sending to +255713241438
+INFO 2025-10-17 10:02:39,737 tasks 57697 6166671360 SMS sent successfully to +255713241438 (Noel Jackson)
+INFO 2025-10-17 10:02:39,738 tasks 57697 6166671360 Message 20 sent successfully to Noel Jackson
+INFO 2025-10-17 10:02:39,743 tasks 57697 6166671360 Updated message 20 final status to 'sent'
+INFO 2025-10-17 10:02:39,744 tasks 57697 6166671360 Bulk progress: 2/4 - Message 20 sent successfully
+INFO 2025-10-17 10:02:40,245 tasks 57697 6166671360 Processing message 3/4 (ID: 21)
+INFO 2025-10-17 10:02:40,247 tasks 57697 6166671360 Starting to process message 21
+INFO 2025-10-17 10:02:40,249 tasks 57697 6166671360 Retrieved message 21 for Stan Kayombo (+255713241438)
+INFO 2025-10-17 10:02:40,253 tasks 57697 6166671360 Updated message 21 status to 'pending'
+INFO 2025-10-17 10:02:42,258 tasks 57697 6166671360 Attempting to send message 21 via sms
+INFO 2025-10-17 10:02:42,258 tasks 57697 6166671360 Attempting SMS send to +255713241438 for Stan Kayombo
+INFO 2025-10-17 10:02:42,259 tasks 57697 6166671360 SMS simulation: Sending to +255713241438
+INFO 2025-10-17 10:02:43,264 tasks 57697 6166671360 SMS sent successfully to +255713241438 (Stan Kayombo)
+INFO 2025-10-17 10:02:43,264 tasks 57697 6166671360 Message 21 sent successfully to Stan Kayombo
+INFO 2025-10-17 10:02:43,268 tasks 57697 6166671360 Updated message 21 final status to 'sent'
+INFO 2025-10-17 10:02:43,269 tasks 57697 6166671360 Bulk progress: 3/4 - Message 21 sent successfully
+INFO 2025-10-17 10:02:43,774 tasks 57697 6166671360 Processing message 4/4 (ID: 22)
+INFO 2025-10-17 10:02:43,776 tasks 57697 6166671360 Starting to process message 22
+INFO 2025-10-17 10:02:43,778 tasks 57697 6166671360 Retrieved message 22 for Stan Kayombo (0713241438)
+INFO 2025-10-17 10:02:43,779 tasks 57697 6166671360 Updated message 22 status to 'pending'
+INFO 2025-10-17 10:02:45,783 tasks 57697 6166671360 Attempting to send message 22 via sms
+INFO 2025-10-17 10:02:45,783 tasks 57697 6166671360 Attempting SMS send to 0713241438 for Stan Kayombo
+INFO 2025-10-17 10:02:45,783 tasks 57697 6166671360 SMS simulation: Sending to 0713241438
+INFO 2025-10-17 10:02:46,789 tasks 57697 6166671360 SMS sent successfully to 0713241438 (Stan Kayombo)
+INFO 2025-10-17 10:02:46,789 tasks 57697 6166671360 Message 22 sent successfully to Stan Kayombo
+INFO 2025-10-17 10:02:46,794 tasks 57697 6166671360 Updated message 22 final status to 'sent'
+INFO 2025-10-17 10:02:46,796 tasks 57697 6166671360 Bulk progress: 4/4 - Message 22 sent successfully
+INFO 2025-10-17 10:02:46,796 tasks 57697 6166671360 Bulk send completed: 4 sent, 0 failed, 4 total
+INFO 2025-10-17 10:02:46,797 tasks 57697 6166671360 Message queue statistics:
+INFO 2025-10-17 10:02:46,798 tasks 57697 6166671360   SENT: 22 messages
+INFO 2025-10-17 10:02:46,798 tasks 57697 6166671360   TOTAL: 22 messages in queue
+INFO 2025-10-17 10:11:58,519 tasks 58833 6197358592 Starting background thread for bulk message sending
+INFO 2025-10-17 10:11:58,522 tasks 58833 6231011328 Starting bulk send process for 6 messages
+INFO 2025-10-17 10:11:58,522 tasks 58833 6197358592 Background thread started for 6 messages
+INFO 2025-10-17 10:11:58,524 tasks 58833 6231011328 Message queue statistics:
+INFO 2025-10-17 10:11:58,524 tasks 58833 6231011328   QUEUED: 6 messages
+INFO 2025-10-17 10:11:58,524 tasks 58833 6231011328   SENT: 22 messages
+INFO 2025-10-17 10:11:58,524 tasks 58833 6231011328   TOTAL: 28 messages in queue
+INFO 2025-10-17 10:11:58,524 tasks 58833 6231011328 Processing message 1/6 (ID: 23)
+INFO 2025-10-17 10:11:58,525 tasks 58833 6231011328 Starting to process message 23
+INFO 2025-10-17 10:11:58,527 tasks 58833 6231011328 Retrieved message 23 for Config Mwende (+255713241438)
+INFO 2025-10-17 10:11:58,530 tasks 58833 6231011328 Updated message 23 status to 'pending'
+INFO 2025-10-17 10:12:00,536 tasks 58833 6231011328 Attempting to send message 23 via whatsapp
+INFO 2025-10-17 10:12:00,536 tasks 58833 6231011328 Attempting WhatsApp send to +255713241438 for Config Mwende
+INFO 2025-10-17 10:12:00,536 tasks 58833 6231011328 WhatsApp simulation: Sending to +255713241438
+INFO 2025-10-17 10:12:02,040 tasks 58833 6231011328 WhatsApp sent successfully to +255713241438 (Config Mwende)
+INFO 2025-10-17 10:12:02,041 tasks 58833 6231011328 Message 23 sent successfully to Config Mwende
+INFO 2025-10-17 10:12:02,045 tasks 58833 6231011328 Updated message 23 final status to 'sent'
+INFO 2025-10-17 10:12:02,047 tasks 58833 6231011328 Bulk progress: 1/6 - Message 23 sent successfully
+INFO 2025-10-17 10:12:02,552 tasks 58833 6231011328 Processing message 2/6 (ID: 24)
+INFO 2025-10-17 10:12:02,554 tasks 58833 6231011328 Starting to process message 24
+INFO 2025-10-17 10:12:02,556 tasks 58833 6231011328 Retrieved message 24 for Mfumwa (+255765787819)
+INFO 2025-10-17 10:12:02,558 tasks 58833 6231011328 Updated message 24 status to 'pending'
+INFO 2025-10-17 10:12:04,560 tasks 58833 6231011328 Attempting to send message 24 via sms
+INFO 2025-10-17 10:12:04,560 tasks 58833 6231011328 Attempting SMS send to +255765787819 for Mfumwa
+INFO 2025-10-17 10:12:04,561 tasks 58833 6231011328 SMS simulation: Sending to +255765787819
+INFO 2025-10-17 10:12:05,564 tasks 58833 6231011328 SMS sent successfully to +255765787819 (Mfumwa)
+INFO 2025-10-17 10:12:05,564 tasks 58833 6231011328 Message 24 sent successfully to Mfumwa
+INFO 2025-10-17 10:12:05,567 tasks 58833 6231011328 Updated message 24 final status to 'sent'
+INFO 2025-10-17 10:12:05,567 tasks 58833 6231011328 Bulk progress: 2/6 - Message 24 sent successfully
+INFO 2025-10-17 10:12:06,073 tasks 58833 6231011328 Processing message 3/6 (ID: 25)
+INFO 2025-10-17 10:12:06,075 tasks 58833 6231011328 Starting to process message 25
+INFO 2025-10-17 10:12:06,076 tasks 58833 6231011328 Retrieved message 25 for Mwanamvua (+255713781920)
+INFO 2025-10-17 10:12:06,077 tasks 58833 6231011328 Updated message 25 status to 'pending'
+INFO 2025-10-17 10:12:08,083 tasks 58833 6231011328 Attempting to send message 25 via sms
+INFO 2025-10-17 10:12:08,088 tasks 58833 6231011328 Attempting SMS send to +255713781920 for Mwanamvua
+INFO 2025-10-17 10:12:08,091 tasks 58833 6231011328 SMS simulation: Sending to +255713781920
+INFO 2025-10-17 10:12:09,096 tasks 58833 6231011328 SMS sent successfully to +255713781920 (Mwanamvua)
+INFO 2025-10-17 10:12:09,097 tasks 58833 6231011328 Message 25 sent successfully to Mwanamvua
+INFO 2025-10-17 10:12:09,105 tasks 58833 6231011328 Updated message 25 final status to 'sent'
+INFO 2025-10-17 10:12:09,116 tasks 58833 6231011328 Bulk progress: 3/6 - Message 25 sent successfully
+INFO 2025-10-17 10:12:09,622 tasks 58833 6231011328 Processing message 4/6 (ID: 26)
+INFO 2025-10-17 10:12:09,625 tasks 58833 6231011328 Starting to process message 26
+INFO 2025-10-17 10:12:09,627 tasks 58833 6231011328 Retrieved message 26 for Noel Jackson (+255713241438)
+INFO 2025-10-17 10:12:09,630 tasks 58833 6231011328 Updated message 26 status to 'pending'
+INFO 2025-10-17 10:12:11,631 tasks 58833 6231011328 Attempting to send message 26 via sms
+INFO 2025-10-17 10:12:11,631 tasks 58833 6231011328 Attempting SMS send to +255713241438 for Noel Jackson
+INFO 2025-10-17 10:12:11,632 tasks 58833 6231011328 SMS simulation: Sending to +255713241438
+INFO 2025-10-17 10:12:12,633 tasks 58833 6231011328 SMS sent successfully to +255713241438 (Noel Jackson)
+INFO 2025-10-17 10:12:12,634 tasks 58833 6231011328 Message 26 sent successfully to Noel Jackson
+INFO 2025-10-17 10:12:12,637 tasks 58833 6231011328 Updated message 26 final status to 'sent'
+INFO 2025-10-17 10:12:12,638 tasks 58833 6231011328 Bulk progress: 4/6 - Message 26 sent successfully
+INFO 2025-10-17 10:12:13,140 tasks 58833 6231011328 Processing message 5/6 (ID: 27)
+INFO 2025-10-17 10:12:13,143 tasks 58833 6231011328 Starting to process message 27
+INFO 2025-10-17 10:12:13,145 tasks 58833 6231011328 Retrieved message 27 for Stan Kayombo (+255713241438)
+INFO 2025-10-17 10:12:13,149 tasks 58833 6231011328 Updated message 27 status to 'pending'
+INFO 2025-10-17 10:12:15,150 tasks 58833 6231011328 Attempting to send message 27 via whatsapp
+INFO 2025-10-17 10:12:15,151 tasks 58833 6231011328 Attempting WhatsApp send to +255713241438 for Stan Kayombo
+INFO 2025-10-17 10:12:15,151 tasks 58833 6231011328 WhatsApp simulation: Sending to +255713241438
+INFO 2025-10-17 10:12:16,655 tasks 58833 6231011328 WhatsApp sent successfully to +255713241438 (Stan Kayombo)
+INFO 2025-10-17 10:12:16,656 tasks 58833 6231011328 Message 27 sent successfully to Stan Kayombo
+INFO 2025-10-17 10:12:16,659 tasks 58833 6231011328 Updated message 27 final status to 'sent'
+INFO 2025-10-17 10:12:16,661 tasks 58833 6231011328 Bulk progress: 5/6 - Message 27 sent successfully
+INFO 2025-10-17 10:12:17,162 tasks 58833 6231011328 Processing message 6/6 (ID: 28)
+INFO 2025-10-17 10:12:17,165 tasks 58833 6231011328 Starting to process message 28
+INFO 2025-10-17 10:12:17,167 tasks 58833 6231011328 Retrieved message 28 for Stan Kayombo (0713241438)
+INFO 2025-10-17 10:12:17,169 tasks 58833 6231011328 Updated message 28 status to 'pending'
+INFO 2025-10-17 10:12:19,174 tasks 58833 6231011328 Attempting to send message 28 via sms
+INFO 2025-10-17 10:12:19,175 tasks 58833 6231011328 Attempting SMS send to 0713241438 for Stan Kayombo
+INFO 2025-10-17 10:12:19,175 tasks 58833 6231011328 SMS simulation: Sending to 0713241438
+INFO 2025-10-17 10:12:20,180 tasks 58833 6231011328 SMS sent successfully to 0713241438 (Stan Kayombo)
+INFO 2025-10-17 10:12:20,181 tasks 58833 6231011328 Message 28 sent successfully to Stan Kayombo
+INFO 2025-10-17 10:12:20,185 tasks 58833 6231011328 Updated message 28 final status to 'sent'
+INFO 2025-10-17 10:12:20,186 tasks 58833 6231011328 Bulk progress: 6/6 - Message 28 sent successfully
+INFO 2025-10-17 10:12:20,187 tasks 58833 6231011328 Bulk send completed: 6 sent, 0 failed, 6 total
+INFO 2025-10-17 10:12:20,188 tasks 58833 6231011328 Message queue statistics:
+INFO 2025-10-17 10:12:20,188 tasks 58833 6231011328   SENT: 28 messages
+INFO 2025-10-17 10:12:20,188 tasks 58833 6231011328   TOTAL: 28 messages in queue
+INFO 2025-10-17 10:26:13,768 tasks 59204 6155988992 Starting background thread for bulk message sending
+INFO 2025-10-17 10:26:13,770 tasks 59204 13304360960 Starting bulk send process for 6 messages
+INFO 2025-10-17 10:26:13,770 tasks 59204 6155988992 Background thread started for 6 messages
+INFO 2025-10-17 10:26:13,772 tasks 59204 13304360960 Message queue statistics:
+INFO 2025-10-17 10:26:13,772 tasks 59204 13304360960   QUEUED: 6 messages
+INFO 2025-10-17 10:26:13,772 tasks 59204 13304360960   SENT: 28 messages
+INFO 2025-10-17 10:26:13,773 tasks 59204 13304360960   TOTAL: 34 messages in queue
+INFO 2025-10-17 10:26:13,773 tasks 59204 13304360960 Processing message 1/6 (ID: 29)
+INFO 2025-10-17 10:26:13,773 tasks 59204 13304360960 Starting to process message 29
+INFO 2025-10-17 10:26:13,775 tasks 59204 13304360960 Retrieved message 29 for Config Mwende (+255713241438)
+INFO 2025-10-17 10:26:13,789 tasks 59204 13304360960 Updated message 29 status to 'pending'
+INFO 2025-10-17 10:26:15,792 tasks 59204 13304360960 Attempting to send message 29 via whatsapp
+INFO 2025-10-17 10:26:15,793 tasks 59204 13304360960 Attempting WhatsApp send to +255713241438 for Config Mwende
+INFO 2025-10-17 10:26:15,793 tasks 59204 13304360960 WhatsApp simulation: Sending to +255713241438
+INFO 2025-10-17 10:26:17,298 tasks 59204 13304360960 WhatsApp sent successfully to +255713241438 (Config Mwende)
+INFO 2025-10-17 10:26:17,298 tasks 59204 13304360960 Message 29 sent successfully to Config Mwende
+INFO 2025-10-17 10:26:17,302 tasks 59204 13304360960 Updated message 29 final status to 'sent'
+INFO 2025-10-17 10:26:17,304 tasks 59204 13304360960 Bulk progress: 1/6 - Message 29 sent successfully
+INFO 2025-10-17 10:26:17,593 tasks 59204 6155988992 Starting background thread for bulk message sending
+INFO 2025-10-17 10:26:17,593 tasks 59204 13321187328 Starting bulk send process for 6 messages
+INFO 2025-10-17 10:26:17,593 tasks 59204 6155988992 Background thread started for 6 messages
+INFO 2025-10-17 10:26:17,596 tasks 59204 13321187328 Message queue statistics:
+INFO 2025-10-17 10:26:17,596 tasks 59204 13321187328   QUEUED: 11 messages
+INFO 2025-10-17 10:26:17,596 tasks 59204 13321187328   SENT: 29 messages
+INFO 2025-10-17 10:26:17,596 tasks 59204 13321187328   TOTAL: 40 messages in queue
+INFO 2025-10-17 10:26:17,596 tasks 59204 13321187328 Processing message 1/6 (ID: 35)
+INFO 2025-10-17 10:26:17,597 tasks 59204 13321187328 Starting to process message 35
+INFO 2025-10-17 10:26:17,599 tasks 59204 13321187328 Retrieved message 35 for Config Mwende (+255713241438)
+INFO 2025-10-17 10:26:17,601 tasks 59204 13321187328 Updated message 35 status to 'pending'
+INFO 2025-10-17 10:26:17,806 tasks 59204 13304360960 Processing message 2/6 (ID: 30)
+INFO 2025-10-17 10:26:17,808 tasks 59204 13304360960 Starting to process message 30
+INFO 2025-10-17 10:26:17,810 tasks 59204 13304360960 Retrieved message 30 for Mfumwa (+255765787819)
+INFO 2025-10-17 10:26:17,812 tasks 59204 13304360960 Updated message 30 status to 'pending'
+INFO 2025-10-17 10:26:19,602 tasks 59204 13321187328 Attempting to send message 35 via whatsapp
+INFO 2025-10-17 10:26:19,602 tasks 59204 13321187328 Attempting WhatsApp send to +255713241438 for Config Mwende
+INFO 2025-10-17 10:26:19,602 tasks 59204 13321187328 WhatsApp simulation: Sending to +255713241438
+INFO 2025-10-17 10:26:19,816 tasks 59204 13304360960 Attempting to send message 30 via sms
+INFO 2025-10-17 10:26:19,816 tasks 59204 13304360960 Attempting SMS send to +255765787819 for Mfumwa
+INFO 2025-10-17 10:26:19,816 tasks 59204 13304360960 SMS simulation: Sending to +255765787819
+INFO 2025-10-17 10:26:20,820 tasks 59204 13304360960 SMS sent successfully to +255765787819 (Mfumwa)
+INFO 2025-10-17 10:26:20,821 tasks 59204 13304360960 Message 30 sent successfully to Mfumwa
+INFO 2025-10-17 10:26:20,825 tasks 59204 13304360960 Updated message 30 final status to 'sent'
+INFO 2025-10-17 10:26:20,826 tasks 59204 13304360960 Bulk progress: 2/6 - Message 30 sent successfully
+INFO 2025-10-17 10:26:21,108 tasks 59204 13321187328 WhatsApp sent successfully to +255713241438 (Config Mwende)
+INFO 2025-10-17 10:26:21,108 tasks 59204 13321187328 Message 35 sent successfully to Config Mwende
+INFO 2025-10-17 10:26:21,112 tasks 59204 13321187328 Updated message 35 final status to 'sent'
+INFO 2025-10-17 10:26:21,114 tasks 59204 13321187328 Bulk progress: 1/6 - Message 35 sent successfully
+INFO 2025-10-17 10:26:21,331 tasks 59204 13304360960 Processing message 3/6 (ID: 31)
+INFO 2025-10-17 10:26:21,334 tasks 59204 13304360960 Starting to process message 31
+INFO 2025-10-17 10:26:21,338 tasks 59204 13304360960 Retrieved message 31 for Mwanamvua (+255713781920)
+INFO 2025-10-17 10:26:21,341 tasks 59204 13304360960 Updated message 31 status to 'pending'
+INFO 2025-10-17 10:26:21,618 tasks 59204 13321187328 Processing message 2/6 (ID: 36)
+INFO 2025-10-17 10:26:21,620 tasks 59204 13321187328 Starting to process message 36
+INFO 2025-10-17 10:26:21,622 tasks 59204 13321187328 Retrieved message 36 for Mfumwa (+255765787819)
+INFO 2025-10-17 10:26:21,629 tasks 59204 13321187328 Updated message 36 status to 'pending'
+INFO 2025-10-17 10:26:23,342 tasks 59204 13304360960 Attempting to send message 31 via sms
+INFO 2025-10-17 10:26:23,343 tasks 59204 13304360960 Attempting SMS send to +255713781920 for Mwanamvua
+INFO 2025-10-17 10:26:23,343 tasks 59204 13304360960 SMS simulation: Sending to +255713781920
+INFO 2025-10-17 10:26:23,632 tasks 59204 13321187328 Attempting to send message 36 via sms
+INFO 2025-10-17 10:26:23,633 tasks 59204 13321187328 Attempting SMS send to +255765787819 for Mfumwa
+INFO 2025-10-17 10:26:23,633 tasks 59204 13321187328 SMS simulation: Sending to +255765787819
+INFO 2025-10-17 10:26:24,347 tasks 59204 13304360960 SMS sent successfully to +255713781920 (Mwanamvua)
+INFO 2025-10-17 10:26:24,347 tasks 59204 13304360960 Message 31 sent successfully to Mwanamvua
+INFO 2025-10-17 10:26:24,353 tasks 59204 13304360960 Updated message 31 final status to 'sent'
+INFO 2025-10-17 10:26:24,359 tasks 59204 13304360960 Bulk progress: 3/6 - Message 31 sent successfully
+INFO 2025-10-17 10:26:24,638 tasks 59204 13321187328 SMS sent successfully to +255765787819 (Mfumwa)
+INFO 2025-10-17 10:26:24,638 tasks 59204 13321187328 Message 36 sent successfully to Mfumwa
+INFO 2025-10-17 10:26:24,640 tasks 59204 13321187328 Updated message 36 final status to 'sent'
+INFO 2025-10-17 10:26:24,641 tasks 59204 13321187328 Bulk progress: 2/6 - Message 36 sent successfully
+INFO 2025-10-17 10:26:24,861 tasks 59204 13304360960 Processing message 4/6 (ID: 32)
+INFO 2025-10-17 10:26:24,864 tasks 59204 13304360960 Starting to process message 32
+INFO 2025-10-17 10:26:24,866 tasks 59204 13304360960 Retrieved message 32 for Noel Jackson (+255713241438)
+INFO 2025-10-17 10:26:24,869 tasks 59204 13304360960 Updated message 32 status to 'pending'
+INFO 2025-10-17 10:26:25,144 tasks 59204 13321187328 Processing message 3/6 (ID: 37)
+INFO 2025-10-17 10:26:25,146 tasks 59204 13321187328 Starting to process message 37
+INFO 2025-10-17 10:26:25,151 tasks 59204 13321187328 Retrieved message 37 for Mwanamvua (+255713781920)
+INFO 2025-10-17 10:26:25,154 tasks 59204 13321187328 Updated message 37 status to 'pending'
+INFO 2025-10-17 10:26:26,871 tasks 59204 13304360960 Attempting to send message 32 via sms
+INFO 2025-10-17 10:26:26,871 tasks 59204 13304360960 Attempting SMS send to +255713241438 for Noel Jackson
+INFO 2025-10-17 10:26:26,872 tasks 59204 13304360960 SMS simulation: Sending to +255713241438
+INFO 2025-10-17 10:26:27,156 tasks 59204 13321187328 Attempting to send message 37 via sms
+INFO 2025-10-17 10:26:27,157 tasks 59204 13321187328 Attempting SMS send to +255713781920 for Mwanamvua
+INFO 2025-10-17 10:26:27,157 tasks 59204 13321187328 SMS simulation: Sending to +255713781920
+INFO 2025-10-17 10:26:27,877 tasks 59204 13304360960 SMS sent successfully to +255713241438 (Noel Jackson)
+INFO 2025-10-17 10:26:27,878 tasks 59204 13304360960 Message 32 sent successfully to Noel Jackson
+INFO 2025-10-17 10:26:27,882 tasks 59204 13304360960 Updated message 32 final status to 'sent'
+INFO 2025-10-17 10:26:27,883 tasks 59204 13304360960 Bulk progress: 4/6 - Message 32 sent successfully
+INFO 2025-10-17 10:26:28,161 tasks 59204 13321187328 SMS sent successfully to +255713781920 (Mwanamvua)
+INFO 2025-10-17 10:26:28,162 tasks 59204 13321187328 Message 37 sent successfully to Mwanamvua
+INFO 2025-10-17 10:26:28,166 tasks 59204 13321187328 Updated message 37 final status to 'sent'
+INFO 2025-10-17 10:26:28,168 tasks 59204 13321187328 Bulk progress: 3/6 - Message 37 sent successfully
+INFO 2025-10-17 10:26:28,387 tasks 59204 13304360960 Processing message 5/6 (ID: 33)
+INFO 2025-10-17 10:26:28,389 tasks 59204 13304360960 Starting to process message 33
+INFO 2025-10-17 10:26:28,391 tasks 59204 13304360960 Retrieved message 33 for Stan Kayombo (+255713241438)
+INFO 2025-10-17 10:26:28,393 tasks 59204 13304360960 Updated message 33 status to 'pending'
+INFO 2025-10-17 10:26:28,673 tasks 59204 13321187328 Processing message 4/6 (ID: 38)
+INFO 2025-10-17 10:26:28,675 tasks 59204 13321187328 Starting to process message 38
+INFO 2025-10-17 10:26:28,677 tasks 59204 13321187328 Retrieved message 38 for Noel Jackson (+255713241438)
+INFO 2025-10-17 10:26:28,679 tasks 59204 13321187328 Updated message 38 status to 'pending'
+INFO 2025-10-17 10:26:30,398 tasks 59204 13304360960 Attempting to send message 33 via whatsapp
+INFO 2025-10-17 10:26:30,399 tasks 59204 13304360960 Attempting WhatsApp send to +255713241438 for Stan Kayombo
+INFO 2025-10-17 10:26:30,399 tasks 59204 13304360960 WhatsApp simulation: Sending to +255713241438
+INFO 2025-10-17 10:26:30,687 tasks 59204 13321187328 Attempting to send message 38 via sms
+INFO 2025-10-17 10:26:30,688 tasks 59204 13321187328 Attempting SMS send to +255713241438 for Noel Jackson
+INFO 2025-10-17 10:26:30,688 tasks 59204 13321187328 SMS simulation: Sending to +255713241438
+INFO 2025-10-17 10:26:31,693 tasks 59204 13321187328 SMS sent successfully to +255713241438 (Noel Jackson)
+INFO 2025-10-17 10:26:31,693 tasks 59204 13321187328 Message 38 sent successfully to Noel Jackson
+INFO 2025-10-17 10:26:31,697 tasks 59204 13321187328 Updated message 38 final status to 'sent'
+INFO 2025-10-17 10:26:31,698 tasks 59204 13321187328 Bulk progress: 4/6 - Message 38 sent successfully
+INFO 2025-10-17 10:26:31,903 tasks 59204 13304360960 WhatsApp sent successfully to +255713241438 (Stan Kayombo)
+INFO 2025-10-17 10:26:31,904 tasks 59204 13304360960 Message 33 sent successfully to Stan Kayombo
+INFO 2025-10-17 10:26:31,908 tasks 59204 13304360960 Updated message 33 final status to 'sent'
+INFO 2025-10-17 10:26:31,909 tasks 59204 13304360960 Bulk progress: 5/6 - Message 33 sent successfully
+INFO 2025-10-17 10:26:32,203 tasks 59204 13321187328 Processing message 5/6 (ID: 39)
+INFO 2025-10-17 10:26:32,206 tasks 59204 13321187328 Starting to process message 39
+INFO 2025-10-17 10:26:32,208 tasks 59204 13321187328 Retrieved message 39 for Stan Kayombo (+255713241438)
+INFO 2025-10-17 10:26:32,213 tasks 59204 13321187328 Updated message 39 status to 'pending'
+INFO 2025-10-17 10:26:32,412 tasks 59204 13304360960 Processing message 6/6 (ID: 34)
+INFO 2025-10-17 10:26:32,414 tasks 59204 13304360960 Starting to process message 34
+INFO 2025-10-17 10:26:32,417 tasks 59204 13304360960 Retrieved message 34 for Stan Kayombo (0713241438)
+INFO 2025-10-17 10:26:32,420 tasks 59204 13304360960 Updated message 34 status to 'pending'
+INFO 2025-10-17 10:26:34,214 tasks 59204 13321187328 Attempting to send message 39 via whatsapp
+INFO 2025-10-17 10:26:34,215 tasks 59204 13321187328 Attempting WhatsApp send to +255713241438 for Stan Kayombo
+INFO 2025-10-17 10:26:34,215 tasks 59204 13321187328 WhatsApp simulation: Sending to +255713241438
+INFO 2025-10-17 10:26:34,425 tasks 59204 13304360960 Attempting to send message 34 via sms
+INFO 2025-10-17 10:26:34,426 tasks 59204 13304360960 Attempting SMS send to 0713241438 for Stan Kayombo
+INFO 2025-10-17 10:26:34,426 tasks 59204 13304360960 SMS simulation: Sending to 0713241438
+INFO 2025-10-17 10:26:35,429 tasks 59204 13304360960 SMS sent successfully to 0713241438 (Stan Kayombo)
+INFO 2025-10-17 10:26:35,430 tasks 59204 13304360960 Message 34 sent successfully to Stan Kayombo
+INFO 2025-10-17 10:26:35,433 tasks 59204 13304360960 Updated message 34 final status to 'sent'
+INFO 2025-10-17 10:26:35,435 tasks 59204 13304360960 Bulk progress: 6/6 - Message 34 sent successfully
+INFO 2025-10-17 10:26:35,435 tasks 59204 13304360960 Bulk send completed: 6 sent, 0 failed, 6 total
+INFO 2025-10-17 10:26:35,437 tasks 59204 13304360960 Message queue statistics:
+INFO 2025-10-17 10:26:35,437 tasks 59204 13304360960   QUEUED: 1 messages
+INFO 2025-10-17 10:26:35,437 tasks 59204 13304360960   PENDING: 1 messages
+INFO 2025-10-17 10:26:35,438 tasks 59204 13304360960   SENT: 38 messages
+INFO 2025-10-17 10:26:35,438 tasks 59204 13304360960   TOTAL: 40 messages in queue
+INFO 2025-10-17 10:26:35,719 tasks 59204 13321187328 WhatsApp sent successfully to +255713241438 (Stan Kayombo)
+INFO 2025-10-17 10:26:35,721 tasks 59204 13321187328 Message 39 sent successfully to Stan Kayombo
+INFO 2025-10-17 10:26:35,725 tasks 59204 13321187328 Updated message 39 final status to 'sent'
+INFO 2025-10-17 10:26:35,727 tasks 59204 13321187328 Bulk progress: 5/6 - Message 39 sent successfully
+INFO 2025-10-17 10:26:36,227 tasks 59204 13321187328 Processing message 6/6 (ID: 40)
+INFO 2025-10-17 10:26:36,230 tasks 59204 13321187328 Starting to process message 40
+INFO 2025-10-17 10:26:36,232 tasks 59204 13321187328 Retrieved message 40 for Stan Kayombo (0713241438)
+INFO 2025-10-17 10:26:36,234 tasks 59204 13321187328 Updated message 40 status to 'pending'
+INFO 2025-10-17 10:26:38,239 tasks 59204 13321187328 Attempting to send message 40 via sms
+INFO 2025-10-17 10:26:38,239 tasks 59204 13321187328 Attempting SMS send to 0713241438 for Stan Kayombo
+INFO 2025-10-17 10:26:38,240 tasks 59204 13321187328 SMS simulation: Sending to 0713241438
+INFO 2025-10-17 10:26:39,245 tasks 59204 13321187328 SMS sent successfully to 0713241438 (Stan Kayombo)
+INFO 2025-10-17 10:26:39,245 tasks 59204 13321187328 Message 40 sent successfully to Stan Kayombo
+INFO 2025-10-17 10:26:39,248 tasks 59204 13321187328 Updated message 40 final status to 'sent'
+INFO 2025-10-17 10:26:39,249 tasks 59204 13321187328 Bulk progress: 6/6 - Message 40 sent successfully
+INFO 2025-10-17 10:26:39,249 tasks 59204 13321187328 Bulk send completed: 6 sent, 0 failed, 6 total
+INFO 2025-10-17 10:26:39,250 tasks 59204 13321187328 Message queue statistics:
+INFO 2025-10-17 10:26:39,250 tasks 59204 13321187328   SENT: 40 messages
+INFO 2025-10-17 10:26:39,250 tasks 59204 13321187328   TOTAL: 40 messages in queue

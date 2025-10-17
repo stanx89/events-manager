@@ -1,0 +1,167 @@
+{% extends 'events/base.html' %}
+
+{% block title %}{{ template.name }} - Message Template Details{% endblock %}
+
+{% block content %}
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+&nbsp;
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Template Details -->
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div class="px-4 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-100">
+            <h5 class="text-base font-semibold text-gray-900 flex items-center">
+                <span class="material-icons mr-2 text-blue-600 text-base">info</span>Template Information
+            </h5>
+        </div>
+        <div class="p-6">
+            <div class="space-y-6">
+                <!-- Template Type and Status -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-sm font-medium text-gray-700">Template Type</label>
+                        <div class="mt-1 p-3 bg-gray-50 rounded-lg">
+                            <span class="text-sm text-gray-900">{{ template.get_type_display }}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium text-gray-700">Status</label>
+                        <div class="mt-1 p-3 bg-gray-50 rounded-lg">
+                            {% if template.is_active %}
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                    <span class="material-icons text-xs mr-1">check_circle</span>Active
+                                </span>
+                            {% else %}
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                                    <span class="material-icons text-xs mr-1">cancel</span>Inactive
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Raw Template -->
+                <div>
+                    <label class="text-sm font-medium text-gray-700">Template Message</label>
+                    <div class="mt-1 p-4 bg-gray-50 rounded-lg border">
+                        <pre class="text-sm text-gray-900 whitespace-pre-wrap font-mono">{{ template.message }}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview Section -->
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div class="px-4 py-3 bg-gradient-to-r from-green-50 to-emerald-50 border-b border-gray-100">
+            <h5 class="text-base font-semibold text-gray-900 flex items-center">
+                <span class="material-icons mr-2 text-green-600 text-base">preview</span>Message Preview
+            </h5>
+        </div>
+        <div class="p-6">
+            <div class="space-y-6">
+                {% if sample_pledge %}
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <h6 class="text-sm font-medium text-blue-900 mb-2">Preview with actual data:</h6>
+                        <p class="text-sm text-blue-800">Using pledge data from {{ sample_pledge.name }}</p>
+                    </div>
+                {% else %}
+                    <div class="bg-orange-50 rounded-lg p-4">
+                        <h6 class="text-sm font-medium text-orange-900 mb-2">Preview with sample data:</h6>
+                        <p class="text-sm text-orange-800">No pledges found for this event, showing sample data</p>
+                    </div>
+                {% endif %}
+
+                <!-- Preview Message -->
+                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 bg-gray-50">
+                    <div class="flex items-start space-x-3">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                <span class="material-icons text-blue-600 text-sm">message</span>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="bg-white rounded-lg p-4 shadow-sm border">
+                                <p class="text-sm text-gray-900 whitespace-pre-wrap">{{ preview_message }}</p>
+                            </div>
+                            <div class="mt-2 text-xs text-gray-500">
+                                Character count: {{ preview_message|length }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if sample_pledge %}
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h6 class="text-sm font-medium text-gray-700 mb-3">Sample data used:</h6>
+                        <div class="grid grid-cols-2 gap-3 text-xs">
+                            <div>
+                                <span class="font-medium text-gray-600">Name:</span>
+                                <span class="text-gray-800">{{ sample_pledge.name }}</span>
+                            </div>
+                            <div>
+                                <span class="font-medium text-gray-600">Event:</span>
+                                <span class="text-gray-800">{{ sample_pledge.event_id }}</span>
+                            </div>
+                            <div>
+                                <span class="font-medium text-gray-600">Pledge:</span>
+                                <span class="text-gray-800">TSH {{ sample_pledge.pledge|floatformat:2 }}</span>
+                            </div>
+                            <div>
+                                <span class="font-medium text-gray-600">Paid:</span>
+                                <span class="text-gray-800">TSH {{ sample_pledge.amount_paid|floatformat:2 }}</span>
+                            </div>
+                            <div>
+                                <span class="font-medium text-gray-600">Balance:</span>
+                                <span class="text-gray-800">TSH {{ sample_pledge.balance|floatformat:2 }}</span>
+                            </div>
+                            <div>
+                                <span class="font-medium text-gray-600">Status:</span>
+                                <span class="text-gray-800">{{ sample_pledge.get_status_display }}</span>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- Actions -->
+                <div class="flex justify-center space-x-3 pt-4 border-t border-gray-200">
+                    <a href="{% url 'events:template_edit' template.id %}" 
+                       class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-full shadow-md hover:shadow-lg transition-all duration-200">
+                        <span class="material-icons mr-1 text-sm">edit</span>
+                        Edit Template
+                    </a>
+                    <button onclick="copyToClipboard('{{ preview_message|escapejs }}')"
+                            class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm rounded-full shadow-md hover:shadow-lg transition-all duration-200">
+                        <span class="material-icons mr-1 text-sm">content_copy</span>
+                        Copy Preview
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        // Show success message
+        const button = event.target.closest('button');
+        const originalText = button.innerHTML;
+        button.innerHTML = '<span class="material-icons mr-1 text-sm">check</span>Copied!';
+        button.classList.remove('bg-green-600', 'hover:bg-green-700');
+        button.classList.add('bg-gray-600');
+        
+        setTimeout(function() {
+            button.innerHTML = originalText;
+            button.classList.remove('bg-gray-600');
+            button.classList.add('bg-green-600', 'hover:bg-green-700');
+        }, 2000);
+    }).catch(function(err) {
+        alert('Failed to copy text to clipboard');
+    });
+}
+</script>
+{% endblock %}

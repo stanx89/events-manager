@@ -1,0 +1,159 @@
+{% extends 'events/base.html' %}
+
+{% block title %}Send Bulk Reminders - Events Management{% endblock %}
+
+{% block content %}
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+    <div>
+        <h1 class="text-3xl font-bold text-gray-900 flex items-center mb-2">
+        </h1>
+    </div>
+    <div class="mt-4 md:mt-0">
+        <button onclick="sendBulkReminder()" 
+                class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 44px;">
+            <span class="material-icons mr-2">send</span>
+            Send Bulk Reminder
+        </button>
+    </div>
+</div>
+
+<!-- Statistics Area -->
+<div class="mb-6 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+    <div class="px-4 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-100">
+        <h5 class="text-base font-semibold text-gray-900 flex items-center">
+            <span class="material-icons mr-2 text-blue-600 text-base">analytics</span>Processing Summary
+        </h5>
+    </div>
+    <div class="p-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+                <div class="text-2xl font-bold text-green-600">{{ new_count }}</div>
+                <div class="text-sm text-green-700 font-medium">New Pledges</div>
+                <div class="text-xs text-green-600 mt-1">Will receive welcome messages</div>
+            </div>
+            
+            <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 text-center">
+                <div class="text-2xl font-bold text-orange-600">{{ pending_with_balance }}</div>
+                <div class="text-sm text-orange-700 font-medium">Pending w/ Balance</div>
+                <div class="text-xs text-orange-600 mt-1">Will receive reminders</div>
+            </div>
+            
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
+                <div class="text-2xl font-bold text-blue-600">{{ pending_zero_balance }}</div>
+                <div class="text-sm text-blue-700 font-medium">Completed Pledges</div>
+                <div class="text-xs text-blue-600 mt-1">Will receive completion message</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content Area -->
+<div class="mb-6 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+    <div class="px-4 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-100">
+        <h5 class="text-base font-semibold text-gray-900 flex items-center">
+            <span class="material-icons mr-2 text-blue-600 text-base">notifications</span>Bulk Reminder Process
+        </h5>
+    </div>
+    <div class="p-6">
+        <div class="text-center py-8">
+            <div class="max-w-2xl mx-auto">
+                <div class="mb-6">
+                    <span class="material-icons text-blue-600 text-6xl">notifications_active</span>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Automated Reminder Processing</h3>
+                
+                <div class="space-y-4 mb-6 text-left">
+                    <!-- New Pledges -->
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <div class="flex items-start mb-2">
+                            <span class="material-icons text-green-600 mr-2 mt-0.5 text-sm">fiber_new</span>
+                            <span class="text-sm font-semibold text-green-800">New pledges will receive welcome messages:</span>
+                        </div>
+                        <div class="ml-7 bg-white border border-green-300 rounded p-3">
+                            <div class="text-xs text-green-600 font-medium mb-1">Sample Message:</div>
+                            <div class="text-sm text-gray-700 italic">"{{ new_sample_message }}"</div>
+                        </div>
+                    </div>
+
+                    <!-- Pending with Balance -->
+                    <div class="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                        <div class="flex items-start mb-2">
+                            <span class="material-icons text-orange-600 mr-2 mt-0.5 text-sm">notification_important</span>
+                            <span class="text-sm font-semibold text-orange-800">Pending with balance will receive reminder messages:</span>
+                        </div>
+                        <div class="ml-7 bg-white border border-orange-300 rounded p-3">
+                            <div class="text-xs text-orange-600 font-medium mb-1">Sample Message:</div>
+                            <div class="text-sm text-gray-700 italic">"{{ reminder_sample_message }}"</div>
+                        </div>
+                    </div>
+
+                    <!-- Pending with Zero Balance -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div class="flex items-start mb-2">
+                            <span class="material-icons text-blue-600 mr-2 mt-0.5 text-sm">check_circle</span>
+                            <span class="text-sm font-semibold text-blue-800">Pending with zero balance will receive completion messages:</span>
+                        </div>
+                        <div class="ml-7 bg-white border border-blue-300 rounded p-3 mb-2">
+                            <div class="text-xs text-blue-600 font-medium mb-1">Sample Message:</div>
+                            <div class="text-sm text-gray-700 italic">"{{ completed_sample_message }}"</div>
+                        </div>
+                        <div class="ml-7">
+                            <div class="text-xs text-blue-600">Then automatically marked as completed in the system</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+                    <div class="flex items-start">
+                        <span class="material-icons text-amber-600 mr-2 mt-0.5">info</span>
+                        <div class="text-sm text-amber-800">
+                            <p class="font-medium mb-1">Required Message Templates:</p>
+                            <ul class="list-disc list-inside space-y-0.5 text-xs">
+                                <li>"New Pledge" template for welcoming new pledges</li>
+                                <li>"Reminder" template for pending balances</li>
+                                <li>"Pledge Completed" template for completion notifications</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function sendBulkReminder() {
+    if (confirm('Are you sure you want to send bulk reminders?\n\n• New pledges will receive welcome messages\n• Pending pledges with zero balance will be marked as completed\n• Other pending pledges will receive reminder messages')) {
+        // Show loading state
+        const button = document.querySelector('button');
+        const originalText = button.innerHTML;
+        button.disabled = true;
+        button.innerHTML = '<span class="material-icons mr-2 animate-spin">refresh</span>Processing...';
+        
+        // Create form and submit
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '{% url "events:bulk_reminder_send" %}';
+        
+        // Add CSRF token
+        const csrfToken = document.createElement('input');
+        csrfToken.type = 'hidden';
+        csrfToken.name = 'csrfmiddlewaretoken';
+        csrfToken.value = '{{ csrf_token }}';
+        form.appendChild(csrfToken);
+        
+        // Add action type
+        const actionInput = document.createElement('input');
+        actionInput.type = 'hidden';
+        actionInput.name = 'action';
+        actionInput.value = 'auto_process';
+        form.appendChild(actionInput);
+        
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+</script>
+
+{% endblock %}

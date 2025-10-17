@@ -1,0 +1,318 @@
+{% extends 'events/base.html' %}
+
+{% block title %}Message Templates - Events Management{% endblock %}
+
+{% block content %}
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+    <div>
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Message Templates</h1>
+        <p class="text-gray-600">Manage predefined message templates for different event scenarios</p>
+    </div>
+    <div class="mt-4 md:mt-0">
+        <a href="{% url 'events:template_create' %}" 
+           class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            <span class="material-icons mr-2">add</span>
+            Create Template
+        </a>
+    </div>
+</div>
+
+<!-- Search and Filter Area -->
+<div class="mb-6 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+    <div class="px-4 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-100">
+        <h5 class="text-base font-semibold text-gray-900 flex items-center">
+            <span class="material-icons mr-2 text-blue-600 text-base">filter_list</span>Filter Templates
+        </h5>
+    </div>
+    <div class="p-6">
+        <form method="get" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Search by Event ID -->
+                <div class="field-container">
+                    <div class="input-field">
+                        <input type="text" 
+                               name="event_id" 
+                               id="event_id" 
+                               value="{{ current_filters.event_id }}"
+                               placeholder=" ">
+                        <label for="event_id" class="field-label">
+                            Event ID
+                        </label>
+                        <div class="field-line"></div>
+                    </div>
+                </div>
+                
+                <!-- Filter by Type -->
+                <div class="field-container">
+                    <div class="input-field">
+                        <select name="type" id="type">
+                            <option value=""></option>
+                            {% for value, label in template_types %}
+                                <option value="{{ value }}" {% if current_filters.type == value %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="type" class="field-label">
+                            Template Type
+                        </label>
+                        <div class="field-line"></div>
+                    </div>
+                </div>
+                
+                <!-- Filter by Active Status -->
+                <div class="field-container">
+                    <div class="input-field">
+                        <select name="active" id="active">
+                            <option value="">All</option>
+                            <option value="true" {% if current_filters.active == 'true' %}selected{% endif %}>Active Only</option>
+                            <option value="false" {% if current_filters.active == 'false' %}selected{% endif %}>Inactive Only</option>
+                        </select>
+                        <label for="active" class="field-label">
+                            Status
+                        </label>
+                        <div class="field-line"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-end space-x-3">
+                <a href="{% url 'events:template_list' %}" 
+                   class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 text-sm rounded-full shadow-md hover:shadow-lg transition-all duration-200">
+                    <span class="material-icons mr-1 text-sm">clear</span>
+                    Clear
+                </a>
+                <button type="submit" 
+                        class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-full shadow-md hover:shadow-lg transition-all duration-200">
+                    <span class="material-icons mr-1 text-sm">search</span>
+                    Filter
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Templates List -->
+<div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+    <div class="px-4 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-100">
+        <h5 class="text-base font-semibold text-gray-900 flex items-center">
+            <span class="material-icons mr-2 text-blue-600 text-base">template_add</span>Message Templates
+        </h5>
+    </div>
+    
+    {% if templates %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-sm font-medium text-gray-700">
+                            <div class="flex items-center">
+                                <span class="material-icons text-sm mr-2">label</span>Name
+                            </div>
+                        </th>
+                        <th class="px-6 py-4 text-left text-sm font-medium text-gray-700">
+                            <div class="flex items-center">
+                                <span class="material-icons text-sm mr-2">category</span>Type
+                            </div>
+                        </th>
+                        <th class="px-6 py-4 text-left text-sm font-medium text-gray-700">
+                            <div class="flex items-center">
+                                <span class="material-icons text-sm mr-2">toggle_on</span>Status
+                            </div>
+                        </th>
+                        <th class="px-6 py-4 text-left text-sm font-medium text-gray-700">
+                            <div class="flex items-center">
+                                <span class="material-icons text-sm mr-2">schedule</span>Created
+                            </div>
+                        </th>
+                        <th class="px-6 py-4 text-left text-sm font-medium text-gray-700">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for template in templates %}
+                    <tr class="hover:bg-blue-50 hover:shadow-sm transition-all duration-200">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                    <span class="material-icons text-blue-600 text-sm">message</span>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">{{ template.name }}</div>
+                                    <div class="text-xs text-gray-500">{{ template.message|truncatechars:50 }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-900">{{ template.event_id }}</td>
+                        <td class="px-6 py-4">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                {{ template.get_type_display }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if template.is_active %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <span class="material-icons text-xs mr-1">check_circle</span>Active
+                                </span>
+                            {% else %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                    <span class="material-icons text-xs mr-1">cancel</span>Inactive
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-900">{{ template.created_at|date:"M d, Y" }}</td>
+                        <td class="px-6 py-4 text-sm font-medium space-x-2">
+                            <a href="{% url 'events:template_detail' template.id %}" 
+                               class="text-blue-600 hover:text-blue-900 transition-colors">
+                                <span class="material-icons text-sm">visibility</span>
+                            </a>
+                            <a href="{% url 'events:template_edit' template.id %}" 
+                               class="text-indigo-600 hover:text-indigo-900 transition-colors">
+                                <span class="material-icons text-sm">edit</span>
+                            </a>
+                            <button onclick="toggleActive({{ template.id }}, {{ template.is_active|yesno:'true,false' }})"
+                                    class="text-orange-600 hover:text-orange-900 transition-colors">
+                                <span class="material-icons text-sm">{{ template.is_active|yesno:'toggle_off,toggle_on' }}</span>
+                            </button>
+                            <a href="{% url 'events:template_delete' template.id %}" 
+                               class="text-red-600 hover:text-red-900 transition-colors"
+                               onclick="return confirm('Are you sure you want to delete this template?')">
+                                <span class="material-icons text-sm">delete</span>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="text-center py-12">
+            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="material-icons text-blue-600 text-2xl">template_add</span>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">No templates found</h3>
+            <p class="text-gray-600 mb-6">Create your first message template to get started</p>
+            <a href="{% url 'events:template_create' %}" 
+               class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                <span class="material-icons mr-2">add</span>
+                Create First Template
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<style>
+/* Material Design 3 Field Styles */
+.field-container {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.input-field {
+    position: relative;
+    background: #e7e0ec;
+    border-radius: 4px 4px 0 0;
+    transition: background-color 0.2s;
+}
+
+.input-field:focus-within {
+    background: #ece6f0;
+}
+
+.input-field input,
+.input-field select {
+    width: 100%;
+    height: 56px;
+    padding: 24px 48px 8px 16px;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    line-height: 24px;
+    color: #1d1b20;
+    outline: none;
+    font-family: 'Roboto', sans-serif;
+}
+
+.field-label {
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    font-size: 16px;
+    line-height: 24px;
+    color: #49454f;
+    pointer-events: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+    font-weight: 400;
+}
+
+.input-field input:focus + .field-label,
+.input-field input:not(:placeholder-shown) + .field-label,
+.input-field select:focus + .field-label,
+.input-field select:not([value=""]) + .field-label {
+    top: 8px;
+    font-size: 12px;
+    line-height: 16px;
+    color: #6750a4;
+    font-weight: 500;
+}
+
+.field-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #79747e;
+    transition: all 0.2s;
+}
+
+.field-line::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    right: 50%;
+    height: 2px;
+    background: #6750a4;
+    transition: all 0.2s;
+}
+
+.input-field:focus-within .field-line::after {
+    left: 0;
+    right: 0;
+}
+
+.input-field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2349454f' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 16px center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+}
+</style>
+
+<script>
+function toggleActive(templateId, currentActive) {
+    if (confirm(`Are you sure you want to ${currentActive ? 'deactivate' : 'activate'} this template?`)) {
+        fetch(`/templates/${templateId}/toggle-active/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            alert('An error occurred. Please try again.');
+        });
+    }
+}
+</script>
+{% endblock %}

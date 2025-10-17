@@ -1,0 +1,304 @@
+{% extends 'events/base.html' %}
+
+{% block title %}{{ title }} - Events Management{% endblock %}
+
+{% block content %}
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+    <div>
+        &nbsp;
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Form Section -->
+    <div class="lg:col-span-2">
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+            <div class="px-4 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-100">
+                <h5 class="text-base font-semibold text-gray-900 flex items-center">
+                    <span class="material-icons mr-2 text-blue-600 text-base">edit</span>Template Details
+                </h5>
+            </div>
+            <div class="p-6">
+                <form method="post" id="template-form">
+                    {% csrf_token %}
+                    
+                    <div class="space-y-6">
+                        <!-- Template Type -->
+                        <div class="field-container">
+                            <div class="input-field">
+                                {{ form.type }}
+                                <label for="{{ form.type.id_for_label }}" class="field-label">
+                                    {{ form.type.label }} <span class="text-red-500">*</span>
+                                </label>
+                                <div class="field-line"></div>
+                            </div>
+                            {% if form.type.help_text %}
+                                <div class="field-hint">{{ form.type.help_text }}</div>
+                            {% endif %}
+                            {% if form.type.errors %}
+                                {% for error in form.type.errors %}
+                                    <div class="field-error">{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <!-- Message Template -->
+                        <div class="field-container">
+                            <div class="input-field">
+                                {{ form.message }}
+                                <label for="{{ form.message.id_for_label }}" class="field-label">
+                                    {{ form.message.label }} <span class="text-red-500">*</span>
+                                </label>
+                                <div class="field-line"></div>
+                            </div>
+                            {% if form.message.help_text %}
+                                <div class="field-hint">{{ form.message.help_text }}</div>
+                            {% endif %}
+                            {% if form.message.errors %}
+                                {% for error in form.message.errors %}
+                                    <div class="field-error">{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="flex justify-end space-x-3 mt-8 pt-6 border-t border-gray-200">
+                        <a href="{% url 'events:template_list' %}" 
+                           class="inline-flex items-center px-6 py-3 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium text-sm rounded-full shadow-md hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                            <span class="material-icons mr-2">cancel</span>
+                            Cancel
+                        </a>
+                        <button type="submit" 
+                                class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                            <span class="material-icons mr-2">save</span>
+                            {{ action }} Template
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Section -->
+    <div class="lg:col-span-1">
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+            <div class="px-4 py-3 bg-gradient-to-r from-purple-50 to-pink-50 border-b border-gray-100">
+                <h5 class="text-base font-semibold text-gray-900 flex items-center">
+                    <span class="material-icons mr-2 text-purple-600 text-base">help</span>Template Placeholders
+                </h5>
+            </div>
+            <div class="p-6">
+                <p class="text-sm text-gray-600 mb-4">Click on any placeholder below to insert it into your message template:</p>
+                
+                <div class="space-y-3">
+                    <div class="p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-blue-50 transition-colors duration-200" onclick="insertPlaceholder('{name}')">
+                        <code class="text-sm font-mono text-blue-600">{name}</code>
+                        <p class="text-xs text-gray-600 mt-1">Pledge holder's name</p>
+                    </div>
+                    
+                    <div class="p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-blue-50 transition-colors duration-200" onclick="insertPlaceholder('{pledge_amount}')">
+                        <code class="text-sm font-mono text-blue-600">{pledge_amount}</code>
+                        <p class="text-xs text-gray-600 mt-1">Total pledge amount</p>
+                    </div>
+                    
+                    <div class="p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-blue-50 transition-colors duration-200" onclick="insertPlaceholder('{amount_paid}')">
+                        <code class="text-sm font-mono text-blue-600">{amount_paid}</code>
+                        <p class="text-xs text-gray-600 mt-1">Amount paid so far</p>
+                    </div>
+                    
+                    <div class="p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-blue-50 transition-colors duration-200" onclick="insertPlaceholder('{balance}')">
+                        <code class="text-sm font-mono text-blue-600">{balance}</code>
+                        <p class="text-xs text-gray-600 mt-1">Remaining balance</p>
+                    </div>
+                    
+                    <div class="p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-blue-50 transition-colors duration-200" onclick="insertPlaceholder('{event_id}')">
+                        <code class="text-sm font-mono text-blue-600">{event_id}</code>
+                        <p class="text-xs text-gray-600 mt-1">Event identifier</p>
+                    </div>
+                    
+                    <div class="p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-blue-50 transition-colors duration-200" onclick="insertPlaceholder('{mobile}')">
+                        <code class="text-sm font-mono text-blue-600">{mobile}</code>
+                        <p class="text-xs text-gray-600 mt-1">Mobile number</p>
+                    </div>
+                    
+                    <div class="p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-blue-50 transition-colors duration-200" onclick="insertPlaceholder('{status}')">
+                        <code class="text-sm font-mono text-blue-600">{status}</code>
+                        <p class="text-xs text-gray-600 mt-1">Current pledge status</p>
+                    </div>
+                </div>
+                
+                <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                    <h6 class="text-sm font-medium text-blue-900 mb-2">Example:</h6>
+                    <code class="text-xs text-blue-800 block">
+                        Hi {name}, your pledge of {pledge_amount} for {event_id} has a remaining balance of {balance}. Please complete your payment.
+                    </code>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<style>
+/* Material Design 3 Field Styles */
+:root {
+    --primary: #6750a4;
+    --on-primary: #ffffff;
+    --surface: #fef7ff;
+    --on-surface: #1d1b20;
+    --on-surface-variant: #49454f;
+    --outline: #79747e;
+    --outline-variant: #cac4d0;
+    --surface-variant: #e7e0ec;
+    --surface-container-high: #ece6f0;
+    --error: #ba1a1a;
+    --shadow: rgba(0, 0, 0, 0.2);
+}
+
+.field-container {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.input-field {
+    position: relative;
+    background: var(--surface-variant);
+    border-radius: 4px 4px 0 0;
+    transition: background-color 0.2s;
+}
+
+.input-field:focus-within {
+    background: var(--surface-container-high);
+}
+
+.input-field input,
+.input-field select,
+.input-field textarea {
+    width: 100%;
+    height: 56px;
+    padding: 24px 48px 8px 16px;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--on-surface);
+    outline: none;
+    font-family: 'Roboto', sans-serif;
+}
+
+.input-field textarea {
+    height: auto;
+    min-height: 120px;
+    resize: vertical;
+    padding-top: 24px;
+    padding-bottom: 8px;
+}
+
+.field-label {
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--on-surface-variant);
+    pointer-events: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+    font-weight: 400;
+}
+
+.input-field input:focus + .field-label,
+.input-field input:not(:placeholder-shown) + .field-label,
+.input-field select:focus + .field-label,
+.input-field select:not([value=""]) + .field-label,
+.input-field textarea:focus + .field-label,
+.input-field textarea:not(:placeholder-shown) + .field-label {
+    top: 8px;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.field-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--outline);
+    transition: all 0.2s;
+}
+
+.field-line::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    right: 50%;
+    height: 2px;
+    background: var(--primary);
+    transition: all 0.2s;
+}
+
+.input-field:focus-within .field-line::after {
+    left: 0;
+    right: 0;
+}
+
+.required {
+    color: var(--error);
+}
+
+.field-error {
+    color: var(--error);
+    font-size: 12px;
+    line-height: 16px;
+    margin-top: 4px;
+}
+
+.field-hint {
+    color: var(--on-surface-variant);
+    font-size: 12px;
+    line-height: 16px;
+    margin-top: 4px;
+}
+
+/* Select dropdown styling */
+.input-field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2349454f' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 16px center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+}
+
+.input-field select:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236750a4' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+}
+</style>
+
+<script>
+function insertPlaceholder(placeholder) {
+    const messageTextarea = document.getElementById('{{ form.message.id_for_label }}');
+    const cursorPos = messageTextarea.selectionStart;
+    const textBefore = messageTextarea.value.substring(0, cursorPos);
+    const textAfter = messageTextarea.value.substring(messageTextarea.selectionEnd);
+    
+    // Insert placeholder at cursor position
+    messageTextarea.value = textBefore + placeholder + textAfter;
+    
+    // Move cursor to after the inserted placeholder
+    const newCursorPos = cursorPos + placeholder.length;
+    messageTextarea.setSelectionRange(newCursorPos, newCursorPos);
+    
+    // Focus back to textarea
+    messageTextarea.focus();
+    
+    // Trigger any change events
+    messageTextarea.dispatchEvent(new Event('input', { bubbles: true }));
+}
+</script>
+{% endblock %}

@@ -58,8 +58,11 @@
                                 <span class="material-icons mr-3 text-purple-500">message</span>New Message
                             </a>
                             <hr class="my-2 border-gray-200">
-                            <a href="{% url 'events:bulk_message_send' %}" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-800 transition-all duration-200 border-l-4 border-transparent hover:border-orange-500">
-                                <span class="material-icons mr-3 text-orange-500">campaign</span>Bulk Messages
+                            <a href="{% url 'events:bulk_reminder_send' %}" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-800 transition-all duration-200 border-l-4 border-transparent hover:border-orange-500">
+                                <span class="material-icons mr-3 text-orange-500">notification_important</span>Bulk Reminders
+                            </a>
+                            <a href="{% url 'events:template_list' %}" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-800 transition-all duration-200 border-l-4 border-transparent hover:border-indigo-500">
+                                <span class="material-icons mr-3 text-indigo-500">description</span>Message Templates
                             </a>
                             <a href="{% url 'events:export_pledges_csv' %}" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-800 transition-all duration-200 border-l-4 border-transparent hover:border-teal-500">
                                 <span class="material-icons mr-3 text-teal-500">download</span>Export Pledges

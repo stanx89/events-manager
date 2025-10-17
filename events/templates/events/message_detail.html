@@ -1,154 +1,215 @@
 {% extends 'events/base.html' %}
+{% load humanize %}
 
-{% block title %}Message Details{% endblock %}
+{% block title %}Message Details - Events Management{% endblock %}
 
 {% block content %}
-<div class="row mb-4">
-    <div class="col-md-8">
-        <h1 class="mb-0">
-            <i class="fas fa-envelope-open me-2"></i>Message Details
+<!-- Material Design Header -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+    <div>
+        <h1 class="text-4xl font-bold text-gray-900 flex items-center mb-3">
         </h1>
-        <p class="text-muted">Sent to {{ message.pledge.name }} via {{ message.get_method_display }}</p>
     </div>
-    <div class="col-md-4 text-end">
-        <a href="{% url 'events:message_list' %}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left me-2"></i>Back to Messages
+    <div class="mt-4 md:mt-0 flex space-x-3">
+        <button onclick="openModal('{% url 'events:message_create' %}?pledge_id={{ message.pledge.id }}&modal=1')" 
+                class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            <span class="material-icons mr-1 text-sm">add</span>Send Another
+        </button>
+        <a href="{% url 'events:message_list' %}" 
+           class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium text-sm rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+            <span class="material-icons mr-1 text-sm">arrow_back</span>Back to Messages
         </a>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">
-                    <i class="fas fa-comment me-2"></i>Message Content
-                </h5>
-            </div>
-            <div class="card-body">
-                <div class="message-content p-3 border rounded bg-light">
-                    {{ message.message|linebreaks }}
-                </div>
-            </div>
-        </div>
-        
-        <div class="card mt-4">
-            <div class="card-header">
-                <h5 class="mb-0">
-                    <i class="fas fa-info-circle me-2"></i>Message Information
-                </h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <dl class="row">
-                            <dt class="col-sm-5">Recipient:</dt>
-                            <dd class="col-sm-7">
-                                <a href="{% url 'events:pledge_detail' message.pledge.id %}">
-                                    {{ message.pledge.name }}
-                                </a>
-                            </dd>
-                            
-                            <dt class="col-sm-5">Method:</dt>
-                            <dd class="col-sm-7">
-                                <span class="badge bg-info">{{ message.get_method_display }}</span>
-                            </dd>
-                            
-                            <dt class="col-sm-5">Status:</dt>
-                            <dd class="col-sm-7">
-                                <span class="badge bg-{% if message.status == 'delivered' %}success{% elif message.status == 'sent' %}info{% elif message.status == 'failed' %}danger{% else %}secondary{% endif %}">
-                                    {{ message.get_status_display }}
-                                </span>
-                            </dd>
-                        </dl>
-                    </div>
-                    <div class="col-md-6">
-                        <dl class="row">
-                            <dt class="col-sm-5">Date Sent:</dt>
-                            <dd class="col-sm-7">{{ message.created_at|date:"F d, Y" }}</dd>
-                            
-                            <dt class="col-sm-5">Time:</dt>
-                            <dd class="col-sm-7">{{ message.created_at|time:"g:i A" }}</dd>
-                            
-                            <dt class="col-sm-5">Last Updated:</dt>
-                            <dd class="col-sm-7">{{ message.updated_at|date:"M d, Y g:i A" }}</dd>
-                        </dl>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!-- Message Content Card -->
+<div class="mb-6 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+    <div class="px-4 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-100">
+        <h5 class="text-base font-semibold text-gray-900 flex items-center">
+            <span class="material-icons mr-2 text-blue-600 text-base">message</span>Message Content
+        </h5>
     </div>
-    
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-                <h6 class="mb-0">
-                    <i class="fas fa-user me-2"></i>Recipient Information
-                </h6>
-            </div>
-            <div class="card-body">
-                <dl class="row">
-                    <dt class="col-sm-5">Name:</dt>
-                    <dd class="col-sm-7">{{ message.pledge.name }}</dd>
-                    
-                    <dt class="col-sm-5">Event ID:</dt>
-                    <dd class="col-sm-7">
-                        <span class="badge bg-light text-dark">{{ message.pledge.event_id }}</span>
-                    </dd>
-                    
-                    <dt class="col-sm-5">Mobile:</dt>
-                    <dd class="col-sm-7">
-                        <a href="tel:{{ message.pledge.mobile_number }}">{{ message.pledge.mobile_number }}</a>
-                    </dd>
-                    
-                    <dt class="col-sm-5">Pledge Status:</dt>
-                    <dd class="col-sm-7">
-                        <span class="badge bg-{% if message.pledge.status == 'completed' %}success{% elif message.pledge.status == 'partial' %}warning{% elif message.pledge.status == 'pending' %}info{% elif message.pledge.status == 'new' %}primary{% else %}secondary{% endif %}">
-                            {{ message.pledge.get_status_display }}
-                        </span>
-                    </dd>
-                </dl>
+    <div class="p-6">
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-6">
+            <div class="text-gray-800 leading-relaxed">
+                {{ message.message|linebreaks }}
             </div>
         </div>
-        
-        <div class="card mt-3">
-            <div class="card-header">
-                <h6 class="mb-0">
-                    <i class="fas fa-bolt me-2"></i>Quick Actions
-                </h6>
-            </div>
-            <div class="card-body">
-                <div class="d-grid gap-2">
-                    <a href="{% url 'events:pledge_detail' message.pledge.id %}" class="btn btn-primary">
-                        <i class="fas fa-user me-2"></i>View Pledge Details
-                    </a>
-                    <a href="{% url 'events:message_create' %}?pledge_id={{ message.pledge.id }}" class="btn btn-info">
-                        <i class="fas fa-plus me-2"></i>Send Another Message
-                    </a>
-                    <a href="{% url 'events:transaction_create' %}?pledge_id={{ message.pledge.id }}" class="btn btn-success">
-                        <i class="fas fa-money-bill me-2"></i>Record Payment
-                    </a>
-                </div>
-            </div>
-        </div>
-        
-        {% if message.status == 'failed' %}
-        <div class="card mt-3 border-danger">
-            <div class="card-header bg-danger text-white">
-                <h6 class="mb-0">
-                    <i class="fas fa-exclamation-triangle me-2"></i>Delivery Failed
-                </h6>
-            </div>
-            <div class="card-body">
-                <p class="small text-danger mb-2">
-                    This message failed to deliver. Consider trying a different communication method or verify the contact information.
-                </p>
-                <a href="{% url 'events:message_create' %}?pledge_id={{ message.pledge.id }}" class="btn btn-sm btn-outline-danger">
-                    <i class="fas fa-redo me-2"></i>Retry Message
-                </a>
-            </div>
-        </div>
-        {% endif %}
     </div>
 </div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Message Information -->
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div class="px-4 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-100">
+            <h5 class="text-base font-semibold text-gray-900 flex items-center">
+                <span class="material-icons mr-2 text-blue-600 text-base">info</span>Message Details
+            </h5>
+        </div>
+        <div class="p-6">
+            <div class="space-y-4">
+                <!-- Method and Status Row -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 py-3 border-b border-gray-100">
+                    <div>
+                        <dt class="text-xs text-gray-500 uppercase tracking-wide mb-1">Method</dt>
+                        <dd class="flex items-center">
+                            {% if message.method == 'sms' %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    <span class="material-icons mr-1 text-xs">sms</span>{{ message.get_method_display }}
+                                </span>
+                            {% elif message.method == 'whatsapp' %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <span class="material-icons mr-1 text-xs">chat</span>{{ message.get_method_display }}
+                                </span>
+                            {% elif message.method == 'email' %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                    <span class="material-icons mr-1 text-xs">email</span>{{ message.get_method_display }}
+                                </span>
+                            {% else %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                    {{ message.get_method_display }}
+                                </span>
+                            {% endif %}
+                        </dd>
+                    </div>
+                    <div>
+                        <dt class="text-xs text-gray-500 uppercase tracking-wide mb-1">Status</dt>
+                        <dd class="flex items-center">
+                            {% if message.status == 'sent' %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <span class="material-icons mr-1 text-xs">check_circle</span>Sent
+                                </span>
+                            {% elif message.status == 'delivered' %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                                    <span class="material-icons mr-1 text-xs">done_all</span>Delivered
+                                </span>
+                            {% elif message.status == 'failed' %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                    <span class="material-icons mr-1 text-xs">error</span>Failed
+                                </span>
+                            {% elif message.status == 'queued' %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                    <span class="material-icons mr-1 text-xs">schedule</span>Queued
+                                </span>
+                            {% elif message.status == 'pending' %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    <span class="material-icons mr-1 text-xs">pending</span>Pending
+                                </span>
+                            {% else %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                    {{ message.get_status_display }}
+                                </span>
+                            {% endif %}
+                        </dd>
+                    </div>
+                </div>
+                
+                <!-- Timing Information -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 py-3">
+                    <div>
+                        <dt class="text-xs text-gray-500 uppercase tracking-wide mb-1">Date Sent</dt>
+                        <dd class="text-sm font-medium text-gray-900">{{ message.created_at|date:"M d, Y" }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-xs text-gray-500 uppercase tracking-wide mb-1">Time</dt>
+                        <dd class="text-sm font-medium text-gray-900">{{ message.created_at|time:"g:i A" }}</dd>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recipient Information -->
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div class="px-4 py-3 bg-gradient-to-r from-green-50 to-emerald-50 border-b border-gray-100">
+            <h5 class="text-base font-semibold text-gray-900 flex items-center">
+                <span class="material-icons mr-2 text-green-600 text-base">person</span>Recipient Details
+            </h5>
+        </div>
+        <div class="p-6">
+            <div class="space-y-4">
+                <!-- Name and Mobile -->
+                <div class="py-3 border-b border-gray-100">
+                    <dt class="text-xs text-gray-500 uppercase tracking-wide mb-1">Recipient Name</dt>
+                    <dd class="text-sm font-semibold text-gray-900">
+                        <a href="{% url 'events:pledge_detail' message.pledge.id %}" class="text-blue-600 hover:text-blue-800 transition-colors">
+                            {{ message.pledge.name }}
+                        </a>
+                    </dd>
+                </div>
+                
+                <div class="py-3 border-b border-gray-100">
+                    <dt class="text-xs text-gray-500 uppercase tracking-wide mb-1">Mobile Number</dt>
+                    <dd class="text-sm font-medium text-gray-900">
+                        <a href="tel:{{ message.pledge.mobile_number }}" class="text-blue-600 hover:text-blue-800 transition-colors">
+                            {{ message.pledge.mobile_number }}
+                        </a>
+                    </dd>
+                </div>
+                
+                <!-- Pledge Status -->
+                <div class="py-3 border-b border-gray-100">
+                    <dt class="text-xs text-gray-500 uppercase tracking-wide mb-1">Pledge Status</dt>
+                    <dd class="flex items-center">
+                        {% if message.pledge.status == 'completed' %}
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                ✅ Completed
+                            </span>
+                        {% elif message.pledge.status == 'partial' %}
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                📊 Partial
+                            </span>
+                        {% elif message.pledge.status == 'pending' %}
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                ⏳ Pending
+                            </span>
+                        {% elif message.pledge.status == 'new' %}
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                🆕 New
+                            </span>
+                        {% else %}
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                {{ message.pledge.get_status_display }}
+                            </span>
+                        {% endif %}
+                    </dd>
+                </div>                <!-- Quick Actions -->
+                <div class="pt-3">
+                    <dt class="text-xs text-gray-500 uppercase tracking-wide mb-3">Quick Actions</dt>
+                    <div class="space-y-2">
+                        <a href="{% url 'events:pledge_detail' message.pledge.id %}" 
+                           class="flex items-center w-full px-4 py-2 text-sm text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">
+                            <span class="material-icons mr-2 text-sm">visibility</span>View Pledge Details
+                        </a>
+                        <button onclick="openModal('{% url 'events:transaction_create' %}?pledge_id={{ message.pledge.id }}&modal=1')" 
+                                class="flex items-center w-full px-4 py-2 text-sm text-green-700 bg-green-50 hover:bg-green-100 rounded-lg transition-colors cursor-pointer border-0">
+                            <span class="material-icons mr-2 text-sm">payments</span>Record Payment
+                        </button>
+                        <a href="{% url 'events:transaction_create' %}?pledge_id={{ message.pledge.id }}" 
+                           class="flex items-center w-full px-4 py-2 text-sm text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors text-center">
+                            <span class="material-icons mr-2 text-sm">open_in_new</span>Record Payment (New Page)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if message.status == 'failed' %}
+<!-- Failed Message Alert -->
+<div class="mt-6 bg-red-50 border border-red-200 rounded-2xl p-6">
+    <div class="flex items-start">
+        <span class="material-icons text-red-600 mr-3 mt-0.5">error</span>
+        <div>
+            <h3 class="text-lg font-semibold text-red-800 mb-2">Message Delivery Failed</h3>
+            <p class="text-red-700 mb-4">This message could not be delivered. Please verify the contact information or try a different communication method.</p>
+            <button onclick="openModal('{% url 'events:message_create' %}?pledge_id={{ message.pledge.id }}&modal=1')" 
+                    class="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium text-sm rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
+                <span class="material-icons mr-1 text-sm">refresh</span>Retry Message
+            </button>
+        </div>
+    </div>
+</div>
+{% endif %}
 {% endblock %}

@@ -164,7 +164,7 @@
             <button onclick="openModal('{% url 'events:transaction_create' %}?modal=1')" class="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg text-center transition duration-200 flex items-center justify-center">
                 <i class="fas fa-plus mr-2"></i>Record Payment
             </button>
-            <a href="{% url 'events:bulk_message_send' %}" class="bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-3 px-4 rounded-lg text-center transition duration-200 flex items-center justify-center">
+            <a href="{% url 'events:bulk_reminder_send' %}" class="bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-3 px-4 rounded-lg text-center transition duration-200 flex items-center justify-center">
                 <i class="fas fa-broadcast-tower mr-2"></i>Send Messages
             </a>
             <a href="{% url 'events:export_pledges_csv' %}" class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-4 rounded-lg text-center transition duration-200 flex items-center justify-center">
