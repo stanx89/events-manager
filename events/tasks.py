@@ -1,6 +1,8 @@
 import threading
 import time
 import logging
+import requests
+import json
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import Messages, Pledges
@@ -199,26 +201,203 @@ def send_sms(message):
 
 def send_whatsapp(message):
     """
-    Placeholder for WhatsApp sending implementation
-    Replace with WhatsApp Business API
+    WhatsApp sending implementation using Facebook Graph API
     """
     logger.info(f"Attempting WhatsApp send to {message.pledge.mobile_number} for {message.pledge.name}")
     
     try:
-        # Example WhatsApp implementation
-        # Implementation depends on your WhatsApp provider
+        # WhatsApp API configuration - these should be in your settings.py
+        whatsapp_token = getattr(settings, 'WHATSAPP_ACCESS_TOKEN', None)
+        whatsapp_phone_id = getattr(settings, 'WHATSAPP_PHONE_NUMBER_ID', '878543835331362')  # Default from your example
+        whatsapp_api_url = f"https://graph.facebook.com/v22.0/{whatsapp_phone_id}/messages"
         
-        logger.info(f"WhatsApp simulation: Sending to {message.pledge.mobile_number}")
-        logger.debug(f"WhatsApp content preview: {message.message[:100]}{'...' if len(message.message) > 100 else ''}")
+        if not whatsapp_token:
+            logger.error("WHATSAPP_ACCESS_TOKEN not configured in settings")
+            return False
         
-        # Simulate some processing time
-        time.sleep(1.5)
+        # Format phone number (remove any non-digits and ensure it has country code)
+        phone_number = message.pledge.mobile_number
+        # Remove any non-digit characters
+        phone_number = ''.join(filter(str.isdigit, phone_number))
         
-        logger.info(f"WhatsApp sent successfully to {message.pledge.mobile_number} ({message.pledge.name})")
-        return True
+        # If number doesn't start with country code, assume it's a local number
+        # You may need to adjust this logic based on your country
+        if not phone_number.startswith('255'):  # Kenya country code example
+            if phone_number.startswith('0'):
+                phone_number = '255' + phone_number[1:]  # Replace leading 0 with country code
+            else:
+                phone_number = '255' + phone_number  # Add country code
         
+        logger.info(f"Formatted phone number: {phone_number}")
+        
+        # Prepare the request headers
+        headers = {
+            'Authorization': f'Bearer {whatsapp_token[:10]}...{whatsapp_token[-4:]}',  # Masked token for logging
+            'Content-Type': 'application/json'
+        }
+        
+        # Log headers (with masked token for security)
+        logger.info(f"WhatsApp API request headers: {headers}")
+        
+        # Try to send as text message first
+        try:
+            # Prepare the message payload for text message
+            payload = {
+                "messaging_product": "whatsapp",
+                "to": phone_number,
+                "type": "template",
+                "template": {
+                    "name": "hello_world",
+                    "language": {"code": "en_US"}
+                }
+            }
+            
+            logger.info(f"WhatsApp API URL: {whatsapp_api_url}")
+            logger.info(f"WhatsApp request payload:")
+            logger.info(f"{json.dumps(payload, indent=2)}")
+            
+            # Prepare actual headers for request (with full token)
+            actual_headers = {
+                'Authorization': f'Bearer {whatsapp_token}',
+                'Content-Type': 'application/json'
+            }
+            
+            # Make the API request
+            logger.info(f"Sending WhatsApp API request...")
+            response = requests.post(
+                whatsapp_api_url,
+                headers=actual_headers,
+                json=payload,
+                timeout=30
+            )
+            
+            logger.info(f"WhatsApp API response received - Status Code: {response.status_code}")
+            logger.info(f"WhatsApp API response headers: {dict(response.headers)}")
+            logger.info(f"WhatsApp API response body:")
+            logger.info(f"{response.text}")
+            
+            # Try to parse response as JSON for better logging
+            try:
+                response_json = response.json()
+                logger.info(f"WhatsApp API response JSON:")
+                logger.info(f"{json.dumps(response_json, indent=2)}")
+            except json.JSONDecodeError:
+                logger.warning(f"WhatsApp API response is not valid JSON")
+            
+            if response.status_code == 200:
+                response_data = response.json()
+                if 'messages' in response_data and len(response_data['messages']) > 0:
+                    message_id = response_data['messages'][0].get('id', 'unknown')
+                    logger.info(f"WhatsApp message sent successfully to {phone_number} ({message.pledge.name}). Message ID: {message_id}")
+                    return True
+                else:
+                    logger.warning(f"WhatsApp API returned 200 but no message ID found: {response_data}")
+                    return False
+            else:
+                logger.error(f"WhatsApp API error {response.status_code}: {response.text}")
+                return False
+                
+        except requests.RequestException as e:
+            logger.error(f"WhatsApp API request failed: {str(e)}")
+            return False
+            
     except Exception as e:
         logger.error(f"WhatsApp sending failed for {message.pledge.mobile_number}: {str(e)}")
+        return False
+
+
+def send_whatsapp_template(message, template_name='hello_world', language_code='en_US'):
+    """
+    Send WhatsApp template message (for cases where template is required)
+    """
+    logger.info(f"Attempting WhatsApp template send to {message.pledge.mobile_number} for {message.pledge.name}")
+    
+    try:
+        whatsapp_token = getattr(settings, 'WHATSAPP_ACCESS_TOKEN', None)
+        whatsapp_phone_id = getattr(settings, 'WHATSAPP_PHONE_NUMBER_ID', '878543835331362')
+        whatsapp_api_url = f"https://graph.facebook.com/v22.0/{whatsapp_phone_id}/messages"
+        
+        if not whatsapp_token:
+            logger.error("WHATSAPP_ACCESS_TOKEN not configured in settings")
+            return False
+        
+        # Format phone number
+        phone_number = message.pledge.mobile_number
+        phone_number = ''.join(filter(str.isdigit, phone_number))
+        
+        if not phone_number.startswith('255'):
+            if phone_number.startswith('0'):
+                phone_number = '255' + phone_number[1:]
+            else:
+                phone_number = '255' + phone_number
+        
+        # Prepare headers (with masked token for logging)
+        headers_masked = {
+            'Authorization': f'Bearer {whatsapp_token[:10]}...{whatsapp_token[-4:]}',  # Masked token for logging
+            'Content-Type': 'application/json'
+        }
+        
+        # Actual headers for request
+        headers = {
+            'Authorization': f'Bearer {whatsapp_token}',
+            'Content-Type': 'application/json'
+        }
+        
+        logger.info(f"WhatsApp template API request headers: {headers_masked}")
+        
+        # Template message payload (as per your example)
+        payload = {
+            "messaging_product": "whatsapp",
+            "to": phone_number,
+            "type": "template",
+            "template": {
+                "name": template_name,
+                "language": {
+                    "code": language_code
+                }
+            }
+        }
+        
+        logger.info(f"WhatsApp template API URL: {whatsapp_api_url}")
+        logger.info(f"WhatsApp template request payload:")
+        logger.info(f"{json.dumps(payload, indent=2)}")
+        
+        logger.info(f"Sending WhatsApp template API request...")
+        response = requests.post(
+            whatsapp_api_url,
+            headers=headers,
+            json=payload,
+            timeout=30
+        )
+        
+        logger.info(f"WhatsApp template API response received - Status Code: {response.status_code}")
+        logger.info(f"WhatsApp template API response headers: {dict(response.headers)}")
+        logger.info(f"WhatsApp template API response body:")
+        logger.info(f"{response.text}")
+        
+        # Try to parse response as JSON for better logging
+        try:
+            response_json = response.json()
+            logger.info(f"WhatsApp template API response JSON:")
+            logger.info(f"{json.dumps(response_json, indent=2)}")
+        except json.JSONDecodeError:
+            logger.warning(f"WhatsApp template API response is not valid JSON")
+        
+        if response.status_code == 200:
+            response_data = response.json()
+            if 'messages' in response_data and len(response_data['messages']) > 0:
+                message_id = response_data['messages'][0].get('id', 'unknown')
+                logger.info(f"WhatsApp template sent successfully to {phone_number} ({message.pledge.name}). Message ID: {message_id}")
+                return True
+            else:
+                logger.warning(f"WhatsApp template API returned 200 but no message ID found: {response_data}")
+                return False
+        else:
+            logger.error(f"WhatsApp template API error {response.status_code}: {response.text}")
+            return False
+            
+    except Exception as e:
+        logger.error(f"WhatsApp template sending failed for {message.pledge.mobile_number}: {str(e)}")
         return False
 
 

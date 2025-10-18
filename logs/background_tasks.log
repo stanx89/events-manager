@@ -554,3 +554,439 @@ INFO 2025-10-17 10:26:39,249 tasks 59204 13321187328 Bulk send completed: 6 sent
 INFO 2025-10-17 10:26:39,250 tasks 59204 13321187328 Message queue statistics:
 INFO 2025-10-17 10:26:39,250 tasks 59204 13321187328   SENT: 40 messages
 INFO 2025-10-17 10:26:39,250 tasks 59204 13321187328   TOTAL: 40 messages in queue
+INFO 2025-10-17 14:55:06,242 tasks 65914 6193508352 Starting background thread for bulk message sending
+INFO 2025-10-17 14:55:06,242 tasks 65914 6227161088 Starting bulk send process for 6 messages
+INFO 2025-10-17 14:55:06,242 tasks 65914 6193508352 Background thread started for 6 messages
+INFO 2025-10-17 14:55:06,248 tasks 65914 6227161088 Message queue statistics:
+INFO 2025-10-17 14:55:06,248 tasks 65914 6227161088   QUEUED: 6 messages
+INFO 2025-10-17 14:55:06,248 tasks 65914 6227161088   SENT: 40 messages
+INFO 2025-10-17 14:55:06,248 tasks 65914 6227161088   TOTAL: 46 messages in queue
+INFO 2025-10-17 14:55:06,248 tasks 65914 6227161088 Processing message 1/6 (ID: 41)
+INFO 2025-10-17 14:55:06,250 tasks 65914 6227161088 Starting to process message 41
+INFO 2025-10-17 14:55:06,252 tasks 65914 6227161088 Retrieved message 41 for Config Mwende (+255713241438)
+INFO 2025-10-17 14:55:06,262 tasks 65914 6227161088 Updated message 41 status to 'pending'
+INFO 2025-10-17 14:55:08,267 tasks 65914 6227161088 Attempting to send message 41 via whatsapp
+INFO 2025-10-17 14:55:08,268 tasks 65914 6227161088 Attempting WhatsApp send to +255713241438 for Config Mwende
+INFO 2025-10-17 14:55:08,268 tasks 65914 6227161088 WhatsApp simulation: Sending to +255713241438
+INFO 2025-10-17 14:55:09,773 tasks 65914 6227161088 WhatsApp sent successfully to +255713241438 (Config Mwende)
+INFO 2025-10-17 14:55:09,773 tasks 65914 6227161088 Message 41 sent successfully to Config Mwende
+INFO 2025-10-17 14:55:09,781 tasks 65914 6227161088 Updated message 41 final status to 'sent'
+INFO 2025-10-17 14:55:09,783 tasks 65914 6227161088 Bulk progress: 1/6 - Message 41 sent successfully
+INFO 2025-10-17 14:55:10,289 tasks 65914 6227161088 Processing message 2/6 (ID: 42)
+INFO 2025-10-17 14:55:10,292 tasks 65914 6227161088 Starting to process message 42
+INFO 2025-10-17 14:55:10,295 tasks 65914 6227161088 Retrieved message 42 for Mfumwa (+255765787819)
+INFO 2025-10-17 14:55:10,299 tasks 65914 6227161088 Updated message 42 status to 'pending'
+INFO 2025-10-17 14:55:12,303 tasks 65914 6227161088 Attempting to send message 42 via sms
+INFO 2025-10-17 14:55:12,303 tasks 65914 6227161088 Attempting SMS send to +255765787819 for Mfumwa
+INFO 2025-10-17 14:55:12,304 tasks 65914 6227161088 SMS simulation: Sending to +255765787819
+INFO 2025-10-17 14:55:13,309 tasks 65914 6227161088 SMS sent successfully to +255765787819 (Mfumwa)
+INFO 2025-10-17 14:55:13,310 tasks 65914 6227161088 Message 42 sent successfully to Mfumwa
+INFO 2025-10-17 14:55:13,315 tasks 65914 6227161088 Updated message 42 final status to 'sent'
+INFO 2025-10-17 14:55:13,317 tasks 65914 6227161088 Bulk progress: 2/6 - Message 42 sent successfully
+INFO 2025-10-17 14:55:13,818 tasks 65914 6227161088 Processing message 3/6 (ID: 43)
+INFO 2025-10-17 14:55:13,821 tasks 65914 6227161088 Starting to process message 43
+INFO 2025-10-17 14:55:13,823 tasks 65914 6227161088 Retrieved message 43 for Mwanamvua (+255713781920)
+INFO 2025-10-17 14:55:13,827 tasks 65914 6227161088 Updated message 43 status to 'pending'
+INFO 2025-10-17 14:55:15,832 tasks 65914 6227161088 Attempting to send message 43 via sms
+INFO 2025-10-17 14:55:15,833 tasks 65914 6227161088 Attempting SMS send to +255713781920 for Mwanamvua
+INFO 2025-10-17 14:55:15,834 tasks 65914 6227161088 SMS simulation: Sending to +255713781920
+INFO 2025-10-17 14:55:16,845 tasks 65914 6227161088 SMS sent successfully to +255713781920 (Mwanamvua)
+INFO 2025-10-17 14:55:16,845 tasks 65914 6227161088 Message 43 sent successfully to Mwanamvua
+INFO 2025-10-17 14:55:16,849 tasks 65914 6227161088 Updated message 43 final status to 'sent'
+INFO 2025-10-17 14:55:16,851 tasks 65914 6227161088 Bulk progress: 3/6 - Message 43 sent successfully
+INFO 2025-10-17 14:55:17,354 tasks 65914 6227161088 Processing message 4/6 (ID: 44)
+INFO 2025-10-17 14:55:17,355 tasks 65914 6227161088 Starting to process message 44
+INFO 2025-10-17 14:55:17,355 tasks 65914 6227161088 Retrieved message 44 for Noel Jackson (+255713241438)
+INFO 2025-10-17 14:55:17,357 tasks 65914 6227161088 Updated message 44 status to 'pending'
+INFO 2025-10-17 14:55:19,362 tasks 65914 6227161088 Attempting to send message 44 via sms
+INFO 2025-10-17 14:55:19,362 tasks 65914 6227161088 Attempting SMS send to +255713241438 for Noel Jackson
+INFO 2025-10-17 14:55:19,363 tasks 65914 6227161088 SMS simulation: Sending to +255713241438
+INFO 2025-10-17 14:55:20,363 tasks 65914 6227161088 SMS sent successfully to +255713241438 (Noel Jackson)
+INFO 2025-10-17 14:55:20,363 tasks 65914 6227161088 Message 44 sent successfully to Noel Jackson
+INFO 2025-10-17 14:55:20,367 tasks 65914 6227161088 Updated message 44 final status to 'sent'
+INFO 2025-10-17 14:55:20,368 tasks 65914 6227161088 Bulk progress: 4/6 - Message 44 sent successfully
+INFO 2025-10-17 14:55:20,873 tasks 65914 6227161088 Processing message 5/6 (ID: 45)
+INFO 2025-10-17 14:55:20,876 tasks 65914 6227161088 Starting to process message 45
+INFO 2025-10-17 14:55:20,878 tasks 65914 6227161088 Retrieved message 45 for Stan Kayombo (+255713241438)
+INFO 2025-10-17 14:55:20,883 tasks 65914 6227161088 Updated message 45 status to 'pending'
+INFO 2025-10-17 14:55:22,889 tasks 65914 6227161088 Attempting to send message 45 via whatsapp
+INFO 2025-10-17 14:55:22,889 tasks 65914 6227161088 Attempting WhatsApp send to +255713241438 for Stan Kayombo
+INFO 2025-10-17 14:55:22,890 tasks 65914 6227161088 WhatsApp simulation: Sending to +255713241438
+INFO 2025-10-17 14:55:24,391 tasks 65914 6227161088 WhatsApp sent successfully to +255713241438 (Stan Kayombo)
+INFO 2025-10-17 14:55:24,391 tasks 65914 6227161088 Message 45 sent successfully to Stan Kayombo
+INFO 2025-10-17 14:55:24,396 tasks 65914 6227161088 Updated message 45 final status to 'sent'
+INFO 2025-10-17 14:55:24,398 tasks 65914 6227161088 Bulk progress: 5/6 - Message 45 sent successfully
+INFO 2025-10-17 14:55:24,899 tasks 65914 6227161088 Processing message 6/6 (ID: 46)
+INFO 2025-10-17 14:55:24,901 tasks 65914 6227161088 Starting to process message 46
+INFO 2025-10-17 14:55:24,903 tasks 65914 6227161088 Retrieved message 46 for Stan Kayombo (0713241438)
+INFO 2025-10-17 14:55:24,906 tasks 65914 6227161088 Updated message 46 status to 'pending'
+INFO 2025-10-17 14:55:26,911 tasks 65914 6227161088 Attempting to send message 46 via sms
+INFO 2025-10-17 14:55:26,911 tasks 65914 6227161088 Attempting SMS send to 0713241438 for Stan Kayombo
+INFO 2025-10-17 14:55:26,911 tasks 65914 6227161088 SMS simulation: Sending to 0713241438
+INFO 2025-10-17 14:55:27,912 tasks 65914 6227161088 SMS sent successfully to 0713241438 (Stan Kayombo)
+INFO 2025-10-17 14:55:27,913 tasks 65914 6227161088 Message 46 sent successfully to Stan Kayombo
+INFO 2025-10-17 14:55:27,917 tasks 65914 6227161088 Updated message 46 final status to 'sent'
+INFO 2025-10-17 14:55:27,919 tasks 65914 6227161088 Bulk progress: 6/6 - Message 46 sent successfully
+INFO 2025-10-17 14:55:27,920 tasks 65914 6227161088 Bulk send completed: 6 sent, 0 failed, 6 total
+INFO 2025-10-17 14:55:27,921 tasks 65914 6227161088 Message queue statistics:
+INFO 2025-10-17 14:55:27,921 tasks 65914 6227161088   SENT: 46 messages
+INFO 2025-10-17 14:55:27,921 tasks 65914 6227161088   TOTAL: 46 messages in queue
+INFO 2025-10-17 14:56:10,998 tasks 65914 6193508352 Starting background thread for bulk message sending
+INFO 2025-10-17 14:56:10,999 tasks 65914 6227161088 Starting bulk send process for 6 messages
+INFO 2025-10-17 14:56:10,999 tasks 65914 6193508352 Background thread started for 6 messages
+INFO 2025-10-17 14:56:11,002 tasks 65914 6227161088 Message queue statistics:
+INFO 2025-10-17 14:56:11,002 tasks 65914 6227161088   QUEUED: 6 messages
+INFO 2025-10-17 14:56:11,002 tasks 65914 6227161088   SENT: 46 messages
+INFO 2025-10-17 14:56:11,002 tasks 65914 6227161088   TOTAL: 52 messages in queue
+INFO 2025-10-17 14:56:11,002 tasks 65914 6227161088 Processing message 1/6 (ID: 47)
+INFO 2025-10-17 14:56:11,003 tasks 65914 6227161088 Starting to process message 47
+INFO 2025-10-17 14:56:11,007 tasks 65914 6227161088 Retrieved message 47 for Config Mwende (+255713241438)
+INFO 2025-10-17 14:56:11,039 tasks 65914 6227161088 Updated message 47 status to 'pending'
+INFO 2025-10-17 14:56:13,045 tasks 65914 6227161088 Attempting to send message 47 via whatsapp
+INFO 2025-10-17 14:56:13,045 tasks 65914 6227161088 Attempting WhatsApp send to +255713241438 for Config Mwende
+INFO 2025-10-17 14:56:13,046 tasks 65914 6227161088 WhatsApp simulation: Sending to +255713241438
+INFO 2025-10-17 14:56:14,550 tasks 65914 6227161088 WhatsApp sent successfully to +255713241438 (Config Mwende)
+INFO 2025-10-17 14:56:14,551 tasks 65914 6227161088 Message 47 sent successfully to Config Mwende
+INFO 2025-10-17 14:56:14,558 tasks 65914 6227161088 Updated message 47 final status to 'sent'
+INFO 2025-10-17 14:56:14,560 tasks 65914 6227161088 Bulk progress: 1/6 - Message 47 sent successfully
+INFO 2025-10-17 14:56:15,061 tasks 65914 6227161088 Processing message 2/6 (ID: 48)
+INFO 2025-10-17 14:56:15,062 tasks 65914 6227161088 Starting to process message 48
+INFO 2025-10-17 14:56:15,063 tasks 65914 6227161088 Retrieved message 48 for Mfumwa (+255765787819)
+INFO 2025-10-17 14:56:15,069 tasks 65914 6227161088 Updated message 48 status to 'pending'
+INFO 2025-10-17 14:56:17,074 tasks 65914 6227161088 Attempting to send message 48 via sms
+INFO 2025-10-17 14:56:17,075 tasks 65914 6227161088 Attempting SMS send to +255765787819 for Mfumwa
+INFO 2025-10-17 14:56:17,075 tasks 65914 6227161088 SMS simulation: Sending to +255765787819
+INFO 2025-10-17 14:56:18,076 tasks 65914 6227161088 SMS sent successfully to +255765787819 (Mfumwa)
+INFO 2025-10-17 14:56:18,077 tasks 65914 6227161088 Message 48 sent successfully to Mfumwa
+INFO 2025-10-17 14:56:18,083 tasks 65914 6227161088 Updated message 48 final status to 'sent'
+INFO 2025-10-17 14:56:18,085 tasks 65914 6227161088 Bulk progress: 2/6 - Message 48 sent successfully
+INFO 2025-10-17 14:56:18,588 tasks 65914 6227161088 Processing message 3/6 (ID: 49)
+INFO 2025-10-17 14:56:18,591 tasks 65914 6227161088 Starting to process message 49
+INFO 2025-10-17 14:56:18,594 tasks 65914 6227161088 Retrieved message 49 for Mwanamvua (+255713781920)
+INFO 2025-10-17 14:56:18,598 tasks 65914 6227161088 Updated message 49 status to 'pending'
+INFO 2025-10-17 14:56:20,604 tasks 65914 6227161088 Attempting to send message 49 via sms
+INFO 2025-10-17 14:56:20,604 tasks 65914 6227161088 Attempting SMS send to +255713781920 for Mwanamvua
+INFO 2025-10-17 14:56:20,605 tasks 65914 6227161088 SMS simulation: Sending to +255713781920
+INFO 2025-10-17 14:56:21,608 tasks 65914 6227161088 SMS sent successfully to +255713781920 (Mwanamvua)
+INFO 2025-10-17 14:56:21,609 tasks 65914 6227161088 Message 49 sent successfully to Mwanamvua
+INFO 2025-10-17 14:56:21,615 tasks 65914 6227161088 Updated message 49 final status to 'sent'
+INFO 2025-10-17 14:56:21,617 tasks 65914 6227161088 Bulk progress: 3/6 - Message 49 sent successfully
+INFO 2025-10-17 14:56:22,121 tasks 65914 6227161088 Processing message 4/6 (ID: 50)
+INFO 2025-10-17 14:56:22,124 tasks 65914 6227161088 Starting to process message 50
+INFO 2025-10-17 14:56:22,127 tasks 65914 6227161088 Retrieved message 50 for Noel Jackson (+255713241438)
+INFO 2025-10-17 14:56:22,131 tasks 65914 6227161088 Updated message 50 status to 'pending'
+INFO 2025-10-17 14:56:24,136 tasks 65914 6227161088 Attempting to send message 50 via sms
+INFO 2025-10-17 14:56:24,137 tasks 65914 6227161088 Attempting SMS send to +255713241438 for Noel Jackson
+INFO 2025-10-17 14:56:24,137 tasks 65914 6227161088 SMS simulation: Sending to +255713241438
+INFO 2025-10-17 14:56:25,138 tasks 65914 6227161088 SMS sent successfully to +255713241438 (Noel Jackson)
+INFO 2025-10-17 14:56:25,139 tasks 65914 6227161088 Message 50 sent successfully to Noel Jackson
+INFO 2025-10-17 14:56:25,145 tasks 65914 6227161088 Updated message 50 final status to 'sent'
+INFO 2025-10-17 14:56:25,147 tasks 65914 6227161088 Bulk progress: 4/6 - Message 50 sent successfully
+INFO 2025-10-17 14:56:25,652 tasks 65914 6227161088 Processing message 5/6 (ID: 51)
+INFO 2025-10-17 14:56:25,655 tasks 65914 6227161088 Starting to process message 51
+INFO 2025-10-17 14:56:25,658 tasks 65914 6227161088 Retrieved message 51 for Stan Kayombo (+255713241438)
+INFO 2025-10-17 14:56:25,663 tasks 65914 6227161088 Updated message 51 status to 'pending'
+INFO 2025-10-17 14:56:27,668 tasks 65914 6227161088 Attempting to send message 51 via whatsapp
+INFO 2025-10-17 14:56:27,669 tasks 65914 6227161088 Attempting WhatsApp send to +255713241438 for Stan Kayombo
+INFO 2025-10-17 14:56:27,669 tasks 65914 6227161088 WhatsApp simulation: Sending to +255713241438
+INFO 2025-10-17 14:56:29,173 tasks 65914 6227161088 WhatsApp sent successfully to +255713241438 (Stan Kayombo)
+INFO 2025-10-17 14:56:29,174 tasks 65914 6227161088 Message 51 sent successfully to Stan Kayombo
+INFO 2025-10-17 14:56:29,179 tasks 65914 6227161088 Updated message 51 final status to 'sent'
+INFO 2025-10-17 14:56:29,181 tasks 65914 6227161088 Bulk progress: 5/6 - Message 51 sent successfully
+INFO 2025-10-17 14:56:29,683 tasks 65914 6227161088 Processing message 6/6 (ID: 52)
+INFO 2025-10-17 14:56:29,687 tasks 65914 6227161088 Starting to process message 52
+INFO 2025-10-17 14:56:29,689 tasks 65914 6227161088 Retrieved message 52 for Stan Kayombo (0713241438)
+INFO 2025-10-17 14:56:29,692 tasks 65914 6227161088 Updated message 52 status to 'pending'
+INFO 2025-10-17 14:56:31,698 tasks 65914 6227161088 Attempting to send message 52 via sms
+INFO 2025-10-17 14:56:31,698 tasks 65914 6227161088 Attempting SMS send to 0713241438 for Stan Kayombo
+INFO 2025-10-17 14:56:31,699 tasks 65914 6227161088 SMS simulation: Sending to 0713241438
+INFO 2025-10-17 14:56:32,704 tasks 65914 6227161088 SMS sent successfully to 0713241438 (Stan Kayombo)
+INFO 2025-10-17 14:56:32,706 tasks 65914 6227161088 Message 52 sent successfully to Stan Kayombo
+INFO 2025-10-17 14:56:32,710 tasks 65914 6227161088 Updated message 52 final status to 'sent'
+INFO 2025-10-17 14:56:32,711 tasks 65914 6227161088 Bulk progress: 6/6 - Message 52 sent successfully
+INFO 2025-10-17 14:56:32,712 tasks 65914 6227161088 Bulk send completed: 6 sent, 0 failed, 6 total
+INFO 2025-10-17 14:56:32,713 tasks 65914 6227161088 Message queue statistics:
+INFO 2025-10-17 14:56:32,713 tasks 65914 6227161088   SENT: 52 messages
+INFO 2025-10-17 14:56:32,713 tasks 65914 6227161088   TOTAL: 52 messages in queue
+INFO 2025-10-17 16:08:36,615 tasks 72081 6196129792 Starting background thread for bulk message sending
+INFO 2025-10-17 16:08:36,616 tasks 72081 6229782528 Starting bulk send process for 1 messages
+INFO 2025-10-17 16:08:36,616 tasks 72081 6196129792 Background thread started for 1 messages
+INFO 2025-10-17 16:08:36,620 tasks 72081 6229782528 Message queue statistics:
+INFO 2025-10-17 16:08:36,620 tasks 72081 6229782528   QUEUED: 1 messages
+INFO 2025-10-17 16:08:36,620 tasks 72081 6229782528   SENT: 52 messages
+INFO 2025-10-17 16:08:36,620 tasks 72081 6229782528   TOTAL: 53 messages in queue
+INFO 2025-10-17 16:08:36,620 tasks 72081 6229782528 Processing message 1/1 (ID: 53)
+INFO 2025-10-17 16:08:36,622 tasks 72081 6229782528 Starting to process message 53
+INFO 2025-10-17 16:08:36,627 tasks 72081 6229782528 Retrieved message 53 for Stan Kayombo (0713241438)
+INFO 2025-10-17 16:08:36,638 tasks 72081 6229782528 Updated message 53 status to 'pending'
+INFO 2025-10-17 16:08:38,643 tasks 72081 6229782528 Attempting to send message 53 via sms
+INFO 2025-10-17 16:08:38,644 tasks 72081 6229782528 Attempting SMS send to 0713241438 for Stan Kayombo
+INFO 2025-10-17 16:08:38,644 tasks 72081 6229782528 SMS simulation: Sending to 0713241438
+INFO 2025-10-17 16:08:39,649 tasks 72081 6229782528 SMS sent successfully to 0713241438 (Stan Kayombo)
+INFO 2025-10-17 16:08:39,650 tasks 72081 6229782528 Message 53 sent successfully to Stan Kayombo
+INFO 2025-10-17 16:08:39,655 tasks 72081 6229782528 Updated message 53 final status to 'sent'
+INFO 2025-10-17 16:08:39,657 tasks 72081 6229782528 Bulk progress: 1/1 - Message 53 sent successfully
+INFO 2025-10-17 16:08:39,657 tasks 72081 6229782528 Bulk send completed: 1 sent, 0 failed, 1 total
+INFO 2025-10-17 16:08:39,658 tasks 72081 6229782528 Message queue statistics:
+INFO 2025-10-17 16:08:39,659 tasks 72081 6229782528   SENT: 53 messages
+INFO 2025-10-17 16:08:39,659 tasks 72081 6229782528   TOTAL: 53 messages in queue
+INFO 2025-10-17 16:12:06,654 tasks 72693 6167801856 Starting background thread for bulk message sending
+INFO 2025-10-17 16:12:06,655 tasks 72693 6201454592 Starting bulk send process for 1 messages
+INFO 2025-10-17 16:12:06,655 tasks 72693 6167801856 Background thread started for 1 messages
+INFO 2025-10-17 16:12:06,658 tasks 72693 6201454592 Message queue statistics:
+INFO 2025-10-17 16:12:06,658 tasks 72693 6201454592   QUEUED: 1 messages
+INFO 2025-10-17 16:12:06,658 tasks 72693 6201454592   SENT: 53 messages
+INFO 2025-10-17 16:12:06,658 tasks 72693 6201454592   TOTAL: 54 messages in queue
+INFO 2025-10-17 16:12:06,658 tasks 72693 6201454592 Processing message 1/1 (ID: 54)
+INFO 2025-10-17 16:12:06,659 tasks 72693 6201454592 Starting to process message 54
+INFO 2025-10-17 16:12:06,662 tasks 72693 6201454592 Retrieved message 54 for Stan Kayombo (0713241438)
+INFO 2025-10-17 16:12:06,669 tasks 72693 6201454592 Updated message 54 status to 'pending'
+INFO 2025-10-17 16:12:08,671 tasks 72693 6201454592 Attempting to send message 54 via sms
+INFO 2025-10-17 16:12:08,671 tasks 72693 6201454592 Attempting SMS send to 0713241438 for Stan Kayombo
+INFO 2025-10-17 16:12:08,672 tasks 72693 6201454592 SMS simulation: Sending to 0713241438
+INFO 2025-10-17 16:12:09,674 tasks 72693 6201454592 SMS sent successfully to 0713241438 (Stan Kayombo)
+INFO 2025-10-17 16:12:09,675 tasks 72693 6201454592 Message 54 sent successfully to Stan Kayombo
+INFO 2025-10-17 16:12:09,681 tasks 72693 6201454592 Updated message 54 final status to 'sent'
+INFO 2025-10-17 16:12:09,683 tasks 72693 6201454592 Bulk progress: 1/1 - Message 54 sent successfully
+INFO 2025-10-17 16:12:09,683 tasks 72693 6201454592 Bulk send completed: 1 sent, 0 failed, 1 total
+INFO 2025-10-17 16:12:09,684 tasks 72693 6201454592 Message queue statistics:
+INFO 2025-10-17 16:12:09,684 tasks 72693 6201454592   SENT: 54 messages
+INFO 2025-10-17 16:12:09,685 tasks 72693 6201454592   TOTAL: 54 messages in queue
+INFO 2025-10-17 16:13:04,955 tasks 72693 6167801856 Starting background thread for bulk message sending
+INFO 2025-10-17 16:13:04,956 tasks 72693 6201454592 Starting bulk send process for 1 messages
+INFO 2025-10-17 16:13:04,956 tasks 72693 6167801856 Background thread started for 1 messages
+INFO 2025-10-17 16:13:04,959 tasks 72693 6201454592 Message queue statistics:
+INFO 2025-10-17 16:13:04,959 tasks 72693 6201454592   QUEUED: 1 messages
+INFO 2025-10-17 16:13:04,959 tasks 72693 6201454592   SENT: 54 messages
+INFO 2025-10-17 16:13:04,959 tasks 72693 6201454592   TOTAL: 55 messages in queue
+INFO 2025-10-17 16:13:04,959 tasks 72693 6201454592 Processing message 1/1 (ID: 55)
+INFO 2025-10-17 16:13:04,960 tasks 72693 6201454592 Starting to process message 55
+INFO 2025-10-17 16:13:04,963 tasks 72693 6201454592 Retrieved message 55 for Stan Kayombo (0713241438)
+INFO 2025-10-17 16:13:04,977 tasks 72693 6201454592 Updated message 55 status to 'pending'
+INFO 2025-10-17 16:13:06,984 tasks 72693 6201454592 Attempting to send message 55 via whatsapp
+INFO 2025-10-17 16:13:06,984 tasks 72693 6201454592 Attempting WhatsApp send to 0713241438 for Stan Kayombo
+INFO 2025-10-17 16:13:06,984 tasks 72693 6201454592 Formatted phone number: 254713241438
+INFO 2025-10-17 16:13:08,261 tasks 72693 6201454592 WhatsApp API response status: 400
+ERROR 2025-10-17 16:13:08,262 tasks 72693 6201454592 WhatsApp API error 400: {"error":{"message":"(#131030) Recipient phone number not in allowed list","type":"OAuthException","code":131030,"error_data":{"messaging_product":"whatsapp","details":"Recipient phone number not in allowed list: Add recipient phone number to recipient list and try again."},"fbtrace_id":"AYAZyr2g-MIkpY-uN97z9hK"}}
+ERROR 2025-10-17 16:13:08,263 tasks 72693 6201454592 Failed to send message 55 to Stan Kayombo
+INFO 2025-10-17 16:13:08,269 tasks 72693 6201454592 Updated message 55 final status to 'failed'
+WARNING 2025-10-17 16:13:08,272 tasks 72693 6201454592 Bulk progress: 1/1 - Message 55 failed
+INFO 2025-10-17 16:13:08,272 tasks 72693 6201454592 Bulk send completed: 0 sent, 1 failed, 1 total
+INFO 2025-10-17 16:13:08,273 tasks 72693 6201454592 Message queue statistics:
+INFO 2025-10-17 16:13:08,274 tasks 72693 6201454592   SENT: 54 messages
+INFO 2025-10-17 16:13:08,274 tasks 72693 6201454592   FAILED: 1 messages
+INFO 2025-10-17 16:13:08,274 tasks 72693 6201454592   TOTAL: 55 messages in queue
+INFO 2025-10-17 16:14:18,813 tasks 72780 6166786048 Starting background thread for bulk message sending
+INFO 2025-10-17 16:14:18,814 tasks 72780 6200438784 Starting bulk send process for 1 messages
+INFO 2025-10-17 16:14:18,814 tasks 72780 6166786048 Background thread started for 1 messages
+INFO 2025-10-17 16:14:18,818 tasks 72780 6200438784 Message queue statistics:
+INFO 2025-10-17 16:14:18,818 tasks 72780 6200438784   QUEUED: 1 messages
+INFO 2025-10-17 16:14:18,818 tasks 72780 6200438784   SENT: 54 messages
+INFO 2025-10-17 16:14:18,819 tasks 72780 6200438784   FAILED: 1 messages
+INFO 2025-10-17 16:14:18,819 tasks 72780 6200438784   TOTAL: 56 messages in queue
+INFO 2025-10-17 16:14:18,819 tasks 72780 6200438784 Processing message 1/1 (ID: 56)
+INFO 2025-10-17 16:14:18,821 tasks 72780 6200438784 Starting to process message 56
+INFO 2025-10-17 16:14:18,823 tasks 72780 6200438784 Retrieved message 56 for Stan Kayombo (0713241438)
+INFO 2025-10-17 16:14:18,830 tasks 72780 6200438784 Updated message 56 status to 'pending'
+INFO 2025-10-17 16:14:20,835 tasks 72780 6200438784 Attempting to send message 56 via whatsapp
+INFO 2025-10-17 16:14:20,836 tasks 72780 6200438784 Attempting WhatsApp send to 0713241438 for Stan Kayombo
+INFO 2025-10-17 16:14:20,836 tasks 72780 6200438784 Formatted phone number: 255713241438
+INFO 2025-10-17 16:14:23,138 tasks 72780 6200438784 WhatsApp API response status: 200
+INFO 2025-10-17 16:14:23,138 tasks 72780 6200438784 WhatsApp message sent successfully to 255713241438 (Stan Kayombo). Message ID: wamid.HBgMMjU1NzEzMjQxNDM4FQIAERgSRTEzNUUzN0Q1NkFGMzg1REUzAA==
+INFO 2025-10-17 16:14:23,139 tasks 72780 6200438784 Message 56 sent successfully to Stan Kayombo
+INFO 2025-10-17 16:14:23,145 tasks 72780 6200438784 Updated message 56 final status to 'sent'
+INFO 2025-10-17 16:14:23,147 tasks 72780 6200438784 Bulk progress: 1/1 - Message 56 sent successfully
+INFO 2025-10-17 16:14:23,147 tasks 72780 6200438784 Bulk send completed: 1 sent, 0 failed, 1 total
+INFO 2025-10-17 16:14:23,149 tasks 72780 6200438784 Message queue statistics:
+INFO 2025-10-17 16:14:23,149 tasks 72780 6200438784   SENT: 55 messages
+INFO 2025-10-17 16:14:23,149 tasks 72780 6200438784   FAILED: 1 messages
+INFO 2025-10-17 16:14:23,149 tasks 72780 6200438784   TOTAL: 56 messages in queue
+INFO 2025-10-17 16:17:03,045 tasks 72780 6166786048 Starting background thread for bulk message sending
+INFO 2025-10-17 16:17:03,046 tasks 72780 6200438784 Starting bulk send process for 1 messages
+INFO 2025-10-17 16:17:03,046 tasks 72780 6166786048 Background thread started for 1 messages
+INFO 2025-10-17 16:17:03,050 tasks 72780 6200438784 Message queue statistics:
+INFO 2025-10-17 16:17:03,050 tasks 72780 6200438784   QUEUED: 1 messages
+INFO 2025-10-17 16:17:03,050 tasks 72780 6200438784   SENT: 55 messages
+INFO 2025-10-17 16:17:03,050 tasks 72780 6200438784   FAILED: 1 messages
+INFO 2025-10-17 16:17:03,050 tasks 72780 6200438784   TOTAL: 57 messages in queue
+INFO 2025-10-17 16:17:03,050 tasks 72780 6200438784 Processing message 1/1 (ID: 57)
+INFO 2025-10-17 16:17:03,051 tasks 72780 6200438784 Starting to process message 57
+INFO 2025-10-17 16:17:03,054 tasks 72780 6200438784 Retrieved message 57 for Stan Kayombo (0713241438)
+INFO 2025-10-17 16:17:03,080 tasks 72780 6200438784 Updated message 57 status to 'pending'
+INFO 2025-10-17 16:17:05,086 tasks 72780 6200438784 Attempting to send message 57 via whatsapp
+INFO 2025-10-17 16:17:05,086 tasks 72780 6200438784 Attempting WhatsApp send to 0713241438 for Stan Kayombo
+INFO 2025-10-17 16:17:05,087 tasks 72780 6200438784 Formatted phone number: 255713241438
+INFO 2025-10-17 16:17:06,541 tasks 72780 6200438784 WhatsApp API response status: 200
+INFO 2025-10-17 16:17:06,541 tasks 72780 6200438784 WhatsApp message sent successfully to 255713241438 (Stan Kayombo). Message ID: wamid.HBgMMjU1NzEzMjQxNDM4FQIAERgSOTMzMDQ2RUIxREQxQkY4M0NFAA==
+INFO 2025-10-17 16:17:06,541 tasks 72780 6200438784 Message 57 sent successfully to Stan Kayombo
+INFO 2025-10-17 16:17:06,544 tasks 72780 6200438784 Updated message 57 final status to 'sent'
+INFO 2025-10-17 16:17:06,544 tasks 72780 6200438784 Bulk progress: 1/1 - Message 57 sent successfully
+INFO 2025-10-17 16:17:06,545 tasks 72780 6200438784 Bulk send completed: 1 sent, 0 failed, 1 total
+INFO 2025-10-17 16:17:06,545 tasks 72780 6200438784 Message queue statistics:
+INFO 2025-10-17 16:17:06,545 tasks 72780 6200438784   SENT: 56 messages
+INFO 2025-10-17 16:17:06,545 tasks 72780 6200438784   FAILED: 1 messages
+INFO 2025-10-17 16:17:06,545 tasks 72780 6200438784   TOTAL: 57 messages in queue
+INFO 2025-10-18 05:17:05,270 tasks 72780 6166786048 Starting background thread for bulk message sending
+INFO 2025-10-18 05:17:05,271 tasks 72780 6200438784 Starting bulk send process for 1 messages
+INFO 2025-10-18 05:17:05,271 tasks 72780 6166786048 Background thread started for 1 messages
+INFO 2025-10-18 05:17:05,282 tasks 72780 6200438784 Message queue statistics:
+INFO 2025-10-18 05:17:05,282 tasks 72780 6200438784   QUEUED: 1 messages
+INFO 2025-10-18 05:17:05,283 tasks 72780 6200438784   SENT: 56 messages
+INFO 2025-10-18 05:17:05,283 tasks 72780 6200438784   FAILED: 1 messages
+INFO 2025-10-18 05:17:05,283 tasks 72780 6200438784   TOTAL: 58 messages in queue
+INFO 2025-10-18 05:17:05,283 tasks 72780 6200438784 Processing message 1/1 (ID: 58)
+INFO 2025-10-18 05:17:05,285 tasks 72780 6200438784 Starting to process message 58
+INFO 2025-10-18 05:17:05,289 tasks 72780 6200438784 Retrieved message 58 for Stan Kayombo (0713241438)
+INFO 2025-10-18 05:17:05,306 tasks 72780 6200438784 Updated message 58 status to 'pending'
+INFO 2025-10-18 05:17:07,315 tasks 72780 6200438784 Attempting to send message 58 via whatsapp
+INFO 2025-10-18 05:17:07,316 tasks 72780 6200438784 Attempting WhatsApp send to 0713241438 for Stan Kayombo
+INFO 2025-10-18 05:17:07,317 tasks 72780 6200438784 Formatted phone number: 255713241438
+INFO 2025-10-18 05:17:08,016 tasks 72780 6200438784 WhatsApp API response status: 401
+ERROR 2025-10-18 05:17:08,017 tasks 72780 6200438784 WhatsApp API error 401: {"error":{"message":"Error validating access token: Session has expired on Friday, 17-Oct-25 11:00:00 PDT. The current time is Friday, 17-Oct-25 22:17:08 PDT.","type":"OAuthException","code":190,"error_subcode":463,"fbtrace_id":"AVGQYqKVcdZF64dr-iSm4XW"}}
+ERROR 2025-10-18 05:17:08,017 tasks 72780 6200438784 Failed to send message 58 to Stan Kayombo
+INFO 2025-10-18 05:17:08,022 tasks 72780 6200438784 Updated message 58 final status to 'failed'
+WARNING 2025-10-18 05:17:08,023 tasks 72780 6200438784 Bulk progress: 1/1 - Message 58 failed
+INFO 2025-10-18 05:17:08,024 tasks 72780 6200438784 Bulk send completed: 0 sent, 1 failed, 1 total
+INFO 2025-10-18 05:17:08,025 tasks 72780 6200438784 Message queue statistics:
+INFO 2025-10-18 05:17:08,025 tasks 72780 6200438784   SENT: 56 messages
+INFO 2025-10-18 05:17:08,025 tasks 72780 6200438784   FAILED: 2 messages
+INFO 2025-10-18 05:17:08,025 tasks 72780 6200438784   TOTAL: 58 messages in queue
+INFO 2025-10-18 05:23:49,581 tasks 74754 6169423872 Starting background thread for bulk message sending
+INFO 2025-10-18 05:23:49,583 tasks 74754 6203076608 Starting bulk send process for 1 messages
+INFO 2025-10-18 05:23:49,584 tasks 74754 6169423872 Background thread started for 1 messages
+INFO 2025-10-18 05:23:49,593 tasks 74754 6203076608 Message queue statistics:
+INFO 2025-10-18 05:23:49,593 tasks 74754 6203076608   QUEUED: 1 messages
+INFO 2025-10-18 05:23:49,594 tasks 74754 6203076608   SENT: 56 messages
+INFO 2025-10-18 05:23:49,594 tasks 74754 6203076608   FAILED: 2 messages
+INFO 2025-10-18 05:23:49,594 tasks 74754 6203076608   TOTAL: 59 messages in queue
+INFO 2025-10-18 05:23:49,594 tasks 74754 6203076608 Processing message 1/1 (ID: 59)
+INFO 2025-10-18 05:23:49,596 tasks 74754 6203076608 Starting to process message 59
+INFO 2025-10-18 05:23:49,608 tasks 74754 6203076608 Retrieved message 59 for Stan Kayombo (0713241438)
+INFO 2025-10-18 05:23:49,619 tasks 74754 6203076608 Updated message 59 status to 'pending'
+INFO 2025-10-18 05:23:51,621 tasks 74754 6203076608 Attempting to send message 59 via whatsapp
+INFO 2025-10-18 05:23:51,622 tasks 74754 6203076608 Attempting WhatsApp send to 0713241438 for Stan Kayombo
+INFO 2025-10-18 05:23:51,622 tasks 74754 6203076608 Formatted phone number: 255713241438
+INFO 2025-10-18 05:23:53,875 tasks 74754 6203076608 WhatsApp API response status: 200
+INFO 2025-10-18 05:23:53,876 tasks 74754 6203076608 WhatsApp message sent successfully to 255713241438 (Stan Kayombo). Message ID: wamid.HBgMMjU1NzEzMjQxNDM4FQIAERgSQTU2NjRCNjdCQzVBQjZGRkU0AA==
+INFO 2025-10-18 05:23:53,876 tasks 74754 6203076608 Message 59 sent successfully to Stan Kayombo
+INFO 2025-10-18 05:23:53,881 tasks 74754 6203076608 Updated message 59 final status to 'sent'
+INFO 2025-10-18 05:23:53,882 tasks 74754 6203076608 Bulk progress: 1/1 - Message 59 sent successfully
+INFO 2025-10-18 05:23:53,882 tasks 74754 6203076608 Bulk send completed: 1 sent, 0 failed, 1 total
+INFO 2025-10-18 05:23:53,883 tasks 74754 6203076608 Message queue statistics:
+INFO 2025-10-18 05:23:53,884 tasks 74754 6203076608   SENT: 57 messages
+INFO 2025-10-18 05:23:53,884 tasks 74754 6203076608   FAILED: 2 messages
+INFO 2025-10-18 05:23:53,884 tasks 74754 6203076608   TOTAL: 59 messages in queue
+INFO 2025-10-18 05:34:30,955 tasks 75345 6191427584 Starting background thread for bulk message sending
+INFO 2025-10-18 05:34:30,956 tasks 75345 6225080320 Starting bulk send process for 1 messages
+INFO 2025-10-18 05:34:30,956 tasks 75345 6191427584 Background thread started for 1 messages
+INFO 2025-10-18 05:34:30,959 tasks 75345 6225080320 Message queue statistics:
+INFO 2025-10-18 05:34:30,959 tasks 75345 6225080320   QUEUED: 1 messages
+INFO 2025-10-18 05:34:30,959 tasks 75345 6225080320   SENT: 57 messages
+INFO 2025-10-18 05:34:30,959 tasks 75345 6225080320   FAILED: 2 messages
+INFO 2025-10-18 05:34:30,959 tasks 75345 6225080320   TOTAL: 60 messages in queue
+INFO 2025-10-18 05:34:30,959 tasks 75345 6225080320 Processing message 1/1 (ID: 60)
+INFO 2025-10-18 05:34:30,961 tasks 75345 6225080320 Starting to process message 60
+INFO 2025-10-18 05:34:30,964 tasks 75345 6225080320 Retrieved message 60 for Stan Kayombo (0713241438)
+INFO 2025-10-18 05:34:30,981 tasks 75345 6225080320 Updated message 60 status to 'pending'
+INFO 2025-10-18 05:34:32,986 tasks 75345 6225080320 Attempting to send message 60 via whatsapp
+INFO 2025-10-18 05:34:32,987 tasks 75345 6225080320 Attempting WhatsApp send to 0713241438 for Stan Kayombo
+INFO 2025-10-18 05:34:32,988 tasks 75345 6225080320 Formatted phone number: 255713241438
+INFO 2025-10-18 05:34:32,989 tasks 75345 6225080320 WhatsApp API request headers: {'Authorization': 'Bearer EAAcP2FdIe...ZDZD', 'Content-Type': 'application/json'}
+INFO 2025-10-18 05:34:32,990 tasks 75345 6225080320 WhatsApp API URL: https://graph.facebook.com/v22.0/878543835331362/messages
+INFO 2025-10-18 05:34:32,990 tasks 75345 6225080320 WhatsApp request payload:
+INFO 2025-10-18 05:34:32,990 tasks 75345 6225080320 {
+  "messaging_product": "whatsapp",
+  "to": "255713241438",
+  "type": "text",
+  "text": {
+    "body": "Ndugu Stan Kayombo habari za jioni"
+  }
+}
+INFO 2025-10-18 05:34:32,990 tasks 75345 6225080320 Sending WhatsApp API request...
+INFO 2025-10-18 05:34:34,179 tasks 75345 6225080320 WhatsApp API response received - Status Code: 200
+INFO 2025-10-18 05:34:34,180 tasks 75345 6225080320 WhatsApp API response headers: {'Content-Type': 'application/json; charset=UTF-8', 'Vary': 'Origin', 'x-fb-aed': '604', 'x-ad-api-version-warning': 'The call has been auto-upgraded to v24.0 as v22.0 will be deprecated.', 'x-business-use-case-usage': '{"2635615883450580":[{"type":"whatsapp","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}', 'Access-Control-Allow-Origin': '*', 'facebook-api-version': 'v24.0', 'Strict-Transport-Security': 'max-age=15552000; preload', 'Pragma': 'no-cache', 'Cache-Control': 'private, no-cache, no-store, must-revalidate', 'Expires': 'Sat, 01 Jan 2000 00:00:00 GMT', 'x-fb-request-id': 'AjNzPj71S2731RTaOmSfg87', 'x-fb-trace-id': 'B+mIsVJALyt', 'x-fb-rev': '1028611476', 'X-FB-Debug': 'JKVp1tr0RaPb1YaRfUEGPGMrUZEytTz5mrDI+NlqWW59e7od3CMYXUAA6ggGdbo24a/cZOzFuvRXZpHdeDoXAA==', 'Date': 'Sat, 18 Oct 2025 05:34:34 GMT', 'X-FB-Connection-Quality': 'EXCELLENT; q=0.9, rtt=8, rtx=0, c=10, mss=1380, tbw=4570, tp=-1, tpl=-1, uplat=913, ullat=0', 'Alt-Svc': 'h3=":443"; ma=86400', 'Connection': 'keep-alive', 'Content-Length': '178'}
+INFO 2025-10-18 05:34:34,180 tasks 75345 6225080320 WhatsApp API response body:
+INFO 2025-10-18 05:34:34,180 tasks 75345 6225080320 {"messaging_product":"whatsapp","contacts":[{"input":"255713241438","wa_id":"255713241438"}],"messages":[{"id":"wamid.HBgMMjU1NzEzMjQxNDM4FQIAERgSRUI2OTZCMzYwRjU1ODkzNDQyAA=="}]}
+INFO 2025-10-18 05:34:34,181 tasks 75345 6225080320 WhatsApp API response JSON:
+INFO 2025-10-18 05:34:34,181 tasks 75345 6225080320 {
+  "messaging_product": "whatsapp",
+  "contacts": [
+    {
+      "input": "255713241438",
+      "wa_id": "255713241438"
+    }
+  ],
+  "messages": [
+    {
+      "id": "wamid.HBgMMjU1NzEzMjQxNDM4FQIAERgSRUI2OTZCMzYwRjU1ODkzNDQyAA=="
+    }
+  ]
+}
+INFO 2025-10-18 05:34:34,182 tasks 75345 6225080320 WhatsApp message sent successfully to 255713241438 (Stan Kayombo). Message ID: wamid.HBgMMjU1NzEzMjQxNDM4FQIAERgSRUI2OTZCMzYwRjU1ODkzNDQyAA==
+INFO 2025-10-18 05:34:34,185 tasks 75345 6225080320 Message 60 sent successfully to Stan Kayombo
+INFO 2025-10-18 05:34:34,195 tasks 75345 6225080320 Updated message 60 final status to 'sent'
+INFO 2025-10-18 05:34:34,196 tasks 75345 6225080320 Bulk progress: 1/1 - Message 60 sent successfully
+INFO 2025-10-18 05:34:34,196 tasks 75345 6225080320 Bulk send completed: 1 sent, 0 failed, 1 total
+INFO 2025-10-18 05:34:34,197 tasks 75345 6225080320 Message queue statistics:
+INFO 2025-10-18 05:34:34,197 tasks 75345 6225080320   SENT: 58 messages
+INFO 2025-10-18 05:34:34,197 tasks 75345 6225080320   FAILED: 2 messages
+INFO 2025-10-18 05:34:34,197 tasks 75345 6225080320   TOTAL: 60 messages in queue
+INFO 2025-10-18 05:40:55,366 tasks 75713 6197899264 Starting background thread for bulk message sending
+INFO 2025-10-18 05:40:55,367 tasks 75713 6231552000 Starting bulk send process for 1 messages
+INFO 2025-10-18 05:40:55,367 tasks 75713 6197899264 Background thread started for 1 messages
+INFO 2025-10-18 05:40:55,370 tasks 75713 6231552000 Message queue statistics:
+INFO 2025-10-18 05:40:55,370 tasks 75713 6231552000   QUEUED: 1 messages
+INFO 2025-10-18 05:40:55,370 tasks 75713 6231552000   SENT: 58 messages
+INFO 2025-10-18 05:40:55,371 tasks 75713 6231552000   FAILED: 2 messages
+INFO 2025-10-18 05:40:55,371 tasks 75713 6231552000   TOTAL: 61 messages in queue
+INFO 2025-10-18 05:40:55,371 tasks 75713 6231552000 Processing message 1/1 (ID: 61)
+INFO 2025-10-18 05:40:55,372 tasks 75713 6231552000 Starting to process message 61
+INFO 2025-10-18 05:40:55,375 tasks 75713 6231552000 Retrieved message 61 for Stan Kayombo (0713241438)
+INFO 2025-10-18 05:40:55,385 tasks 75713 6231552000 Updated message 61 status to 'pending'
+INFO 2025-10-18 05:40:57,388 tasks 75713 6231552000 Attempting to send message 61 via whatsapp
+INFO 2025-10-18 05:40:57,389 tasks 75713 6231552000 Attempting WhatsApp send to 0713241438 for Stan Kayombo
+INFO 2025-10-18 05:40:57,389 tasks 75713 6231552000 Formatted phone number: 255713241438
+INFO 2025-10-18 05:40:57,389 tasks 75713 6231552000 WhatsApp API request headers: {'Authorization': 'Bearer EAAcP2FdIe...ZDZD', 'Content-Type': 'application/json'}
+INFO 2025-10-18 05:40:57,389 tasks 75713 6231552000 WhatsApp API URL: https://graph.facebook.com/v22.0/878543835331362/messages
+INFO 2025-10-18 05:40:57,389 tasks 75713 6231552000 WhatsApp request payload:
+INFO 2025-10-18 05:40:57,389 tasks 75713 6231552000 {
+  "messaging_product": "whatsapp",
+  "to": "255713241438",
+  "type": "template",
+  "template": {
+    "name": "hello_world",
+    "language": {
+      "code": "en_US"
+    }
+  }
+}
+INFO 2025-10-18 05:40:57,389 tasks 75713 6231552000 Sending WhatsApp API request...
+INFO 2025-10-18 05:40:58,544 tasks 75713 6231552000 WhatsApp API response received - Status Code: 200
+INFO 2025-10-18 05:40:58,545 tasks 75713 6231552000 WhatsApp API response headers: {'Content-Type': 'application/json; charset=UTF-8', 'Vary': 'Origin', 'x-fb-aed': '604', 'x-ad-api-version-warning': 'The call has been auto-upgraded to v24.0 as v22.0 will be deprecated.', 'x-business-use-case-usage': '{"2635615883450580":[{"type":"whatsapp","call_count":1,"total_cputime":1,"total_time":1,"estimated_time_to_regain_access":0}]}', 'Access-Control-Allow-Origin': '*', 'facebook-api-version': 'v24.0', 'Strict-Transport-Security': 'max-age=15552000; preload', 'Pragma': 'no-cache', 'Cache-Control': 'private, no-cache, no-store, must-revalidate', 'Expires': 'Sat, 01 Jan 2000 00:00:00 GMT', 'x-fb-request-id': 'AfkTDR2b5vIx6aLUAEYfLWF', 'x-fb-trace-id': 'E1ajpeasWnR', 'x-fb-rev': '1028611476', 'X-FB-Debug': 'xO3Tc/5Rpp+AGyyG4yK7NEGuYFlrJbjVUUOtwFfOGJz36u65ROUD5g3BRrC5reArAFeiqNN0YgcaRhn8NSCZTw==', 'Date': 'Sat, 18 Oct 2025 05:40:58 GMT', 'X-FB-Connection-Quality': 'EXCELLENT; q=0.9, rtt=8, rtx=0, c=10, mss=1380, tbw=4572, tp=-1, tpl=-1, uplat=940, ullat=0', 'Alt-Svc': 'h3=":443"; ma=86400', 'Connection': 'keep-alive', 'Content-Length': '206'}
+INFO 2025-10-18 05:40:58,545 tasks 75713 6231552000 WhatsApp API response body:
+INFO 2025-10-18 05:40:58,545 tasks 75713 6231552000 {"messaging_product":"whatsapp","contacts":[{"input":"255713241438","wa_id":"255713241438"}],"messages":[{"id":"wamid.HBgMMjU1NzEzMjQxNDM4FQIAERgSNzJGNzMwMjVGNUE2QkY4RjRBAA==","message_status":"accepted"}]}
+INFO 2025-10-18 05:40:58,546 tasks 75713 6231552000 WhatsApp API response JSON:
+INFO 2025-10-18 05:40:58,546 tasks 75713 6231552000 {
+  "messaging_product": "whatsapp",
+  "contacts": [
+    {
+      "input": "255713241438",
+      "wa_id": "255713241438"
+    }
+  ],
+  "messages": [
+    {
+      "id": "wamid.HBgMMjU1NzEzMjQxNDM4FQIAERgSNzJGNzMwMjVGNUE2QkY4RjRBAA==",
+      "message_status": "accepted"
+    }
+  ]
+}
+INFO 2025-10-18 05:40:58,546 tasks 75713 6231552000 WhatsApp message sent successfully to 255713241438 (Stan Kayombo). Message ID: wamid.HBgMMjU1NzEzMjQxNDM4FQIAERgSNzJGNzMwMjVGNUE2QkY4RjRBAA==
+INFO 2025-10-18 05:40:58,547 tasks 75713 6231552000 Message 61 sent successfully to Stan Kayombo
+INFO 2025-10-18 05:40:58,552 tasks 75713 6231552000 Updated message 61 final status to 'sent'
+INFO 2025-10-18 05:40:58,554 tasks 75713 6231552000 Bulk progress: 1/1 - Message 61 sent successfully
+INFO 2025-10-18 05:40:58,554 tasks 75713 6231552000 Bulk send completed: 1 sent, 0 failed, 1 total
+INFO 2025-10-18 05:40:58,555 tasks 75713 6231552000 Message queue statistics:
+INFO 2025-10-18 05:40:58,555 tasks 75713 6231552000   SENT: 59 messages
+INFO 2025-10-18 05:40:58,556 tasks 75713 6231552000   FAILED: 2 messages
+INFO 2025-10-18 05:40:58,556 tasks 75713 6231552000   TOTAL: 61 messages in queue

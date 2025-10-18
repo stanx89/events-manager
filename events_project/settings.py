@@ -169,3 +169,16 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For developm
 # EMAIL_HOST_USER = 'your-email@gmail.com'
 # EMAIL_HOST_PASSWORD = 'your-app-password'
 DEFAULT_FROM_EMAIL = 'events@yourcompany.com'
+
+# WhatsApp Configuration (Facebook Graph API)
+# Get these values from your Facebook Developer Console
+# 1. Create a Facebook App at https://developers.facebook.com/
+# 2. Add WhatsApp Business API product
+# 3. Get your Phone Number ID and Access Token
+WHATSAPP_ACCESS_TOKEN = 'EAAcP2FdIeAABPkyXGhqAZAt7i6pu4QdvxjANArZA4x2Eu8EQAUin8O4MzhZBoReC62pa4VHfXJbrahg9EoeY3tT6DR7t206lICCxUbLzOA4DtCVuuhmkaZCeD2q9qeWuXaowIaWRUNsVJvBmwxwVZCuxeksRvz3UCBjSr040C8NlagZCZAJg8XbTaU384r0dZCtWEudvtyLDEgmLmhk6TyS8UgdxNFUnhkNoMHZBp5gOGFQZDZD'  # Replace with your actual token
+WHATSAPP_PHONE_NUMBER_ID = '878543835331362'  # Replace with your actual phone number ID
+
+# For production, consider using environment variables:
+# import os
+# WHATSAPP_ACCESS_TOKEN = os.environ.get('WHATSAPP_ACCESS_TOKEN')
+# WHATSAPP_PHONE_NUMBER_ID = os.environ.get('WHATSAPP_PHONE_NUMBER_ID')
