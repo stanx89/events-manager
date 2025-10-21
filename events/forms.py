@@ -1,5 +1,5 @@
 from django import forms
-from .models import Pledges, Transactions, Messages, MessageTemplate
+from .models import Pledges, Transactions, Messages, MessageTemplate, RegistrationRequest, Event, EventUser
 import uuid
 
 
@@ -258,4 +258,157 @@ class MessageTemplateForm(forms.ModelForm):
         help_texts = {
             'type': 'The category/type of this message template',
             'message': 'Use placeholders like {name}, {pledge_amount}, {balance} etc. for dynamic content',
+        }
+
+
+class RegistrationForm(forms.ModelForm):
+    """Form for user registration"""
+    
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500',
+            'placeholder': 'Enter a secure password'
+        }),
+        min_length=8,
+        help_text='Password must be at least 8 characters long'
+    )
+    
+    password_confirm = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500',
+            'placeholder': 'Confirm your password'
+        }),
+        label='Confirm Password',
+        help_text='Enter the same password again for verification'
+    )
+    
+    class Meta:
+        model = RegistrationRequest
+        fields = ['full_name', 'email', 'password', 'mobile_number', 'event_name', 'event_date']
+        
+        widgets = {
+            'full_name': forms.TextInput(attrs={
+                'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500',
+                'placeholder': 'Enter your full name'
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500',
+                'placeholder': 'Enter your email address'
+            }),
+            'mobile_number': forms.TextInput(attrs={
+                'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500',
+                'placeholder': '+255123456789'
+            }),
+            'event_name': forms.TextInput(attrs={
+                'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500',
+                'placeholder': 'Enter your event name'
+            }),
+            'event_date': forms.DateTimeInput(attrs={
+                'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500',
+                'type': 'datetime-local'
+            }),
+        }
+        
+        labels = {
+            'full_name': 'Full Name',
+            'email': 'Email Address',
+            'mobile_number': 'Mobile Number',
+            'event_name': 'Event Name',
+            'event_date': 'Event Date & Time',
+        }
+        
+        help_texts = {
+            'full_name': 'Enter your complete full name',
+            'email': 'We will send a verification email to this address',
+            'mobile_number': 'Tanzanian mobile number (e.g., +255123456789)',
+            'event_name': 'Name of the event you want to organize',
+            'event_date': 'Date and time when your event will take place',
+        }
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        # Check if email already exists in verified users
+        if EventUser.objects.filter(email=email, is_verified=True).exists():
+            raise forms.ValidationError("An account with this email already exists.")
+        return email
+    
+    def clean_password_confirm(self):
+        password = self.cleaned_data.get('password')
+        password_confirm = self.cleaned_data.get('password_confirm')
+        
+        if password and password_confirm:
+            if password != password_confirm:
+                raise forms.ValidationError("Passwords don't match.")
+        return password_confirm
+    
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        # Hash the password before saving
+        from django.contrib.auth.hashers import make_password
+        instance.password = make_password(self.cleaned_data['password'])
+        
+        if commit:
+            instance.save()
+        return instance
+
+
+class LoginForm(forms.Form):
+    """Form for user login"""
+    
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500',
+            'placeholder': 'Enter your email address'
+        }),
+        label='Email Address'
+    )
+    
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500',
+            'placeholder': 'Enter your password'
+        }),
+        label='Password'
+    )
+
+
+class EventForm(forms.ModelForm):
+    """Form for creating and editing events"""
+    
+    class Meta:
+        model = Event
+        fields = ['name', 'date', 'description', 'location']
+        
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500',
+                'placeholder': 'Enter event name'
+            }),
+            'date': forms.DateTimeInput(attrs={
+                'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500',
+                'type': 'datetime-local'
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500',
+                'placeholder': 'Enter event description',
+                'rows': 4
+            }),
+            'location': forms.TextInput(attrs={
+                'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500',
+                'placeholder': 'Enter event location'
+            })
+        }
+        
+        labels = {
+            'name': 'Event Name',
+            'date': 'Event Date & Time',
+            'description': 'Description',
+            'location': 'Location'
+        }
+        
+        help_texts = {
+            'name': 'A descriptive name for your event',
+            'date': 'When your event will take place',
+            'description': 'Brief description of the event (optional)',
+            'location': 'Where the event will be held (optional)'
         }

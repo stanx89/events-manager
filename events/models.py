@@ -5,9 +5,134 @@ This module contains the data models for managing events, pledges, transactions,
 """
 
 from django.db import models
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.validators import RegexValidator
 from django.utils import timezone
 from decimal import Decimal
+
+
+class EventUserManager(BaseUserManager):
+    """
+    Custom user manager for EventUser model that uses email as the unique identifier
+    """
+    
+    def create_user(self, email, password=None, **extra_fields):
+        """
+        Create and save a regular user with the given email and password.
+        """
+        if not email:
+            raise ValueError('The Email field must be set')
+        
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+    
+    def create_superuser(self, email, password=None, **extra_fields):
+        """
+        Create and save a superuser with the given email and password.
+        """
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_verified', True)
+        
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+        
+        return self.create_user(email, password, **extra_fields)
+
+
+class EventUser(AbstractUser):
+    """
+    Custom user model that uses email as username
+    """
+    # Remove the default username field
+    username = None
+    
+    # Phone number validation regex
+    phone_regex = RegexValidator(
+        regex=r'^\+?255[67]\d{8}$|^\+?0[67]\d{8}$',
+        message="Phone number must be a valid Tanzanian number (e.g., +255123456789 or 0123456789)"
+    )
+    
+    # Use email as the unique identifier
+    email = models.EmailField(
+        unique=True,
+        verbose_name="Email Address",
+        help_text="Email address for login and notifications"
+    )
+    
+    # Additional fields
+    full_name = models.CharField(
+        max_length=200,
+        verbose_name="Full Name",
+        help_text="Full name of the user"
+    )
+    mobile_number = models.CharField(
+        validators=[phone_regex],
+        max_length=17,
+        verbose_name="Mobile Number",
+        help_text="Tanzanian mobile number (e.g., +255123456789)"
+    )
+    is_verified = models.BooleanField(
+        default=False,
+        verbose_name="Email Verified",
+        help_text="Whether the email has been verified"
+    )
+    verification_token = models.CharField(
+        max_length=100,
+        blank=True,
+        verbose_name="Verification Token",
+        help_text="Token for email verification"
+    )
+    verification_sent_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name="Verification Sent At",
+        help_text="When the verification email was last sent"
+    )
+    
+    # Set email as the username field
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['full_name']
+    
+    # Use the custom manager
+    objects = EventUserManager()
+    
+    class Meta:
+        db_table = 'event_users'
+        verbose_name = 'Event User'
+        verbose_name_plural = 'Event Users'
+        ordering = ['-date_joined']
+
+    def __str__(self):
+        return f"{self.full_name} ({self.email})"
+
+    def generate_verification_token(self):
+        """Generate a unique verification token"""
+        import uuid
+        self.verification_token = str(uuid.uuid4())
+        self.verification_sent_at = timezone.now()
+        self.save()
+        return self.verification_token
+
+    def verify_email(self):
+        """Mark email as verified and activate account"""
+        self.is_verified = True
+        self.is_active = True
+        self.verification_token = ''
+        self.save()
+
+    def get_full_name(self):
+        """Return the full name for the user"""
+        return self.full_name or self.email
+
+    def get_short_name(self):
+        """Return the short name for the user"""
+        return self.full_name.split()[0] if self.full_name else self.email
 
 
 class Pledges(models.Model):
@@ -467,3 +592,127 @@ class MessageTemplate(models.Model):
                 'status': 'Partial Payment',
             }
             return self.get_formatted_message(**sample_data)
+
+
+class Event(models.Model):
+    """
+    Model representing an event that users can register for
+    """
+    name = models.CharField(
+        max_length=200,
+        verbose_name="Event Name",
+        help_text="Name of the event"
+    )
+    date = models.DateTimeField(
+        verbose_name="Event Date",
+        help_text="Date and time of the event"
+    )
+    description = models.TextField(
+        blank=True,
+        verbose_name="Event Description",
+        help_text="Description of the event"
+    )
+    location = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="Event Location",
+        help_text="Location where the event will take place"
+    )
+    created_by = models.ForeignKey(
+        'EventUser',
+        on_delete=models.CASCADE,
+        related_name='events',
+        verbose_name="Created By"
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name="Is Active",
+        help_text="Whether this event is currently active"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'events'
+        verbose_name = 'Event'
+        verbose_name_plural = 'Events'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.name} - {self.date.strftime('%Y-%m-%d')}"
+
+
+class RegistrationRequest(models.Model):
+    """
+    Model representing a pending registration request before email verification
+    """
+    # Phone number validation regex
+    phone_regex = RegexValidator(
+        regex=r'^\+?255[67]\d{8}$|^\+?0[67]\d{8}$',
+        message="Phone number must be a valid Tanzanian number (e.g., +255123456789 or 0123456789)"
+    )
+    
+    full_name = models.CharField(
+        max_length=200,
+        verbose_name="Full Name"
+    )
+    email = models.EmailField(
+        verbose_name="Email Address"
+    )
+    password = models.CharField(
+        max_length=128,
+        verbose_name="Password",
+        help_text="Password for the account (will be hashed)"
+    )
+    mobile_number = models.CharField(
+        validators=[phone_regex],
+        max_length=17,
+        verbose_name="Mobile Number"
+    )
+    event_name = models.CharField(
+        max_length=200,
+        verbose_name="Event Name"
+    )
+    event_date = models.DateTimeField(
+        verbose_name="Event Date"
+    )
+    verification_token = models.CharField(
+        max_length=100,
+        unique=True,
+        verbose_name="Verification Token"
+    )
+    is_verified = models.BooleanField(
+        default=False,
+        verbose_name="Is Verified"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField(
+        verbose_name="Expires At",
+        help_text="When this registration request expires"
+    )
+
+    class Meta:
+        db_table = 'registration_requests'
+        verbose_name = 'Registration Request'
+        verbose_name_plural = 'Registration Requests'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.full_name} - {self.event_name}"
+
+    def is_expired(self):
+        """Check if the registration request has expired"""
+        return timezone.now() > self.expires_at
+
+    def save(self, *args, **kwargs):
+        # Set expiration time to 24 hours from creation if not set
+        if not self.expires_at:
+            from datetime import timedelta
+            self.expires_at = timezone.now() + timedelta(hours=24)
+        
+        # Generate verification token if not set
+        if not self.verification_token:
+            import uuid
+            self.verification_token = str(uuid.uuid4())
+        
+        super().save(*args, **kwargs)

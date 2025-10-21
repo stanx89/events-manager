@@ -15,7 +15,7 @@
 <body class="bg-gray-100 min-h-screen font-sans antialiased">
     <!-- Material Navigation -->
     <nav class="material-nav">
-        <div class="max-w-7xl mx-auto px-6">
+        <div class="w-full px-6">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
                     <a href="{% url 'events:index' %}" class="nav-logo flex items-center text-white font-medium text-xl">
@@ -28,6 +28,9 @@
                     <a href="{% url 'events:index' %}" class="material-nav-item flex items-center">
                         <span class="material-icons mr-2 text-lg">dashboard</span>Dashboard
                     </a>
+                    <a href="{% url 'events:event_list' %}" class="material-nav-item flex items-center">
+                        <span class="material-icons mr-2 text-lg">event</span>Events
+                    </a>
                     <a href="{% url 'events:pledge_list' %}" class="material-nav-item flex items-center">
                         <span class="material-icons mr-2 text-lg">handshake</span>Pledges
                     </a>
@@ -39,25 +42,42 @@
                     </a>
                 </div>
                 
+                <!-- User Authentication -->
+                <div class="hidden md:flex items-center space-x-2">
+                    {% if user.is_authenticated %}
+                    {% else %}
+                        <a href="{% url 'events:login' %}" class="material-nav-item flex items-center">
+                            <span class="material-icons mr-2 text-lg">login</span>Login
+                        </a>
+                        <a href="{% url 'events:landing_page' %}" class="material-nav-item flex items-center">
+                            <span class="material-icons mr-2 text-lg">person_add</span>Register
+                        </a>
+                    {% endif %}
+                </div>
+                
                 <!-- Material Actions Dropdown -->
+                {% if user.is_authenticated %}
                 <div class="relative">
                     <button type="button" class="material-nav-item flex items-center dropdown-toggle" onclick="toggleDropdown()">
-                        <span class="material-icons mr-2 text-lg">settings</span>Actions
+                        <span class="material-icons mr-2 text-lg">person</span>{{ user.get_full_name|default:user.username }}
                         <span class="material-icons ml-1 text-lg">keyboard_arrow_down</span>
                     </button>
                     
                     <div id="dropdown-menu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-material-lg z-50 overflow-hidden">
                         <div class="py-2">
-                            <a href="#" onclick="openModal('{% url 'events:pledge_create' %}?modal=1')" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-800 transition-all duration-200 border-l-4 border-transparent hover:border-blue-500">
+                            <a href="#" onclick="openPledgeModalFromNav()" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-800 transition-all duration-200 border-l-4 border-transparent hover:border-blue-500">
                                 <span class="material-icons mr-3 text-blue-500">volunteer_activism</span>New Pledge
                             </a>
-                            <a href="#" onclick="openModal('{% url 'events:transaction_create' %}?modal=1')" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-green-50 hover:text-green-800 transition-all duration-200 border-l-4 border-transparent hover:border-green-500">
+                            <a href="#" onclick="openTransactionModalFromNav()" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-green-50 hover:text-green-800 transition-all duration-200 border-l-4 border-transparent hover:border-green-500">
                                 <span class="material-icons mr-3 text-green-500">payments</span>New Transaction
                             </a>
                             <a href="{% url 'events:message_create' %}" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-800 transition-all duration-200 border-l-4 border-transparent hover:border-purple-500">
                                 <span class="material-icons mr-3 text-purple-500">message</span>New Message
                             </a>
                             <hr class="my-2 border-gray-200">
+                            <a href="{% url 'events:event_create' %}" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-800 transition-all duration-200 border-l-4 border-transparent hover:border-pink-500">
+                                <span class="material-icons mr-3 text-pink-500">event</span>New Event
+                            </a>
                             <a href="{% url 'events:bulk_reminder_send' %}" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-800 transition-all duration-200 border-l-4 border-transparent hover:border-orange-500">
                                 <span class="material-icons mr-3 text-orange-500">notification_important</span>Bulk Reminders
                             </a>
@@ -67,9 +87,16 @@
                             <a href="{% url 'events:export_pledges_csv' %}" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-800 transition-all duration-200 border-l-4 border-transparent hover:border-teal-500">
                                 <span class="material-icons mr-3 text-teal-500">download</span>Export Pledges
                             </a>
+                            {% if user.is_authenticated %}
+                                <hr class="my-2 border-gray-200">
+                                <a href="{% url 'events:logout' %}" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-red-50 hover:text-red-800 transition-all duration-200 border-l-4 border-transparent hover:border-red-500">
+                                    <span class="material-icons mr-3 text-red-500">logout</span>Logout
+                                </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
+                {% endif %}
                 
                 <!-- Mobile menu button -->
                 <div class="md:hidden">
@@ -84,6 +111,9 @@
                 <a href="{% url 'events:index' %}" class="material-nav-item block">
                     <span class="material-icons mr-3">dashboard</span>Dashboard
                 </a>
+                <a href="{% url 'events:event_list' %}" class="material-nav-item block">
+                    <span class="material-icons mr-3">event</span>Events
+                </a>
                 <a href="{% url 'events:pledge_list' %}" class="material-nav-item block">
                     <span class="material-icons mr-3">handshake</span>Pledges
                 </a>
@@ -93,6 +123,41 @@
                 <a href="{% url 'events:message_list' %}" class="material-nav-item block">
                     <span class="material-icons mr-3">message</span>Messages
                 </a>
+                
+                <!-- Mobile Actions -->
+                <div class="border-t border-gray-300 mt-3 pt-3">
+                    <div class="text-white text-xs px-4 py-1 uppercase tracking-wide">{{ user.get_full_name|default:user.username }}</div>
+                    <a href="#" onclick="openPledgeModalFromNav()" class="material-nav-item block">
+                        <span class="material-icons mr-3">volunteer_activism</span>New Pledge
+                    </a>
+                    <a href="#" onclick="openTransactionModalFromNav()" class="material-nav-item block">
+                        <span class="material-icons mr-3">payments</span>New Transaction
+                    </a>
+                    <a href="{% url 'events:bulk_reminder_send' %}" class="material-nav-item block">
+                        <span class="material-icons mr-3">notification_important</span>Bulk Reminders
+                    </a>
+                    <a href="{% url 'events:export_pledges_csv' %}" class="material-nav-item block">
+                        <span class="material-icons mr-3">download</span>Export Pledges
+                    </a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'events:logout' %}" class="material-nav-item block">
+                            <span class="material-icons mr-3">logout</span>Logout
+                        </a>
+                    {% endif %}
+                </div>
+                
+                <!-- Mobile Authentication -->
+                <div class="border-t border-gray-300 mt-3 pt-3">
+                    {% if user.is_authenticated %}
+                    {% else %}
+                        <a href="{% url 'events:login' %}" class="material-nav-item block">
+                            <span class="material-icons mr-3">login</span>Login
+                        </a>
+                        <a href="{% url 'events:landing_page' %}" class="material-nav-item block">
+                            <span class="material-icons mr-3">person_add</span>Register
+                        </a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </nav>
@@ -819,6 +884,36 @@
             cursor: wait !important;
         }
     </style>
+    
+    <script>
+    // Global functions for event-aware modal opening
+    function getSelectedEventId() {
+        const selector = document.getElementById('event-selector');
+        return selector ? selector.value : '';
+    }
+    
+    function openPledgeModalFromNav() {
+        const eventId = getSelectedEventId();
+        let url = '{% url "events:pledge_create" %}?modal=1';
+        
+        if (eventId) {
+            url += '&event_id=' + eventId;
+        }
+        
+        openModal(url);
+    }
+    
+    function openTransactionModalFromNav() {
+        const eventId = getSelectedEventId();
+        let url = '{% url "events:transaction_create" %}?modal=1';
+        
+        if (eventId) {
+            url += '&event_id=' + eventId;
+        }
+        
+        openModal(url);
+    }
+    </script>
     
     {% block extra_js %}{% endblock %}
 </body>

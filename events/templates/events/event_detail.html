@@ -1,0 +1,185 @@
+{% extends 'events/base.html' %}
+{% load currency_filters %}
+
+{% block title %}{{ event.name }} - Event Details{% endblock %}
+
+{% block content %}
+<div class="mb-8">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+        <div>
+            <nav class="flex items-center space-x-2 text-sm text-gray-600 mb-2">
+                <a href="{% url 'events:event_list' %}" class="hover:text-blue-600">Events</a>
+                <span class="material-icons text-xs">chevron_right</span>
+                <span class="text-gray-900">{{ event.name }}</span>
+            </nav>
+            <h1 class="text-3xl font-bold text-gray-900 flex items-center">
+                <span class="material-icons mr-3 text-blue-600">event</span>{{ event.name }}
+            </h1>
+        </div>
+        <div class="flex space-x-3 mt-4 md:mt-0">
+            <a href="{% url 'events:event_edit' event.id %}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition duration-300 flex items-center">
+                <span class="material-icons mr-2">edit</span>Edit Event
+            </a>
+            <a href="{% url 'events:dashboard' %}?event_id={{ event.id }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition duration-300 flex items-center">
+                <span class="material-icons mr-2">dashboard</span>View Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Event Information -->
+<div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+        <span class="material-icons mr-2 text-blue-600">info</span>Event Information
+    </h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-4">
+            <div class="flex items-center">
+                <span class="material-icons mr-3 text-blue-500">schedule</span>
+                <div>
+                    <p class="text-sm text-gray-600">Date & Time</p>
+                    <p class="font-medium text-gray-900">{{ event.date|date:"F d, Y \a\t g:i A" }}</p>
+                </div>
+            </div>
+            
+            {% if event.location %}
+            <div class="flex items-center">
+                <span class="material-icons mr-3 text-green-500">location_on</span>
+                <div>
+                    <p class="text-sm text-gray-600">Location</p>
+                    <p class="font-medium text-gray-900">{{ event.location }}</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="space-y-4">
+            <div class="flex items-center">
+                <span class="material-icons mr-3 text-purple-500">person</span>
+                <div>
+                    <p class="text-sm text-gray-600">Created By</p>
+                    <p class="font-medium text-gray-900">{{ event.created_by.get_full_name|default:event.created_by.email }}</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center">
+                <span class="material-icons mr-3 text-orange-500">today</span>
+                <div>
+                    <p class="text-sm text-gray-600">Created On</p>
+                    <p class="font-medium text-gray-900">{{ event.created_at|date:"F d, Y" }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% if event.description %}
+    <div class="mt-6 pt-6 border-t border-gray-200">
+        <h3 class="text-lg font-medium text-gray-900 mb-2">Description</h3>
+        <p class="text-gray-700">{{ event.description }}</p>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Statistics Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-blue-600 rounded-lg shadow-lg p-6 text-white">
+        <div class="flex justify-between items-center">
+            <div>
+                <h4 class="text-2xl font-bold">{{ total_pledges }}</h4>
+                <p class="text-blue-100">Total Pledges</p>
+            </div>
+            <div class="text-blue-200">
+                <span class="material-icons text-3xl">handshake</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bg-green-600 rounded-lg shadow-lg p-6 text-white">
+        <div class="flex justify-between items-center">
+            <div>
+                <h4 class="text-2xl font-bold">{{ total_amount_pledged|currency }}</h4>
+                <p class="text-green-100">Amount Pledged</p>
+            </div>
+            <div class="text-green-200">
+                <span class="material-icons text-3xl">volunteer_activism</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bg-yellow-600 rounded-lg shadow-lg p-6 text-white">
+        <div class="flex justify-between items-center">
+            <div>
+                <h4 class="text-2xl font-bold">{{ total_amount_paid|currency }}</h4>
+                <p class="text-yellow-100">Amount Paid</p>
+            </div>
+            <div class="text-yellow-200">
+                <span class="material-icons text-3xl">payments</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bg-red-600 rounded-lg shadow-lg p-6 text-white">
+        <div class="flex justify-between items-center">
+            <div>
+                <h4 class="text-2xl font-bold">{{ pending_pledges }}</h4>
+                <p class="text-red-100">Pending Pledges</p>
+            </div>
+            <div class="text-red-200">
+                <span class="material-icons text-3xl">pending</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Pledges -->
+<div class="bg-white rounded-lg shadow-lg">
+    <div class="p-6 border-b border-gray-200">
+        <h5 class="text-lg font-semibold text-gray-900 flex items-center">
+            <span class="material-icons mr-2">handshake</span>Recent Pledges for This Event
+        </h5>
+    </div>
+    <div class="overflow-x-auto">
+        {% if recent_pledges %}
+            <table class="min-w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mobile</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pledge Amount</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount Paid</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for pledge in recent_pledges %}
+                    <tr>
+                        <td class="px-4 py-3 text-sm font-medium text-gray-900">
+                            <a href="{% url 'events:pledge_detail' pledge.id %}" class="text-blue-600 hover:text-blue-700">
+                                {{ pledge.name }}
+                            </a>
+                        </td>
+                        <td class="px-4 py-3 text-sm text-gray-900">{{ pledge.mobile_number }}</td>
+                        <td class="px-4 py-3 text-sm text-gray-900">{{ pledge.pledge|currency }}</td>
+                        <td class="px-4 py-3 text-sm text-gray-900">{{ pledge.amount_paid|currency }}</td>
+                        <td class="px-4 py-3 text-sm">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                {% if pledge.status == 'completed' %}bg-green-100 text-green-800
+                                {% elif pledge.status == 'partial' %}bg-yellow-100 text-yellow-800
+                                {% elif pledge.status == 'pending' %}bg-blue-100 text-blue-800
+                                {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                {{ pledge.get_status_display }}
+                            </span>
+                        </td>
+                        <td class="px-4 py-3 text-sm text-gray-900">{{ pledge.created_at|date:"M d, Y" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-gray-500 text-center py-8">No pledges yet for this event.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

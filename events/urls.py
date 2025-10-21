@@ -4,6 +4,22 @@ from . import views
 app_name = 'events'
 
 urlpatterns = [
+    # Landing page and registration
+    path('landing/', views.landing_page, name='landing_page'),
+    path('verify-email/<str:token>/', views.verify_email, name='verify_email'),
+    path('resend-verification/', views.resend_verification, name='resend_verification'),
+    
+    # Authentication
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('dashboard/', views.dashboard_view, name='dashboard'),
+    
+    # Events URLs
+    path('events/', views.event_list, name='event_list'),
+    path('events/create/', views.event_create, name='event_create'),
+    path('events/<int:event_id>/', views.event_detail, name='event_detail'),
+    path('events/<int:event_id>/edit/', views.event_edit, name='event_edit'),
+    
     # Home page
     path('', views.index, name='index'),
     
@@ -47,4 +63,7 @@ urlpatterns = [
     path('api/templates/', views.api_templates, name='api_templates'),
     path('api/dashboard-stats/', views.dashboard_stats, name='dashboard_stats'),
     path('api/message-queue-status/', views.message_queue_status, name='message_queue_status'),
+    
+    # Event selection
+    path('set-selected-event/', views.set_selected_event, name='set_selected_event'),
 ]

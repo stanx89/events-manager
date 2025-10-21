@@ -5,8 +5,46 @@
 
 {% block content %}
 <div class="mb-8">
-    <h1 class="text-3xl font-bold text-gray-900 flex items-center">
-    </h1>
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+        <h1 class="text-3xl font-bold text-gray-900 flex items-center mb-4 md:mb-0">
+            Dashboard
+        </h1>
+        
+        <!-- Event Selector -->
+        {% if events %}
+        <div class="flex items-center space-x-3">
+            <label for="event-selector" class="text-sm font-medium text-gray-700">Your Event:</label>
+            <select id="event-selector" onchange="changeEvent()" class="block w-64 px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                {% for event in events %}
+                <option value="{{ event.id }}" {% if selected_event and selected_event.id == event.id %}selected{% endif %}>
+                    {{ event.name }} - {{ event.date|date:"M d, Y" }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        {% else %}
+        <div class="text-center">
+            <p class="text-gray-600 mb-4">You haven't created any events yet.</p>
+            <a href="{% url 'events:event_create' %}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition duration-300 inline-flex items-center">
+                <span class="material-icons mr-2">add</span>Create Your First Event
+            </a>
+        </div>
+        {% endif %}
+    </div>
+    
+    {% if selected_event %}
+    <div class="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+        <div class="flex items-center">
+            <div class="flex-shrink-0">
+                <span class="material-icons text-blue-600">event</span>
+            </div>
+            <div class="ml-3">
+                <h3 class="text-sm font-medium text-blue-800">Current Event: {{ selected_event.name }}</h3>
+                <p class="text-sm text-blue-600">{{ selected_event.date|date:"F d, Y \a\t g:i A" }} | {{ selected_event.location|default:"Location TBD" }}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </div>
 
 <!-- Statistics Cards -->
@@ -158,7 +196,7 @@
     </div>
     <div class="p-6">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <button onclick="openModal('{% url 'events:pledge_create' %}?modal=1')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg text-center transition duration-200 flex items-center justify-center">
+            <button onclick="openPledgeModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg text-center transition duration-200 flex items-center justify-center">
                 <i class="fas fa-plus mr-2"></i>New Pledge
             </button>
             <button onclick="openModal('{% url 'events:transaction_create' %}?modal=1')" class="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg text-center transition duration-200 flex items-center justify-center">
@@ -173,4 +211,32 @@
         </div>
     </div>
 </div>
+
+<script>
+function changeEvent() {
+    const selector = document.getElementById('event-selector');
+    const eventId = selector.value;
+    
+    // Redirect to dashboard with selected event ID
+    const url = new URL(window.location);
+    if (eventId) {
+        url.searchParams.set('event_id', eventId);
+    } else {
+        url.searchParams.delete('event_id');
+    }
+    window.location.href = url.toString();
+}
+
+function openPledgeModal() {
+    const selector = document.getElementById('event-selector');
+    const eventId = selector ? selector.value : '';
+    let url = '{% url "events:pledge_create" %}?modal=1';
+    
+    if (eventId) {
+        url += '&event_id=' + eventId;
+    }
+    
+    openModal(url);
+}
+</script>
 {% endblock %}

@@ -990,3 +990,228 @@ INFO 2025-10-18 05:40:58,555 tasks 75713 6231552000 Message queue statistics:
 INFO 2025-10-18 05:40:58,555 tasks 75713 6231552000   SENT: 59 messages
 INFO 2025-10-18 05:40:58,556 tasks 75713 6231552000   FAILED: 2 messages
 INFO 2025-10-18 05:40:58,556 tasks 75713 6231552000   TOTAL: 61 messages in queue
+INFO 2025-10-21 16:41:10,540 views 85093 8229849152 Attempting to send verification email to stankayombo@gmail.com
+INFO 2025-10-21 16:41:14,310 views 85093 8229849152 ✅ Verification email sent successfully to stankayombo@gmail.com
+INFO 2025-10-21 16:55:29,448 views 85244 6124859392 New registration created: stankayombo@gmail.com (ID: 7)
+INFO 2025-10-21 16:55:29,465 views 85244 6124859392 Attempting to send verification email to stankayombo@gmail.com
+INFO 2025-10-21 16:55:33,510 views 85244 6124859392 ✅ Verification email sent successfully to stankayombo@gmail.com
+INFO 2025-10-21 16:58:09,081 views 86991 6204633088 New registration created: stankayombo@gmail.com (ID: 8)
+INFO 2025-10-21 16:58:09,095 views 86991 6204633088 Attempting to send verification email to stankayombo@gmail.com
+ERROR 2025-10-21 16:58:11,499 views 86991 6204633088 ❌ Failed to send verification email to stankayombo@gmail.com: (535, b'5.7.8 Username and Password not accepted. For more information, go to\n5.7.8  https://support.google.com/mail/?p=BadCredentials ffacd0b85a97d-427ea5a0e9csm21329211f8f.5 - gsmtp')
+ERROR 2025-10-21 16:58:11,500 views 86991 6204633088 Email configuration - Backend: django.core.mail.backends.smtp.EmailBackend
+ERROR 2025-10-21 16:58:11,500 views 86991 6204633088 From email: stankayombo@gmail.com
+ERROR 2025-10-21 16:58:11,501 views 86991 6204633088 Recipient: stankayombo@gmail.com
+INFO 2025-10-21 17:05:34,243 views 87532 6189674496 Email config - Host: smtp.gmail.com, Port: 587
+INFO 2025-10-21 17:05:34,244 views 87532 6189674496 Email config - User: stankayombo@gmail.com, From: stankayombo@gmail.com
+ERROR 2025-10-21 17:05:36,411 views 87532 6189674496 Failed to send verification email to stankayombo@gmail.com: (535, b'5.7.8 Username and Password not accepted. For more information, go to\n5.7.8  https://support.google.com/mail/?p=BadCredentials ffacd0b85a97d-427ea5bbc50sm21535633f8f.21 - gsmtp')
+INFO 2025-10-21 17:12:24,594 views 88797 6167769088 Registration saved for stankayombo@gmail.com (ID: 13)
+INFO 2025-10-21 17:12:24,594 views 88797 6167769088 Attempting to send verification email to stankayombo@gmail.com
+INFO 2025-10-21 17:12:24,594 views 88797 6167769088 Email config - Host: mail.nifty.co.tz, Port: 587
+INFO 2025-10-21 17:12:24,594 views 88797 6167769088 Email config - User: events@nifty.co.tz, From: events@nifty.co.tz
+INFO 2025-10-21 17:12:24,594 views 88797 6167769088 Email config - TLS: True, SSL: False
+INFO 2025-10-21 17:12:24,594 views 88797 6167769088 Sending verification email to: stankayombo@gmail.com
+INFO 2025-10-21 17:12:29,114 views 88797 6167769088 ✅ Verification email sent successfully to stankayombo@gmail.com
+INFO 2025-10-21 17:12:29,115 views 88797 6167769088 Verification email sent successfully to stankayombo@gmail.com
+INFO 2025-10-21 17:13:40,772 views 88972 8229849152 Email config - Host: mail.nifty.co.tz, Port: 587
+INFO 2025-10-21 17:13:40,772 views 88972 8229849152 Email config - User: events@nifty.co.tz, From: events@nifty.co.tz
+INFO 2025-10-21 17:13:40,772 views 88972 8229849152 Email config - TLS: True, SSL: False
+INFO 2025-10-21 17:13:40,772 views 88972 8229849152 Sending verification email to: stankayombo@gmail.com
+INFO 2025-10-21 17:13:45,064 views 88972 8229849152 ✅ Verification email sent successfully to stankayombo@gmail.com
+INFO 2025-10-21 17:16:17,323 views 89343 8229849152 Email config - Host: mail.nifty.co.tz, Port: 587
+INFO 2025-10-21 17:16:17,324 views 89343 8229849152 Email config - User: events@nifty.co.tz, From: events@nifty.co.tz
+INFO 2025-10-21 17:16:17,324 views 89343 8229849152 Email config - TLS: True, SSL: False
+INFO 2025-10-21 17:16:17,324 views 89343 8229849152 Sending verification email to: stankayombo@gmail.com
+INFO 2025-10-21 17:16:21,109 views 89343 8229849152 ✅ Verification email sent successfully to stankayombo@gmail.com
+INFO 2025-10-21 17:17:19,906 views 88797 6167769088 Registration saved for stankayombo@gmail.com (ID: 16)
+INFO 2025-10-21 17:17:19,907 views 88797 6167769088 Attempting to send verification email to stankayombo@gmail.com
+INFO 2025-10-21 17:17:19,908 views 88797 6167769088 Email config - Host: mail.nifty.co.tz, Port: 587
+INFO 2025-10-21 17:17:19,908 views 88797 6167769088 Email config - User: events@nifty.co.tz, From: events@nifty.co.tz
+INFO 2025-10-21 17:17:19,908 views 88797 6167769088 Email config - TLS: True, SSL: False
+INFO 2025-10-21 17:17:19,908 views 88797 6167769088 Sending verification email to: stankayombo@gmail.com
+INFO 2025-10-21 17:17:25,055 views 88797 6167769088 ✅ Verification email sent successfully to stankayombo@gmail.com
+INFO 2025-10-21 17:17:25,056 views 88797 6167769088 Verification email sent successfully to stankayombo@gmail.com
+INFO 2025-10-21 17:29:12,499 views 90440 6169620480 Registration saved for stankayombo@gmail.com (ID: 17)
+INFO 2025-10-21 17:29:12,500 views 90440 6169620480 Attempting to send verification email to stankayombo@gmail.com
+INFO 2025-10-21 17:29:12,500 views 90440 6169620480 Email config - Host: mail.nifty.co.tz, Port: 587
+INFO 2025-10-21 17:29:12,500 views 90440 6169620480 Email config - User: events@nifty.co.tz, From: events@nifty.co.tz
+INFO 2025-10-21 17:29:12,500 views 90440 6169620480 Email config - TLS: True, SSL: False
+INFO 2025-10-21 17:29:12,500 views 90440 6169620480 Sending verification email to: stankayombo@gmail.com
+INFO 2025-10-21 17:29:19,967 views 90440 6169620480 ✅ Verification email sent successfully to stankayombo@gmail.com
+INFO 2025-10-21 17:29:19,967 views 90440 6169620480 Verification email sent successfully to stankayombo@gmail.com
+INFO 2025-10-21 17:37:22,289 views 91427 6166622208 Registration saved for stankayombo@gmail.com (ID: 18)
+INFO 2025-10-21 17:37:22,290 views 91427 6166622208 Attempting to send verification email to stankayombo@gmail.com
+INFO 2025-10-21 17:37:22,290 views 91427 6166622208 ============================================================
+INFO 2025-10-21 17:37:22,290 views 91427 6166622208 📧 STARTING EMAIL SENDING PROCESS
+INFO 2025-10-21 17:37:22,290 views 91427 6166622208 ============================================================
+INFO 2025-10-21 17:37:22,290 views 91427 6166622208 📋 Email Configuration:
+INFO 2025-10-21 17:37:22,290 views 91427 6166622208    Backend: django.core.mail.backends.smtp.EmailBackend
+INFO 2025-10-21 17:37:22,290 views 91427 6166622208    Host: mail.nifty.co.tz
+INFO 2025-10-21 17:37:22,290 views 91427 6166622208    Port: 587
+INFO 2025-10-21 17:37:22,290 views 91427 6166622208    User: events@nifty.co.tz
+INFO 2025-10-21 17:37:22,290 views 91427 6166622208    From: events@nifty.co.tz
+INFO 2025-10-21 17:37:22,290 views 91427 6166622208    TLS: True
+INFO 2025-10-21 17:37:22,290 views 91427 6166622208    SSL: False
+INFO 2025-10-21 17:37:22,290 views 91427 6166622208    Timeout: 30
+INFO 2025-10-21 17:37:22,290 views 91427 6166622208 📤 Email Details:
+INFO 2025-10-21 17:37:22,290 views 91427 6166622208    To: stankayombo@gmail.com
+INFO 2025-10-21 17:37:22,290 views 91427 6166622208    User: Stanslaus Kayombo
+INFO 2025-10-21 17:37:22,290 views 91427 6166622208    Event: Stan Harusi
+INFO 2025-10-21 17:37:22,290 views 91427 6166622208    Token: 55805b19-65ec-4136-9afb-f2f90bca4e7c
+INFO 2025-10-21 17:37:22,290 views 91427 6166622208    Created: 2025-10-21 17:37:22.272846+00:00
+INFO 2025-10-21 17:37:22,290 views 91427 6166622208    Expires: 2025-10-22 17:37:22.272256+00:00
+INFO 2025-10-21 17:37:57,355 views 91514 6194524160 Registration saved for stankayombo@gmail.com (ID: 19)
+INFO 2025-10-21 17:37:57,355 views 91514 6194524160 Attempting to send verification email to stankayombo@gmail.com
+INFO 2025-10-21 17:37:57,355 views 91514 6194524160 ============================================================
+INFO 2025-10-21 17:37:57,355 views 91514 6194524160 📧 STARTING EMAIL SENDING PROCESS
+INFO 2025-10-21 17:37:57,355 views 91514 6194524160 ============================================================
+INFO 2025-10-21 17:37:57,355 views 91514 6194524160 📋 Email Configuration:
+INFO 2025-10-21 17:37:57,355 views 91514 6194524160    Backend: django.core.mail.backends.smtp.EmailBackend
+INFO 2025-10-21 17:37:57,355 views 91514 6194524160    Host: mail.nifty.co.tz
+INFO 2025-10-21 17:37:57,355 views 91514 6194524160    Port: 587
+INFO 2025-10-21 17:37:57,355 views 91514 6194524160    User: events@nifty.co.tz
+INFO 2025-10-21 17:37:57,355 views 91514 6194524160    From: events@nifty.co.tz
+INFO 2025-10-21 17:37:57,355 views 91514 6194524160    TLS: True
+INFO 2025-10-21 17:37:57,355 views 91514 6194524160    SSL: False
+INFO 2025-10-21 17:37:57,356 views 91514 6194524160    Timeout: 30
+INFO 2025-10-21 17:37:57,356 views 91514 6194524160 📤 Email Details:
+INFO 2025-10-21 17:37:57,356 views 91514 6194524160    To: stankayombo@gmail.com
+INFO 2025-10-21 17:37:57,356 views 91514 6194524160    User: Stanslaus Kayombo
+INFO 2025-10-21 17:37:57,356 views 91514 6194524160    Event: Stan Harusi
+INFO 2025-10-21 17:37:57,356 views 91514 6194524160    Token: f0aaae4a-71fa-4160-9dad-55b9c1372e7e
+INFO 2025-10-21 17:37:57,356 views 91514 6194524160    Created: 2025-10-21 17:37:57.350256+00:00
+INFO 2025-10-21 17:37:57,356 views 91514 6194524160    Expires: 2025-10-22 17:37:57.349695+00:00
+INFO 2025-10-21 17:37:57,356 views 91514 6194524160 🔗 Generating verification URL...
+INFO 2025-10-21 17:37:57,363 views 91514 6194524160    Using request.build_absolute_uri()
+INFO 2025-10-21 17:37:57,363 views 91514 6194524160    Generated URL: http://localhost:8000/verify-email/f0aaae4a-71fa-4160-9dad-55b9c1372e7e/
+INFO 2025-10-21 17:37:57,363 views 91514 6194524160 📝 Preparing email content...
+INFO 2025-10-21 17:37:57,363 views 91514 6194524160    Subject: Verify Your Email - Events Management System
+INFO 2025-10-21 17:38:17,253 views 91514 6194524160 ✅ Verification email sent successfully to stankayombo@gmail.com
+INFO 2025-10-21 17:38:17,254 views 91514 6194524160 Verification email sent successfully to stankayombo@gmail.com
+INFO 2025-10-21 17:39:14,434 views 91665 6173536256 Registration saved for stankayombo@gmail.com (ID: 20)
+INFO 2025-10-21 17:39:14,434 views 91665 6173536256 Attempting to send verification email to stankayombo@gmail.com
+INFO 2025-10-21 17:39:14,434 views 91665 6173536256 ============================================================
+INFO 2025-10-21 17:39:14,434 views 91665 6173536256 📧 STARTING EMAIL SENDING PROCESS
+INFO 2025-10-21 17:39:14,434 views 91665 6173536256 ============================================================
+INFO 2025-10-21 17:39:14,434 views 91665 6173536256 📋 Email Configuration:
+INFO 2025-10-21 17:39:14,434 views 91665 6173536256    Backend: django.core.mail.backends.smtp.EmailBackend
+INFO 2025-10-21 17:39:14,434 views 91665 6173536256    Host: mail.nifty.co.tz
+INFO 2025-10-21 17:39:14,434 views 91665 6173536256    Port: 587
+INFO 2025-10-21 17:39:14,434 views 91665 6173536256    User: events@nifty.co.tz
+INFO 2025-10-21 17:39:14,435 views 91665 6173536256    From: events@nifty.co.tz
+INFO 2025-10-21 17:39:14,435 views 91665 6173536256    TLS: True
+INFO 2025-10-21 17:39:14,435 views 91665 6173536256    SSL: False
+INFO 2025-10-21 17:39:14,435 views 91665 6173536256    Timeout: 30
+INFO 2025-10-21 17:39:14,435 views 91665 6173536256 📤 Email Details:
+INFO 2025-10-21 17:39:14,435 views 91665 6173536256    To: stankayombo@gmail.com
+INFO 2025-10-21 17:39:14,435 views 91665 6173536256    User: Stanslaus Kayombo
+INFO 2025-10-21 17:39:14,435 views 91665 6173536256    Event: Stan Harusi
+INFO 2025-10-21 17:39:14,435 views 91665 6173536256    Token: 682f5da8-dd5c-4021-9cc5-7180ed360112
+INFO 2025-10-21 17:39:14,435 views 91665 6173536256    Created: 2025-10-21 17:39:14.427259+00:00
+INFO 2025-10-21 17:39:14,435 views 91665 6173536256    Expires: 2025-10-22 17:39:14.426810+00:00
+INFO 2025-10-21 17:39:14,435 views 91665 6173536256 🔗 Generating verification URL...
+INFO 2025-10-21 17:39:14,441 views 91665 6173536256    Using request.build_absolute_uri()
+INFO 2025-10-21 17:39:14,441 views 91665 6173536256    Generated URL: http://localhost:8000/verify-email/682f5da8-dd5c-4021-9cc5-7180ed360112/
+INFO 2025-10-21 17:39:14,441 views 91665 6173536256 📝 Preparing email content...
+INFO 2025-10-21 17:39:14,441 views 91665 6173536256    Subject: Verify Your Email - Events Management System
+INFO 2025-10-21 17:39:14,441 views 91665 6173536256 🎨 Rendering HTML email template...
+INFO 2025-10-21 17:39:14,451 views 91665 6173536256    ✅ HTML template rendered successfully (4902 characters)
+INFO 2025-10-21 17:48:37,605 views 92180 6159970304 Registration saved for stankayombo@gmail.com (ID: 21)
+INFO 2025-10-21 17:48:37,606 views 92180 6159970304 🚀 INITIATING REGISTRATION EMAIL PROCESS
+INFO 2025-10-21 17:48:37,606 views 92180 6159970304    Registration ID: 21
+INFO 2025-10-21 17:48:37,606 views 92180 6159970304    User: Stanslaus Kayombo
+INFO 2025-10-21 17:48:37,606 views 92180 6159970304    Email: stankayombo@gmail.com
+INFO 2025-10-21 17:48:37,606 views 92180 6159970304    Event: Jones Harusi
+INFO 2025-10-21 17:48:37,606 views 92180 6159970304 ============================================================
+INFO 2025-10-21 17:48:37,606 views 92180 6159970304 📧 STARTING EMAIL SENDING PROCESS
+INFO 2025-10-21 17:48:37,606 views 92180 6159970304 ============================================================
+INFO 2025-10-21 17:48:37,606 views 92180 6159970304 📋 Email Configuration:
+INFO 2025-10-21 17:48:37,606 views 92180 6159970304    Backend: django.core.mail.backends.smtp.EmailBackend
+INFO 2025-10-21 17:48:37,606 views 92180 6159970304    Host: mail.nifty.co.tz
+INFO 2025-10-21 17:48:37,606 views 92180 6159970304    Port: 587
+INFO 2025-10-21 17:48:37,607 views 92180 6159970304    User: events@nifty.co.tz
+INFO 2025-10-21 17:48:37,607 views 92180 6159970304    From: events@nifty.co.tz
+INFO 2025-10-21 17:48:37,607 views 92180 6159970304    TLS: True
+INFO 2025-10-21 17:48:37,607 views 92180 6159970304    SSL: False
+INFO 2025-10-21 17:48:37,607 views 92180 6159970304    Timeout: 30
+INFO 2025-10-21 17:48:37,607 views 92180 6159970304 📤 Email Details:
+INFO 2025-10-21 17:48:37,607 views 92180 6159970304    To: stankayombo@gmail.com
+INFO 2025-10-21 17:48:37,607 views 92180 6159970304    User: Stanslaus Kayombo
+INFO 2025-10-21 17:48:37,607 views 92180 6159970304    Event: Jones Harusi
+INFO 2025-10-21 17:48:37,607 views 92180 6159970304    Token: 04c1d0ac-7aa4-4357-abc1-be07c7fc5562
+INFO 2025-10-21 17:48:37,607 views 92180 6159970304    Created: 2025-10-21 17:48:37.590081+00:00
+INFO 2025-10-21 17:48:37,607 views 92180 6159970304    Expires: 2025-10-22 17:48:37.589538+00:00
+INFO 2025-10-21 17:48:37,607 views 92180 6159970304 🔗 Generating verification URL...
+INFO 2025-10-21 17:48:37,608 views 92180 6159970304    Using request.build_absolute_uri()
+INFO 2025-10-21 17:48:37,608 views 92180 6159970304    Generated URL: http://localhost:8000/verify-email/04c1d0ac-7aa4-4357-abc1-be07c7fc5562/
+INFO 2025-10-21 17:48:37,613 views 92180 6159970304 📝 Preparing email content...
+INFO 2025-10-21 17:48:37,615 views 92180 6159970304    Subject: Verify Your Email - Events Management System
+INFO 2025-10-21 17:48:37,615 views 92180 6159970304 🎨 Rendering HTML email template...
+INFO 2025-10-21 17:48:37,621 views 92180 6159970304    ✅ HTML template rendered successfully (4730 characters)
+INFO 2025-10-21 17:48:37,621 views 92180 6159970304 📨 SENDING EMAIL...
+INFO 2025-10-21 17:48:37,621 views 92180 6159970304    From: events@nifty.co.tz
+INFO 2025-10-21 17:48:37,621 views 92180 6159970304    To: [stankayombo@gmail.com]
+INFO 2025-10-21 17:48:37,621 views 92180 6159970304    Subject: Verify Your Email - Events Management System
+INFO 2025-10-21 17:48:37,621 views 92180 6159970304    Plain text length: 575 characters
+INFO 2025-10-21 17:48:37,621 views 92180 6159970304    HTML message: Yes
+INFO 2025-10-21 17:48:37,621 views 92180 6159970304    Fail silently: False
+INFO 2025-10-21 17:48:54,872 views 92180 6159970304 ============================================================
+INFO 2025-10-21 17:48:54,873 views 92180 6159970304 ✅ EMAIL SENT SUCCESSFULLY!
+INFO 2025-10-21 17:48:54,873 views 92180 6159970304 ============================================================
+INFO 2025-10-21 17:48:54,873 views 92180 6159970304 📊 Sending Statistics:
+INFO 2025-10-21 17:48:54,873 views 92180 6159970304    Duration: 17.25 seconds
+INFO 2025-10-21 17:48:54,873 views 92180 6159970304    Timestamp: 2025-10-21 17:48:54
+INFO 2025-10-21 17:48:54,873 views 92180 6159970304    Recipient: stankayombo@gmail.com
+INFO 2025-10-21 17:48:54,873 views 92180 6159970304    Registration ID: 21
+INFO 2025-10-21 17:48:54,873 views 92180 6159970304    Token: 04c1d0ac-7aa4-4357-abc1-be07c7fc5562
+INFO 2025-10-21 17:48:54,873 views 92180 6159970304 ============================================================
+INFO 2025-10-21 17:48:54,874 views 92180 6159970304 🎉 REGISTRATION PROCESS COMPLETED SUCCESSFULLY
+INFO 2025-10-21 17:55:59,828 views 93193 6133772288 Registration saved for jonesjeezy@gmail.com (ID: 22)
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288 🚀 INITIATING REGISTRATION EMAIL PROCESS
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288    Registration ID: 22
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288    User: Jones Njelekela
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288    Email: jonesjeezy@gmail.com
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288    Event: Jones Jeezy Test
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288 ============================================================
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288 📧 STARTING EMAIL SENDING PROCESS
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288 ============================================================
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288 📋 Email Configuration:
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288    Backend: django.core.mail.backends.smtp.EmailBackend
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288    Host: mail.nifty.co.tz
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288    Port: 587
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288    User: events@nifty.co.tz
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288    From: events@nifty.co.tz
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288    TLS: True
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288    SSL: False
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288    Timeout: 30
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288 📤 Email Details:
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288    To: jonesjeezy@gmail.com
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288    User: Jones Njelekela
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288    Event: Jones Jeezy Test
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288    Token: fb0e13c7-3bb6-4684-be87-60acb31b3f17
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288    Created: 2025-10-21 17:55:59.820130+00:00
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288    Expires: 2025-10-22 17:55:59.819641+00:00
+INFO 2025-10-21 17:55:59,829 views 93193 6133772288 🔗 Generating verification URL...
+INFO 2025-10-21 17:55:59,830 views 93193 6133772288    Using request.build_absolute_uri()
+INFO 2025-10-21 17:55:59,830 views 93193 6133772288    Generated URL: http://localhost:8000/verify-email/fb0e13c7-3bb6-4684-be87-60acb31b3f17/
+INFO 2025-10-21 17:55:59,830 views 93193 6133772288 📝 Preparing email content...
+INFO 2025-10-21 17:55:59,830 views 93193 6133772288    Subject: Nifty Events - Verify Your Email
+INFO 2025-10-21 17:55:59,830 views 93193 6133772288 🎨 Rendering HTML email template...
+INFO 2025-10-21 17:55:59,831 views 93193 6133772288    ✅ HTML template rendered successfully (4732 characters)
+INFO 2025-10-21 17:55:59,831 views 93193 6133772288 📨 SENDING EMAIL...
+INFO 2025-10-21 17:55:59,831 views 93193 6133772288    From: events@nifty.co.tz
+INFO 2025-10-21 17:55:59,831 views 93193 6133772288    To: [jonesjeezy@gmail.com]
+INFO 2025-10-21 17:55:59,831 views 93193 6133772288    Subject: Nifty Events - Verify Your Email
+INFO 2025-10-21 17:55:59,831 views 93193 6133772288    Plain text length: 577 characters
+INFO 2025-10-21 17:55:59,831 views 93193 6133772288    HTML message: Yes
+INFO 2025-10-21 17:55:59,831 views 93193 6133772288    Fail silently: False
+INFO 2025-10-21 17:56:15,636 views 93193 6133772288 ============================================================
+INFO 2025-10-21 17:56:15,637 views 93193 6133772288 ✅ EMAIL SENT SUCCESSFULLY!
+INFO 2025-10-21 17:56:15,637 views 93193 6133772288 ============================================================
+INFO 2025-10-21 17:56:15,637 views 93193 6133772288 📊 Sending Statistics:
+INFO 2025-10-21 17:56:15,637 views 93193 6133772288    Duration: 15.8 seconds
+INFO 2025-10-21 17:56:15,637 views 93193 6133772288    Timestamp: 2025-10-21 17:56:15
+INFO 2025-10-21 17:56:15,637 views 93193 6133772288    Recipient: jonesjeezy@gmail.com
+INFO 2025-10-21 17:56:15,637 views 93193 6133772288    Registration ID: 22
+INFO 2025-10-21 17:56:15,637 views 93193 6133772288    Token: fb0e13c7-3bb6-4684-be87-60acb31b3f17
+INFO 2025-10-21 17:56:15,637 views 93193 6133772288 ============================================================
+INFO 2025-10-21 17:56:15,637 views 93193 6133772288 🎉 REGISTRATION PROCESS COMPLETED SUCCESSFULLY

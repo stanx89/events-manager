@@ -1,41 +1,72 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse, HttpResponse
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.urls import reverse
-from .models import Pledges, Transactions, Messages, MessageTemplate
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+import json
+from .models import Pledges, Transactions, Messages, MessageTemplate, RegistrationRequest, Event, EventUser
 from .forms import PledgeForm, TransactionForm, MessageForm, PledgeSearchForm, TransactionSearchForm, MessageTemplateForm
 from django.db.models import Sum, Q, Count, F
 from .tasks import send_bulk_messages_background, send_message_background
 
 
-# Home page
+def get_base_context(request):
+    """
+    Get base context for all views including events and selected event
+    """
+    context = {}
+    if request.user.is_authenticated:
+        # Get user's events
+        events = Event.objects.filter(created_by=request.user, is_active=True).order_by('-date', 'name')
+        context['events'] = events
+        
+        # Get selected event
+        selected_event_id = request.session.get('selected_event_id')
+        selected_event = None
+        
+        if selected_event_id:
+            try:
+                selected_event = Event.objects.get(id=selected_event_id, created_by=request.user, is_active=True)
+            except Event.DoesNotExist:
+                # Clear invalid event from session
+                request.session.pop('selected_event_id', None)
+        
+        # If no selected event and user has events, select the first one
+        if not selected_event and events.exists():
+            selected_event = events.first()
+            request.session['selected_event_id'] = selected_event.id
+        
+        context['selected_event'] = selected_event
+    
+    return context
+
+
+# Home page - requires login
+@login_required
 def index(request):
-    # Dashboard data
-    total_pledges = Pledges.objects.count()
-    total_amount_pledged = Pledges.objects.aggregate(Sum('pledge'))['pledge__sum'] or 0
-    total_amount_paid = Pledges.objects.aggregate(Sum('amount_paid'))['amount_paid__sum'] or 0
-    pending_pledges = Pledges.objects.filter(status__in=['new', 'pending', 'partial']).count()
-    
-    recent_pledges = Pledges.objects.order_by('-created_at')[:5]
-    recent_transactions = Transactions.objects.order_by('-created_at')[:5]
-    
-    context = {
-        'total_pledges': total_pledges,
-        'total_amount_pledged': total_amount_pledged,
-        'total_amount_paid': total_amount_paid,
-        'pending_pledges': pending_pledges,
-        'recent_pledges': recent_pledges,
-        'recent_transactions': recent_transactions,
-    }
-    return render(request, 'events/index.html', context)
+    # Redirect to dashboard view to maintain consistent event-based filtering
+    return redirect('events:dashboard')
 
 
-# Pledge Views
+# Pledge Views - all require login
+@login_required
 def pledge_list(request):
-    pledges = Pledges.objects.all().order_by('-created_at')
+    # Get base context (events and selected event)
+    context = get_base_context(request)
+    selected_event = context.get('selected_event')
+    user_events = context.get('events')
+    user_event_names = [event.name for event in user_events] if user_events else []
+    
+    # Filter pledges by selected event or all user events
+    if selected_event:
+        pledges = Pledges.objects.filter(event_id=selected_event.name).order_by('-created_at')
+    else:
+        pledges = Pledges.objects.filter(event_id__in=user_event_names).order_by('-created_at')
     
     # Search functionality
     search_query = request.GET.get('search')
@@ -52,14 +83,24 @@ def pledge_list(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
-    context = {
+    context.update({
         'page_obj': page_obj,
-    }
+    })
     return render(request, 'events/pledge_list.html', context)
 
 
+@login_required
 def pledge_create(request):
     is_modal = request.GET.get('modal') == '1'
+    selected_event_id = request.GET.get('event_id')
+    
+    # Get the selected event for pre-population - only user's own events
+    selected_event = None
+    if selected_event_id:
+        try:
+            selected_event = Event.objects.get(id=selected_event_id, created_by=request.user, is_active=True)
+        except Event.DoesNotExist:
+            pass
     
     if request.method == 'POST':
         form = PledgeForm(request.POST)
@@ -81,7 +122,8 @@ def pledge_create(request):
                     'form': form,
                     'title': 'Create New Pledge',
                     'submit_text': 'Create Pledge',
-                    'is_modal': True
+                    'is_modal': True,
+                    'selected_event': selected_event
                 }
                 html = render(request, 'events/pledge_modal_form.html', context).content.decode('utf-8')
                 return JsonResponse({
@@ -91,19 +133,26 @@ def pledge_create(request):
             else:
                 messages.error(request, 'Please correct the errors below.')
     else:
-        form = PledgeForm()
+        # Pre-populate form with selected event
+        initial_data = {}
+        if selected_event:
+            initial_data['event_id'] = selected_event.name
+        
+        form = PledgeForm(initial=initial_data)
     
     context = {
         'form': form,
         'title': 'Create New Pledge',
         'submit_text': 'Create Pledge',
-        'is_modal': is_modal
+        'is_modal': is_modal,
+        'selected_event': selected_event
     }
     
     template = 'events/pledge_modal_form.html' if is_modal else 'events/pledge_form.html'
     return render(request, template, context)
 
 
+@login_required
 def pledge_detail(request, pledge_id):
     pledge = get_object_or_404(Pledges, id=pledge_id)
     transactions = pledge.transactions.all().order_by('-created_at')
@@ -117,6 +166,7 @@ def pledge_detail(request, pledge_id):
     return render(request, 'events/pledge_detail.html', context)
 
 
+@login_required
 def pledge_edit(request, pledge_id):
     pledge = get_object_or_404(Pledges, id=pledge_id)
     is_modal = request.GET.get('modal') == '1' or request.POST.get('modal') == '1'
@@ -156,6 +206,7 @@ def pledge_edit(request, pledge_id):
     return render(request, 'events/pledge_form.html', context)
 
 
+@login_required
 def pledge_delete(request, pledge_id):
     pledge = get_object_or_404(Pledges, id=pledge_id)
     if request.method == 'POST':
@@ -168,8 +219,20 @@ def pledge_delete(request, pledge_id):
 
 
 # Transaction Views
+@login_required
 def transaction_list(request):
-    transactions = Transactions.objects.select_related('pledge').order_by('-created_at')
+    # Get base context (events and selected event)
+    context = get_base_context(request)
+    selected_event = context.get('selected_event')
+    user_events = context.get('events')
+    user_event_names = [event.name for event in user_events] if user_events else []
+    
+    # Filter transactions by selected event or all user events
+    if selected_event:
+        transactions = Transactions.objects.select_related('pledge').filter(pledge__event_id=selected_event.name).order_by('-created_at')
+    else:
+        transactions = Transactions.objects.select_related('pledge').filter(pledge__event_id__in=user_event_names).order_by('-created_at')
+    
     search_form = TransactionSearchForm(request.GET or None)
     
     # Handle direct search parameters from template
@@ -216,18 +279,22 @@ def transaction_list(request):
     # Calculate total amount for current page
     total_amount = sum(transaction.amount for transaction in page_obj.object_list)
     
-    # Get all pledges for the transaction modal selector
-    all_pledges = Pledges.objects.all().order_by('name')
+    # Get pledges for the transaction modal selector (filtered by user's events)
+    if selected_event:
+        all_pledges = Pledges.objects.filter(event_id=selected_event.name).order_by('name')
+    else:
+        all_pledges = Pledges.objects.filter(event_id__in=user_event_names).order_by('name')
     
-    context = {
+    context.update({
         'page_obj': page_obj,
         'search_form': search_form,
         'all_pledges': all_pledges,
         'total_amount': total_amount,
-    }
+    })
     return render(request, 'events/transaction_list.html', context)
 
 
+@login_required
 def transaction_create(request):
     pledge_id = request.GET.get('pledge_id')
     is_modal = request.GET.get('modal') == '1'
@@ -311,12 +378,14 @@ def transaction_create(request):
     return render(request, template, context)
 
 
+@login_required
 def transaction_detail(request, transaction_id):
     transaction = get_object_or_404(Transactions, id=transaction_id)
     context = {'transaction': transaction}
     return render(request, 'events/transaction_detail.html', context)
 
 
+@login_required
 def pledge_transactions(request, pledge_id):
     pledge = get_object_or_404(Pledges, id=pledge_id)
     transactions = pledge.transactions.all().order_by('-created_at')
@@ -329,8 +398,19 @@ def pledge_transactions(request, pledge_id):
 
 
 # Message Views
+@login_required
 def message_list(request):
-    messages_list = Messages.objects.select_related('pledge').order_by('-created_at')
+    # Get base context (events and selected event)
+    context = get_base_context(request)
+    selected_event = context.get('selected_event')
+    user_events = context.get('events')
+    user_event_names = [event.name for event in user_events] if user_events else []
+    
+    # Filter messages by selected event or all user events
+    if selected_event:
+        messages_list = Messages.objects.select_related('pledge').filter(pledge__event_id=selected_event.name).order_by('-created_at')
+    else:
+        messages_list = Messages.objects.select_related('pledge').filter(pledge__event_id__in=user_event_names).order_by('-created_at')
     
     # Handle search parameters
     search_query = request.GET.get('search')
@@ -356,10 +436,13 @@ def message_list(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
-    context = {'page_obj': page_obj}
+    context.update({
+        'page_obj': page_obj,
+    })
     return render(request, 'events/message_list.html', context)
 
 
+@login_required
 def message_create(request):
     pledge_id = request.GET.get('pledge_id')
     is_modal = request.GET.get('modal') == '1'
@@ -411,12 +494,14 @@ def message_create(request):
         return render(request, 'events/message_form.html', context)
 
 
+@login_required
 def message_detail(request, message_id):
     message = get_object_or_404(Messages, id=message_id)
     context = {'message': message}
     return render(request, 'events/message_detail.html', context)
 
 
+@login_required
 def pledge_messages(request, pledge_id):
     pledge = get_object_or_404(Pledges, id=pledge_id)
     messages_list = pledge.messages.all().order_by('-created_at')
@@ -429,6 +514,7 @@ def pledge_messages(request, pledge_id):
 
 
 # API Views (for future use)
+@login_required
 def api_pledges(request):
     pledges = Pledges.objects.all()
     data = []
@@ -444,6 +530,7 @@ def api_pledges(request):
     return JsonResponse({'pledges': data})
 
 
+@login_required
 def api_transactions(request):
     transactions = Transactions.objects.all()
     data = []
@@ -458,6 +545,7 @@ def api_transactions(request):
     return JsonResponse({'transactions': data})
 
 
+@login_required
 def api_messages(request):
     messages_list = Messages.objects.all()
     data = []
@@ -473,6 +561,7 @@ def api_messages(request):
 
 
 # Additional Utility Views
+@login_required
 def pledge_status_update(request, pledge_id):
     """AJAX view to update pledge status"""
     if request.method == 'POST' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
@@ -495,6 +584,7 @@ def pledge_status_update(request, pledge_id):
     return JsonResponse({'success': False, 'message': 'Invalid request'})
 
 
+@login_required
 def pledge_whatsapp_status_update(request, pledge_id):
     """AJAX view to update WhatsApp status"""
     if request.method == 'POST' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
@@ -517,6 +607,7 @@ def pledge_whatsapp_status_update(request, pledge_id):
     return JsonResponse({'success': False, 'message': 'Invalid request'})
 
 
+@login_required
 def dashboard_stats(request):
     """API endpoint for dashboard statistics"""
     stats = {
@@ -541,6 +632,7 @@ def dashboard_stats(request):
     return JsonResponse(stats)
 
 
+@login_required
 def export_pledges_csv(request):
     """Export pledges data to CSV"""
     import csv
@@ -576,6 +668,7 @@ def export_pledges_csv(request):
     return response
 
 
+@login_required
 def bulk_reminder_send(request):
     """View to send bulk reminders with automatic processing"""
     if request.method == 'POST':
@@ -738,6 +831,7 @@ def bulk_reminder_send(request):
     return render(request, 'events/bulk_reminder.html', context)
 
 
+@login_required
 def message_queue_status(request):
     """API endpoint to check message queue status"""
     status_counts = Messages.objects.values('status').annotate(count=Count('id'))
@@ -769,8 +863,12 @@ def message_queue_status(request):
 
 
 # Message Template Views
+@login_required
 def template_list(request):
     """View to list all message templates"""
+    # Get base context (events and selected event)
+    context = get_base_context(request)
+    
     templates = MessageTemplate.objects.all().order_by('event_id', 'type', 'name')
     
     # Filter by event_id
@@ -789,7 +887,7 @@ def template_list(request):
         is_active = active_filter.lower() == 'true'
         templates = templates.filter(is_active=is_active)
     
-    context = {
+    context.update({
         'templates': templates,
         'template_types': MessageTemplate.TEMPLATE_TYPES,
         'current_filters': {
@@ -797,10 +895,11 @@ def template_list(request):
             'type': type_filter or '',
             'active': active_filter or '',
         }
-    }
+    })
     return render(request, 'events/template_list.html', context)
 
 
+@login_required
 def template_create(request):
     """View to create a new message template"""
     if request.method == 'POST':
@@ -829,6 +928,7 @@ def template_create(request):
     return render(request, 'events/template_form.html', context)
 
 
+@login_required
 def template_edit(request, template_id):
     """View to edit an existing message template"""
     template = get_object_or_404(MessageTemplate, id=template_id)
@@ -860,6 +960,7 @@ def template_edit(request, template_id):
     return render(request, 'events/template_form.html', context)
 
 
+@login_required
 def template_detail(request, template_id):
     """View to show template details and preview"""
     template = get_object_or_404(MessageTemplate, id=template_id)
@@ -879,6 +980,7 @@ def template_detail(request, template_id):
     return render(request, 'events/template_detail.html', context)
 
 
+@login_required
 def template_delete(request, template_id):
     """View to delete a message template"""
     template = get_object_or_404(MessageTemplate, id=template_id)
@@ -895,6 +997,7 @@ def template_delete(request, template_id):
     return render(request, 'events/template_confirm_delete.html', context)
 
 
+@login_required
 def template_toggle_active(request, template_id):
     """AJAX view to toggle template active status"""
     if request.method == 'POST':
@@ -911,6 +1014,7 @@ def template_toggle_active(request, template_id):
     return JsonResponse({'success': False, 'message': 'Invalid request'})
 
 
+@login_required
 def api_templates(request):
     """API endpoint to get templates for a specific event and type"""
     event_id = request.GET.get('event_id')
@@ -935,3 +1039,537 @@ def api_templates(request):
         })
     
     return JsonResponse({'templates': data})
+
+
+# Landing Page and Registration Views
+def landing_page(request):
+    """Landing page with service information and registration form"""
+    from .forms import RegistrationForm
+    import logging
+    
+    logger = logging.getLogger(__name__)
+    
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            try:
+                # Save the registration request
+                registration_request = form.save()
+                logger.info(f"Registration saved for {registration_request.email} (ID: {registration_request.id})")
+                
+                # Send verification email
+                logger.info("🚀 INITIATING REGISTRATION EMAIL PROCESS")
+                logger.info(f"   Registration ID: {registration_request.id}")
+                logger.info(f"   User: {registration_request.full_name}")
+                logger.info(f"   Email: {registration_request.email}")
+                logger.info(f"   Event: {registration_request.event_name}")
+                
+                email_result = send_verification_email(registration_request, request)
+                
+                if email_result:
+                    logger.info("🎉 REGISTRATION PROCESS COMPLETED SUCCESSFULLY")
+                else:
+                    logger.error("💥 REGISTRATION EMAIL PROCESS FAILED")
+                
+                messages.success(
+                    request, 
+                    f'Registration successful! We have sent a verification email to {registration_request.email}. '
+                    'Please check your inbox and click the verification link to activate your account.'
+                )
+                
+            except Exception as e:
+                logger.error(f"Registration process failed for {registration_request.email}: {str(e)}")
+                logger.error(f"Error type: {type(e).__name__}")
+                import traceback
+                logger.error(f"Traceback: {traceback.format_exc()}")
+                
+                messages.error(
+                    request,
+                    f'Registration saved but we had trouble sending the verification email. '
+                    f'Please contact support or try registering again.'
+                )
+                
+            return redirect('events:landing_page')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = RegistrationForm()
+    
+    # Service statistics for the landing page
+    total_events = Event.objects.filter(is_active=True).count()
+    total_users = EventUser.objects.filter(is_verified=True).count()
+    total_pledges = Pledges.objects.count()
+    
+    context = {
+        'form': form,
+        'total_events': total_events,
+        'total_users': total_users,
+        'total_pledges': total_pledges,
+    }
+    return render(request, 'events/landing_page.html', context)
+
+
+def verify_email(request, token):
+    """Verify email address and create user account"""
+    try:
+        # Find the registration request
+        registration_request = RegistrationRequest.objects.get(
+            verification_token=token,
+            is_verified=False
+        )
+        
+        # Check if the token has expired
+        if registration_request.is_expired():
+            messages.error(
+                request,
+                'Verification link has expired. Please register again.'
+            )
+            return redirect('events:landing_page')
+        
+        # Create the user account
+        with transaction.atomic():
+            # Create EventUser with password
+            user = EventUser.objects.create_user(
+                email=registration_request.email,
+                full_name=registration_request.full_name,
+                mobile_number=registration_request.mobile_number,
+                is_verified=True,
+                is_active=True
+            )
+            
+            # Set the password using the hashed password from registration
+            user.password = registration_request.password  # This is already hashed
+            user.save()
+            
+            # Create Event
+            event = Event.objects.create(
+                name=registration_request.event_name,
+                date=registration_request.event_date,
+                created_by=user
+            )
+            
+            # Mark registration as verified
+            registration_request.is_verified = True
+            registration_request.save()
+        
+        messages.success(
+            request,
+            f'Email verified successfully! Your account has been created and your event "{event.name}" is now set up. '
+            'You have been automatically logged in and can now start managing pledges for your event.'
+        )
+        
+        # Automatically log in the user
+        from django.contrib.auth import login
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        
+        # Redirect to the main dashboard/index page
+        return redirect('events:index')
+        
+    except RegistrationRequest.DoesNotExist:
+        messages.error(
+            request,
+            'Invalid verification link. Please check the link or register again.'
+        )
+        return redirect('events:landing_page')
+
+
+def send_verification_email(registration_request, request=None):
+    """Send verification email to the user"""
+    from django.core.mail import send_mail
+    from django.template.loader import render_to_string
+    from django.conf import settings
+    from django.urls import reverse
+    import logging
+    
+    logger = logging.getLogger(__name__)
+    
+    # Start of email sending process
+    logger.info("=" * 60)
+    logger.info("📧 STARTING EMAIL SENDING PROCESS")
+    logger.info("=" * 60)
+    
+    # Log email configuration for debugging
+    logger.info(f"📋 Email Configuration:")
+    logger.info(f"   Backend: {settings.EMAIL_BACKEND}")
+    logger.info(f"   Host: {settings.EMAIL_HOST}")
+    logger.info(f"   Port: {settings.EMAIL_PORT}")
+    logger.info(f"   User: {settings.EMAIL_HOST_USER}")
+    logger.info(f"   From: {settings.DEFAULT_FROM_EMAIL}")
+    logger.info(f"   TLS: {getattr(settings, 'EMAIL_USE_TLS', False)}")
+    logger.info(f"   SSL: {getattr(settings, 'EMAIL_USE_SSL', False)}")
+    logger.info(f"   Timeout: {getattr(settings, 'EMAIL_TIMEOUT', 'Not set')}")
+    
+    # Log recipient and registration details
+    logger.info(f"📤 Email Details:")
+    logger.info(f"   To: {registration_request.email}")
+    logger.info(f"   User: {registration_request.full_name}")
+    logger.info(f"   Event: {registration_request.event_name}")
+    logger.info(f"   Token: {registration_request.verification_token}")
+    logger.info(f"   Created: {registration_request.created_at}")
+    logger.info(f"   Expires: {registration_request.expires_at}")
+    
+    try:
+        logger.info("🔗 Generating verification URL...")
+        
+        # Generate verification URL
+        if request:
+            verification_url = request.build_absolute_uri(
+                reverse('events:verify_email', kwargs={'token': registration_request.verification_token})
+            )
+            logger.info(f"   Using request.build_absolute_uri()")
+        else:
+            # Fallback if request is not available
+            from django.contrib.sites.models import Site
+            current_site = Site.objects.get_current()
+            verification_url = f"http://{current_site.domain}{reverse('events:verify_email', kwargs={'token': registration_request.verification_token})}"
+            logger.info(f"   Using fallback with Site: {current_site.domain}")
+        
+        logger.info(f"   Generated URL: {verification_url}")
+        
+        # Prepare email content
+        subject = 'Nifty Events - Verify Your Email'
+        logger.info(f"📝 Preparing email content...")
+        logger.info(f"   Subject: {subject}")
+        
+        # HTML email template
+        logger.info("🎨 Rendering HTML email template...")
+        try:
+            html_message = render_to_string('events/emails/verification_email.html', {
+                'user_name': registration_request.full_name,
+                'event_name': registration_request.event_name,
+                'event_date': registration_request.event_date,
+                'verification_url': verification_url,
+                'expires_in_hours': 24,
+            })
+            logger.info(f"   ✅ HTML template rendered successfully ({len(html_message)} characters)")
+        except Exception as e:
+            logger.error(f"   ❌ HTML template rendering failed: {str(e)}")
+            html_message = None
+        
+        # Plain text fallback
+        plain_message = f"""
+        Hi {registration_request.full_name},
+
+        Thank you for registering with our Events Management System!
+
+        Your Event Details:
+        - Event Name: {registration_request.event_name}
+        - Event Date: {registration_request.event_date.strftime('%B %d, %Y at %I:%M %p')}
+
+        To complete your registration and activate your account, please click the link below:
+        {verification_url}
+
+        This link will expire in 24 hours.
+
+        If you did not register for this account, please ignore this email.
+
+        Best regards,
+        Events Management Team
+        """
+        
+        # Send email
+        logger.info("📨 SENDING EMAIL...")
+        logger.info(f"   From: {settings.DEFAULT_FROM_EMAIL}")
+        logger.info(f"   To: [{registration_request.email}]")
+        logger.info(f"   Subject: {subject}")
+        logger.info(f"   Plain text length: {len(plain_message)} characters")
+        logger.info(f"   HTML message: {'Yes' if html_message else 'No'}")
+        logger.info(f"   Fail silently: False")
+        
+        # Import time to measure sending duration
+        import time
+        start_time = time.time()
+        
+        send_mail(
+            subject=subject,
+            message=plain_message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[registration_request.email],
+            html_message=html_message,
+            fail_silently=False
+        )
+        
+        end_time = time.time()
+        duration = round(end_time - start_time, 2)
+        
+        logger.info("=" * 60)
+        logger.info("✅ EMAIL SENT SUCCESSFULLY!")
+        logger.info("=" * 60)
+        logger.info(f"📊 Sending Statistics:")
+        logger.info(f"   Duration: {duration} seconds")
+        logger.info(f"   Timestamp: {time.strftime('%Y-%m-%d %H:%M:%S')}")
+        logger.info(f"   Recipient: {registration_request.email}")
+        logger.info(f"   Registration ID: {registration_request.id}")
+        logger.info(f"   Token: {registration_request.verification_token}")
+        logger.info("=" * 60)
+        
+        return True
+        
+    except Exception as e:
+        logger.error("=" * 60)
+        logger.error("❌ EMAIL SENDING FAILED!")
+        logger.error("=" * 60)
+        logger.error(f"📋 Error Details:")
+        logger.error(f"   Recipient: {registration_request.email}")
+        logger.error(f"   Registration ID: {registration_request.id}")
+        logger.error(f"   Error Type: {type(e).__name__}")
+        logger.error(f"   Error Message: {str(e)}")
+        
+        # Import for detailed error information
+        import traceback
+        import time
+        
+        logger.error(f"📊 Error Context:")
+        logger.error(f"   Timestamp: {time.strftime('%Y-%m-%d %H:%M:%S')}")
+        logger.error(f"   Email Host: {settings.EMAIL_HOST}")
+        logger.error(f"   Email Port: {settings.EMAIL_PORT}")
+        logger.error(f"   Email User: {settings.EMAIL_HOST_USER}")
+        
+        logger.error(f"🔍 Full Traceback:")
+        for line in traceback.format_exc().split('\n'):
+            if line.strip():
+                logger.error(f"   {line}")
+        
+        logger.error("=" * 60)
+        return False
+
+
+def resend_verification(request):
+    """Resend verification email"""
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        
+        try:
+            registration_request = RegistrationRequest.objects.get(
+                email=email,
+                is_verified=False
+            )
+            
+            if registration_request.is_expired():
+                messages.error(
+                    request,
+                    'Registration has expired. Please register again.'
+                )
+                return redirect('events:landing_page')
+            
+            # Generate new token and resend
+            import uuid
+            registration_request.verification_token = str(uuid.uuid4())
+            registration_request.save()
+            
+            send_verification_email(registration_request, request)
+            
+            messages.success(
+                request,
+                f'Verification email resent to {email}. Please check your inbox.'
+            )
+            
+        except RegistrationRequest.DoesNotExist:
+            messages.error(
+                request,
+                'No pending registration found for this email address.'
+            )
+    
+    return redirect('events:landing_page')
+
+
+def login_view(request):
+    """User login view"""
+    from django.contrib.auth import authenticate, login
+    from .forms import LoginForm
+    
+    if request.user.is_authenticated:
+        return redirect('events:dashboard')
+    
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            
+            # Authenticate user
+            user = authenticate(request, username=email, password=password)
+            
+            if user is not None:
+                if user.is_verified:
+                    login(request, user)
+                    messages.success(request, f'Welcome back, {user.get_full_name()}!')
+                    
+                    # Redirect to next page or dashboard
+                    next_page = request.GET.get('next')
+                    if next_page:
+                        return redirect(next_page)
+                    else:
+                        return redirect('events:dashboard')
+                else:
+                    messages.error(request, 'Please verify your email address before logging in.')
+            else:
+                messages.error(request, 'Invalid email or password.')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = LoginForm()
+    
+    context = {
+        'form': form,
+    }
+    return render(request, 'events/login.html', context)
+
+
+def logout_view(request):
+    """User logout view"""
+    from django.contrib.auth import logout
+    
+    logout(request)
+    messages.success(request, 'You have been logged out successfully.')
+    return redirect('events:landing_page')
+
+
+@login_required
+def dashboard_view(request):
+    """User dashboard - requires authentication"""
+    
+    # Get base context (events and selected event)
+    context = get_base_context(request)
+    selected_event = context.get('selected_event')
+    
+    # Dashboard data filtered by selected event (or empty if no events)
+    if selected_event:
+        total_pledges = Pledges.objects.filter(event_id=selected_event.name).count()
+        total_amount_pledged = Pledges.objects.filter(event_id=selected_event.name).aggregate(Sum('pledge'))['pledge__sum'] or 0
+        total_amount_paid = Pledges.objects.filter(event_id=selected_event.name).aggregate(Sum('amount_paid'))['amount_paid__sum'] or 0
+        pending_pledges = Pledges.objects.filter(event_id=selected_event.name, status__in=['new', 'pending', 'partial']).count()
+        
+        recent_pledges = Pledges.objects.filter(event_id=selected_event.name).order_by('-created_at')[:5]
+        recent_transactions = Transactions.objects.filter(pledge__event_id=selected_event.name).order_by('-created_at')[:5]
+    else:
+        # No events exist - show empty data
+        total_pledges = 0
+        total_amount_pledged = 0
+        total_amount_paid = 0
+        pending_pledges = 0
+        recent_pledges = []
+        recent_transactions = []
+    
+    context.update({
+        'total_pledges': total_pledges,
+        'total_amount_pledged': total_amount_pledged,
+        'total_amount_paid': total_amount_paid,
+        'pending_pledges': pending_pledges,
+        'recent_pledges': recent_pledges,
+        'recent_transactions': recent_transactions,
+    })
+    return render(request, 'events/index.html', context)
+
+
+# Event Management Views
+@login_required
+def event_list(request):
+    """List user's events"""
+    context = get_base_context(request)
+    return render(request, 'events/event_list.html', context)
+
+
+@login_required
+def event_create(request):
+    """Create a new event"""
+    from .forms import EventForm
+    
+    if request.method == 'POST':
+        form = EventForm(request.POST)
+        if form.is_valid():
+            event = form.save(commit=False)
+            event.created_by = request.user
+            event.save()
+            
+            messages.success(request, f'Event "{event.name}" created successfully!')
+            return redirect('events:event_detail', event_id=event.id)
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = EventForm()
+    
+    context = {
+        'form': form,
+        'title': 'Create New Event',
+        'submit_text': 'Create Event'
+    }
+    return render(request, 'events/event_form.html', context)
+
+
+@login_required
+def event_detail(request, event_id):
+    """View event details - only user's own events"""
+    event = get_object_or_404(Event, id=event_id, created_by=request.user, is_active=True)
+    
+    # Get statistics for this event
+    total_pledges = Pledges.objects.filter(event_id=event.name).count()
+    total_amount_pledged = Pledges.objects.filter(event_id=event.name).aggregate(Sum('pledge'))['pledge__sum'] or 0
+    total_amount_paid = Pledges.objects.filter(event_id=event.name).aggregate(Sum('amount_paid'))['amount_paid__sum'] or 0
+    pending_pledges = Pledges.objects.filter(event_id=event.name, status__in=['new', 'pending', 'partial']).count()
+    
+    recent_pledges = Pledges.objects.filter(event_id=event.name).order_by('-created_at')[:10]
+    
+    context = {
+        'event': event,
+        'total_pledges': total_pledges,
+        'total_amount_pledged': total_amount_pledged,
+        'total_amount_paid': total_amount_paid,
+        'pending_pledges': pending_pledges,
+        'recent_pledges': recent_pledges,
+    }
+    return render(request, 'events/event_detail.html', context)
+
+
+@login_required
+def event_edit(request, event_id):
+    """Edit an event - only user's own events"""
+    from .forms import EventForm
+    
+    event = get_object_or_404(Event, id=event_id, created_by=request.user, is_active=True)
+    
+    if request.method == 'POST':
+        form = EventForm(request.POST, instance=event)
+        if form.is_valid():
+            event = form.save()
+            messages.success(request, f'Event "{event.name}" updated successfully!')
+            return redirect('events:event_detail', event_id=event.id)
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = EventForm(instance=event)
+    
+    context = {
+        'form': form,
+        'event': event,
+        'title': f'Edit Event: {event.name}',
+        'submit_text': 'Update Event'
+    }
+    return render(request, 'events/event_form.html', context)
+
+
+@login_required
+@require_POST
+def set_selected_event(request):
+    """
+    AJAX view to set the selected event in the session
+    """
+    try:
+        data = json.loads(request.body)
+        event_id = data.get('event_id')
+        
+        if event_id:
+            # Verify the event belongs to the user
+            try:
+                event = Event.objects.get(id=event_id, created_by=request.user, is_active=True)
+                request.session['selected_event_id'] = event_id
+                return JsonResponse({'success': True})
+            except Event.DoesNotExist:
+                return JsonResponse({'success': False, 'error': 'Event not found'})
+        else:
+            return JsonResponse({'success': False, 'error': 'No event ID provided'})
+            
+    except json.JSONDecodeError:
+        return JsonResponse({'success': False, 'error': 'Invalid JSON'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})

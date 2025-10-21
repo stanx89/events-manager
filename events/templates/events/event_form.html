@@ -1,0 +1,80 @@
+{% extends 'events/base.html' %}
+
+{% block title %}{{ title }} - Events Management{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 flex items-center">
+            <span class="material-icons mr-3 text-blue-600">event</span>{{ title }}
+        </h1>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+            
+            <div>
+                <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                    {{ form.name.label }}
+                </label>
+                {{ form.name }}
+                {% if form.name.help_text %}
+                <p class="text-sm text-gray-600 mt-1">{{ form.name.help_text }}</p>
+                {% endif %}
+                {% if form.name.errors %}
+                <div class="text-red-600 text-sm mt-1">{{ form.name.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div>
+                <label for="{{ form.date.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                    {{ form.date.label }}
+                </label>
+                {{ form.date }}
+                {% if form.date.help_text %}
+                <p class="text-sm text-gray-600 mt-1">{{ form.date.help_text }}</p>
+                {% endif %}
+                {% if form.date.errors %}
+                <div class="text-red-600 text-sm mt-1">{{ form.date.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div>
+                <label for="{{ form.location.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                    {{ form.location.label }}
+                </label>
+                {{ form.location }}
+                {% if form.location.help_text %}
+                <p class="text-sm text-gray-600 mt-1">{{ form.location.help_text }}</p>
+                {% endif %}
+                {% if form.location.errors %}
+                <div class="text-red-600 text-sm mt-1">{{ form.location.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div>
+                <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                    {{ form.description.label }}
+                </label>
+                {{ form.description }}
+                {% if form.description.help_text %}
+                <p class="text-sm text-gray-600 mt-1">{{ form.description.help_text }}</p>
+                {% endif %}
+                {% if form.description.errors %}
+                <div class="text-red-600 text-sm mt-1">{{ form.description.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="flex items-center justify-between pt-6 border-t border-gray-200">
+                <a href="{% url 'events:event_list' %}" class="text-gray-600 hover:text-gray-700 font-medium flex items-center">
+                    <span class="material-icons mr-2">arrow_back</span>Back to Events
+                </a>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition duration-300 flex items-center">
+                    <span class="material-icons mr-2">save</span>{{ submit_text }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

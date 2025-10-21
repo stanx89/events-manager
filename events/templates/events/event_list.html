@@ -1,0 +1,79 @@
+{% extends 'events/base.html' %}
+
+{% block title %}Events - Events Management{% endblock %}
+
+{% block content %}
+<div class="mb-8">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+        <h1 class="text-3xl font-bold text-gray-900 flex items-center mb-4 md:mb-0">
+            <span class="material-icons mr-3 text-blue-600">event</span>Your Events
+        </h1>
+        <a href="{% url 'events:event_create' %}" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition duration-300 flex items-center">
+            <span class="material-icons mr-2">add</span>Create New Event
+        </a>
+    </div>
+</div>
+
+{% if events %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for event in events %}
+    <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition duration-300">
+        <div class="p-6">
+            <div class="flex items-start justify-between mb-4">
+                <h3 class="text-xl font-semibold text-gray-900">{{ event.name }}</h3>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    Active
+                </span>
+            </div>
+            
+            <div class="space-y-3 mb-6">
+                <div class="flex items-center text-gray-600">
+                    <span class="material-icons mr-3 text-blue-500">schedule</span>
+                    <span class="text-sm">{{ event.date|date:"F d, Y \a\t g:i A" }}</span>
+                </div>
+                
+                {% if event.location %}
+                <div class="flex items-center text-gray-600">
+                    <span class="material-icons mr-3 text-green-500">location_on</span>
+                    <span class="text-sm">{{ event.location }}</span>
+                </div>
+                {% endif %}
+                
+                <div class="flex items-center text-gray-600">
+                    <span class="material-icons mr-3 text-purple-500">person</span>
+                    <span class="text-sm">Created by {{ event.created_by.get_full_name|default:event.created_by.email }}</span>
+                </div>
+            </div>
+            
+            {% if event.description %}
+            <p class="text-gray-600 text-sm mb-6 line-clamp-3">{{ event.description|truncatechars:150 }}</p>
+            {% endif %}
+            
+            <div class="flex items-center justify-between pt-4 border-t border-gray-200">
+                <span class="text-xs text-gray-500">{{ event.created_at|date:"M d, Y" }}</span>
+                <div class="flex space-x-2">
+                    <a href="{% url 'events:event_detail' event.id %}" class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center">
+                        <span class="material-icons mr-1 text-sm">visibility</span>View
+                    </a>
+                    <a href="{% url 'events:event_edit' event.id %}" class="text-green-600 hover:text-green-700 font-medium text-sm flex items-center">
+                        <span class="material-icons mr-1 text-sm">edit</span>Edit
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="bg-white rounded-lg shadow-md p-12 text-center">
+    <div class="mb-6">
+        <span class="material-icons text-gray-400 mb-4" style="font-size: 4rem;">event_note</span>
+    </div>
+    <h3 class="text-xl font-medium text-gray-900 mb-2">No Events Yet</h3>
+    <p class="text-gray-600 mb-6">Create your first event to start managing pledges and donations.</p>
+    <a href="{% url 'events:event_create' %}" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition duration-300 inline-flex items-center">
+        <span class="material-icons mr-2">add</span>Create Your First Event
+    </a>
+</div>
+{% endif %}
+{% endblock %}
