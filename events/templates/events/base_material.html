@@ -82,6 +82,25 @@
                         </a>
                     </li>
                 </ul>
+                
+                <!-- Account Section -->
+                <div class="mt-8 pt-6 border-t border-outline-variant">
+                    <h3 class="md-title-small text-on-surface mb-3">Account</h3>
+                    <ul class="space-y-1">
+                        <li>
+                            <a href="{% url 'events:logout' %}" class="flex items-center p-3 rounded-lg hover:bg-surface-container-high transition-colors">
+                                <span class="material-symbols-outlined mr-3">logout</span>
+                                <span class="md-body-medium">Logout</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'events:delete_account' %}" class="flex items-center p-3 rounded-lg hover:bg-error-container text-error transition-colors">
+                                <span class="material-symbols-outlined mr-3">delete_forever</span>
+                                <span class="md-body-medium">Delete Account</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
 

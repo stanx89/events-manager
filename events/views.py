@@ -1051,11 +1051,23 @@ def landing_page(request):
     
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
-        if form.is_valid():
+        
+        # Check privacy agreement checkbox
+        privacy_agreement = request.POST.get('privacy_agreement')
+        if not privacy_agreement:
+            messages.error(request, 'You must agree to the Privacy Policy and Terms of Service to register.')
+            
+        elif form.is_valid():
             try:
-                # Save the registration request
-                registration_request = form.save()
+                # Save the registration request with privacy agreement info
+                registration_request = form.save(commit=False)
+                registration_request.privacy_agreement_accepted = True
+                registration_request.marketing_consent = bool(request.POST.get('marketing_consent'))
+                registration_request.save()
+                
                 logger.info(f"Registration saved for {registration_request.email} (ID: {registration_request.id})")
+                logger.info(f"Privacy agreement: {registration_request.privacy_agreement_accepted}")
+                logger.info(f"Marketing consent: {registration_request.marketing_consent}")
                 
                 # Send verification email
                 logger.info("🚀 INITIATING REGISTRATION EMAIL PROCESS")
@@ -1128,13 +1140,17 @@ def verify_email(request, token):
         
         # Create the user account
         with transaction.atomic():
-            # Create EventUser with password
+            # Create EventUser with password and privacy consent
+            from django.utils import timezone
             user = EventUser.objects.create_user(
                 email=registration_request.email,
                 full_name=registration_request.full_name,
                 mobile_number=registration_request.mobile_number,
                 is_verified=True,
-                is_active=True
+                is_active=True,
+                privacy_agreement_accepted=getattr(registration_request, 'privacy_agreement_accepted', True),
+                marketing_consent=getattr(registration_request, 'marketing_consent', False),
+                privacy_accepted_at=timezone.now() if getattr(registration_request, 'privacy_agreement_accepted', True) else None
             )
             
             # Set the password using the hashed password from registration
@@ -1227,7 +1243,7 @@ def send_verification_email(registration_request, request=None):
         logger.info(f"   Generated URL: {verification_url}")
         
         # Prepare email content
-        subject = 'Nifty Events - Verify Your Email'
+        subject = 'Nifty Events -   Verify Your Email'
         logger.info(f"📝 Preparing email content...")
         logger.info(f"   Subject: {subject}")
         
@@ -1573,3 +1589,262 @@ def set_selected_event(request):
         return JsonResponse({'success': False, 'error': 'Invalid JSON'})
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)})
+
+
+def privacy_policy(request):
+    """
+    Display privacy policy page
+    """
+    from datetime import date
+    context = {
+        'current_date': date.today()
+    }
+    return render(request, 'events/privacy_policy.html', context)
+
+
+def terms_of_service(request):
+    """
+    Display terms of service page
+    """
+    from datetime import date
+    context = {
+        'current_date': date.today()
+    }
+    return render(request, 'events/terms_of_service.html', context)
+
+
+def data_deletion_request(request):
+    """
+    Handle data deletion requests from users
+    """
+    if request.method == 'POST':
+        full_name = request.POST.get('full_name', '').strip()
+        email = request.POST.get('email', '').strip()
+        reason = request.POST.get('reason', '').strip()
+        confirm_deletion = request.POST.get('confirm_deletion')
+        
+        # Validate required fields
+        if not full_name or not email:
+            messages.error(request, 'Full name and email address are required.')
+        elif not confirm_deletion:
+            messages.error(request, 'You must confirm that you understand this action is permanent.')
+        else:
+            # Send email to privacy team
+            try:
+                from django.core.mail import send_mail
+                from django.conf import settings
+                from django.utils import timezone
+                import logging
+                
+                logger = logging.getLogger(__name__)
+                
+                # Email content
+                subject = f'Data Deletion Request - {full_name}'
+                message_body = f"""
+Data Deletion Request Received
+
+User Details:
+- Full Name: {full_name}
+- Email Address: {email}
+- Request Date: {timezone.now().strftime('%Y-%m-%d %H:%M:%S')}
+- User IP: {request.META.get('REMOTE_ADDR', 'Unknown')}
+
+Reason for Deletion:
+{reason if reason else 'No reason provided'}
+
+This request was submitted through the automated data deletion form.
+Please process this request within 30 business days as required by our privacy policy.
+
+Note: Verify the user's identity before processing the deletion request.
+                """
+                
+                # Send to privacy team
+                privacy_email = getattr(settings, 'PRIVACY_EMAIL', 'privacy@ndondo.co.tz')
+                support_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'support@ndondo.co.tz')
+                
+                send_mail(
+                    subject=subject,
+                    message=message_body,
+                    from_email=support_email,
+                    recipient_list=[privacy_email, support_email],
+                    fail_silently=False,
+                )
+                
+                # Send confirmation email to user
+                user_subject = 'Data Deletion Request Received - Events Management System'
+                user_message = f"""
+Dear {full_name},
+
+We have received your request to delete your personal data from the Events Management System.
+
+Request Details:
+- Email: {email}
+- Submitted: {timezone.now().strftime('%Y-%m-%d %H:%M:%S')}
+
+What happens next:
+1. We will verify your identity and process your request within 30 business days
+2. You will receive a confirmation email once your data has been permanently deleted
+3. After deletion, you will no longer be able to access your account or recover any data
+
+If you have any questions or did not submit this request, please contact us immediately at privacy@ndondo.co.tz
+
+Thank you,
+Events Management System Team
+                """
+                
+                send_mail(
+                    subject=user_subject,
+                    message=user_message,
+                    from_email=support_email,
+                    recipient_list=[email],
+                    fail_silently=False,
+                )
+                
+                logger.info(f"Data deletion request submitted for {email} - {full_name}")
+                
+                messages.success(
+                    request,
+                    f'Your data deletion request has been submitted successfully. '
+                    f'We have sent a confirmation email to {email}. '
+                    f'We will process your request within 30 business days and notify you when complete.'
+                )
+                
+            except Exception as e:
+                logger.error(f"Failed to send data deletion request emails: {str(e)}")
+                messages.error(
+                    request,
+                    'There was an error submitting your deletion request. '
+                    'Please try again or contact support@ndondo.co.tz directly.'
+                )
+            
+            return redirect('events:data_deletion_request')
+    
+    return render(request, 'events/data_deletion.html')
+
+
+@login_required
+def delete_account(request):
+    """
+    Allow logged-in users to delete their own account
+    """
+    if request.method == 'POST':
+        password = request.POST.get('password', '').strip()
+        confirmation_text = request.POST.get('confirmation_text', '').strip()
+        final_confirmation = request.POST.get('final_confirmation')
+        
+        # Validate inputs
+        if not password:
+            messages.error(request, 'Password is required to confirm account deletion.')
+        elif not confirmation_text or confirmation_text != 'DELETE':
+            messages.error(request, 'You must type "DELETE" exactly to confirm deletion.')
+        elif not final_confirmation:
+            messages.error(request, 'You must check the final confirmation checkbox.')
+        else:
+            # Verify password
+            from django.contrib.auth import authenticate
+            user = authenticate(username=request.user.email, password=password)
+            
+            if user is None:
+                messages.error(request, 'Invalid password. Please try again.')
+            else:
+                # Perform account deletion
+                try:
+                    from django.utils import timezone
+                    import logging
+                    
+                    logger = logging.getLogger(__name__)
+                    
+                    # Log the deletion
+                    logger.info(f"Account deletion initiated for user: {request.user.email} ({request.user.full_name})")
+                    
+                    # Get user data for logging before deletion
+                    user_email = request.user.email
+                    user_name = request.user.full_name
+                    
+                    # Count associated data
+                    events_count = Event.objects.filter(created_by=request.user).count()
+                    pledges_count = Pledges.objects.filter(event__created_by=request.user).count()
+                    transactions_count = Transactions.objects.filter(pledge__event__created_by=request.user).count()
+                    messages_count = Messages.objects.filter(pledge__event__created_by=request.user).count()
+                    
+                    # Delete all associated data (Django will handle cascade deletions)
+                    with transaction.atomic():
+                        # Delete user's events (this will cascade to pledges, transactions, messages)
+                        Event.objects.filter(created_by=request.user).delete()
+                        
+                        # Delete the user account
+                        request.user.delete()
+                    
+                    logger.info(f"Account successfully deleted: {user_email} ({user_name})")
+                    logger.info(f"Deleted data - Events: {events_count}, Pledges: {pledges_count}, Transactions: {transactions_count}, Messages: {messages_count}")
+                    
+                    # Send confirmation email (optional)
+                    try:
+                        from django.core.mail import send_mail
+                        from django.conf import settings
+                        
+                        send_mail(
+                            subject='Account Deletion Confirmation - Events Management System',
+                            message=f"""
+Dear {user_name},
+
+Your account has been successfully deleted from the Events Management System.
+
+Deletion Details:
+- Account: {user_email}
+- Deletion Date: {timezone.now().strftime('%Y-%m-%d %H:%M:%S')}
+- Events Deleted: {events_count}
+- Total Data Records Removed: {pledges_count + transactions_count + messages_count}
+
+All your personal data and associated records have been permanently removed from our system.
+
+If you have any questions or believe this deletion was made in error, please contact us immediately.
+
+Thank you for using our service.
+
+Best regards,
+Nifty Technologies Team
+                            """,
+                            from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'events@nifty.co.tz'),
+                            recipient_list=[user_email],
+                            fail_silently=True,  # Don't fail if email can't be sent since account is already deleted
+                        )
+                    except Exception as email_error:
+                        logger.error(f"Failed to send account deletion confirmation email: {str(email_error)}")
+                    
+                    # Redirect to landing page with success message
+                    messages.success(
+                        request,
+                        f'Your account has been successfully deleted. All your data has been permanently removed. '
+                        f'Thank you for using our Events Management System.'
+                    )
+                    
+                    # Logout and redirect
+                    from django.contrib.auth import logout
+                    logout(request)
+                    return redirect('events:landing_page')
+                    
+                except Exception as e:
+                    logger.error(f"Failed to delete account for {request.user.email}: {str(e)}")
+                    messages.error(
+                        request,
+                        'There was an error deleting your account. Please try again or contact support.'
+                    )
+        
+        return redirect('events:delete_account')
+    
+    # GET request - show the deletion form
+    # Count user's data
+    events_count = Event.objects.filter(created_by=request.user).count()
+    pledges_count = Pledges.objects.filter(event__created_by=request.user).count()
+    transactions_count = Transactions.objects.filter(pledge__event__created_by=request.user).count()
+    messages_count = Messages.objects.filter(pledge__event__created_by=request.user).count()
+    
+    context = {
+        'events_count': events_count,
+        'pledges_count': pledges_count,
+        'transactions_count': transactions_count,
+        'messages_count': messages_count,
+    }
+    
+    return render(request, 'events/delete_account.html', context)

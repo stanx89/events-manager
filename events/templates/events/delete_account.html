@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Account - Events Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#1E40AF',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .hero-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        /* Material Design Navigation Styles */
+        .material-nav {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #6366f1 100%);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+        
+        .material-nav::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            pointer-events: none;
+        }
+        
+        .material-nav-item {
+            color: white !important;
+            padding: 12px 16px;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 10;
+            text-decoration: none;
+        }
+        
+        .material-nav-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+            color: white !important;
+        }
+        
+        .nav-logo {
+            color: white !important;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 10;
+            text-decoration: none;
+        }
+        .material-icons {
+            font-feature-settings: 'liga';
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 min-h-screen font-sans antialiased">
+    <!-- Material Navigation -->
+    <nav class="material-nav">
+        <div class="w-full px-6">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="{% url 'events:index' %}" class="nav-logo flex items-center text-white font-medium text-xl">
+                        <span class="material-icons mr-3 text-2xl">event</span>Events Manager
+                    </a>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <a href="{% url 'events:landing_page' %}" class="material-nav-item flex items-center">
+                        <span class="material-icons mr-2 text-lg">home</span>Home
+                    </a>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'events:index' %}" class="material-nav-item flex items-center">
+                        <span class="material-icons mr-2 text-lg">dashboard</span>Dashboard
+                    </a>
+                    {% else %}
+                    <a href="{% url 'events:login' %}" class="material-nav-item flex items-center">
+                        <span class="material-icons mr-2 text-lg">login</span>Login
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden bg-gradient-to-br from-red-600 via-red-700 to-red-800 text-white py-20">
+        <div class="absolute inset-0 bg-black opacity-20"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="text-6xl mb-4">🗑️</div>
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">
+                Delete Account
+            </h1>
+            <p class="text-xl text-red-100 mb-8 max-w-3xl mx-auto">
+                Permanently delete your account and all associated data from our system.
+            </p>
+        </div>
+    </section>
+
+    <!-- Account Deletion Content -->
+    <section class="py-20 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            {% if not user.is_authenticated %}
+            <!-- Not Logged In Section -->
+            <section class="bg-blue-50 border-l-4 border-blue-400 p-8 rounded-lg mb-8">
+                <h2 class="text-2xl font-bold text-blue-900 mb-4 flex items-center">
+                    <span class="material-icons mr-2">info</span>Account Access Required
+                </h2>
+                <div class="text-blue-800 space-y-4">
+                    <p class="text-lg">
+                        To delete your account and personal data, you must first log in to your Events Management System account.
+                    </p>
+                    <p><strong>How to access account deletion:</strong></p>
+                    <ol class="list-decimal list-inside space-y-2 ml-4">
+                        <li>Log in to your Events Management System account</li>
+                        <li>Navigate to your account settings or dashboard</li>
+                        <li>Look for the "Delete Account" option in the navigation menu</li>
+                        <li>Follow the secure deletion process with password confirmation</li>
+                    </ol>
+                    <div class="flex flex-col sm:flex-row gap-4 mt-6">
+                        <a href="{% url 'events:login' %}" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition duration-300">
+                            <span class="material-icons mr-2">login</span>
+                            Log In to Your Account
+                        </a>
+                        <a href="{% url 'events:landing_page' %}" class="inline-flex items-center border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-medium py-3 px-6 rounded-lg transition duration-300">
+                            <span class="material-icons mr-2">home</span>
+                            Back to Home
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Data Rights Information -->
+            <section class="space-y-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6">Your Data Rights</h2>
+                    <div class="text-gray-700 space-y-4">
+                        <p>As a user of our Events Management System, you have the right to:</p>
+                        <ul class="list-disc list-inside space-y-2 ml-4">
+                            <li><strong>Access your data:</strong> View and download all personal information we have about you</li>
+                            <li><strong>Update your data:</strong> Modify or correct your personal information</li>
+                            <li><strong>Delete your data:</strong> Request permanent removal of your account and all associated data</li>
+                            <li><strong>Data portability:</strong> Export your data in a machine-readable format</li>
+                            <li><strong>Opt-out:</strong> Unsubscribe from marketing communications at any time</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">What Gets Deleted</h3>
+                    <p class="text-gray-700 mb-4">When you delete your account through the secure deletion process, the following data is permanently removed:</p>
+                    <ul class="list-disc list-inside space-y-1 ml-4 text-gray-700">
+                        <li>Your user profile and login credentials</li>
+                        <li>All events you created</li>
+                        <li>All pledges associated with your events</li>
+                        <li>All transaction records and payment history</li>
+                        <li>All messages and communication logs</li>
+                        <li>All preferences and settings</li>
+                    </ul>
+                </div>
+            </section>
+            
+            {% else %}
+
+        <!-- Content -->
+        <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 space-y-8">
+            
+            <!-- Warning Section -->
+            <section class="bg-red-50 border-l-4 border-red-400 p-6 rounded">
+                <h2 class="text-xl font-bold text-red-900 mb-4 flex items-center">
+                    <span class="material-icons mr-2">warning</span>Important Warning
+                </h2>
+                <div class="text-red-800 space-y-3">
+                    <p><strong>This action cannot be undone!</strong></p>
+                    <p><strong>The following data will be permanently deleted:</strong></p>
+                    <ul class="list-disc list-inside space-y-1 ml-4">
+                        <li>Your user account and profile information</li>
+                        <li>All events you created ({{ events_count }} events)</li>
+                        <li>All pledges associated with your events ({{ pledges_count }} pledges)</li>
+                        <li>All transactions and payment records ({{ transactions_count }} transactions)</li>
+                        <li>All messages and communication history ({{ messages_count }} messages)</li>
+                        <li>All associated data and settings</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- User Information -->
+            <section class="bg-blue-50 border-l-4 border-blue-400 p-6 rounded">
+                <h2 class="text-xl font-bold text-blue-900 mb-4">Account Information</h2>
+                <div class="text-blue-800 space-y-2">
+                    <p><strong>Full Name:</strong> {{ user.full_name }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Mobile:</strong> {{ user.mobile_number }}</p>
+                    <p><strong>Account Created:</strong> {{ user.date_joined|date:"F d, Y" }}</p>
+                    <p><strong>Last Login:</strong> {{ user.last_login|date:"F d, Y" }}</p>
+                </div>
+            </section>
+
+            <!-- Messages -->
+            {% if messages %}
+                <div class="mb-6">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} p-4 mb-4 rounded-lg {% if message.tags == 'success' %}bg-green-50 border border-green-200 text-green-800{% elif message.tags == 'error' %}bg-red-50 border border-red-200 text-red-800{% else %}bg-blue-50 border border-blue-200 text-blue-800{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- Deletion Form -->
+            <section>
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Confirm Account Deletion</h2>
+                
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <!-- Password Confirmation -->
+                    <div class="field-container">
+                        <div class="input-field relative">
+                            <label for="password" class="absolute left-3 -top-2.5 bg-white px-2 text-sm font-medium text-red-600 transition-all">
+                                <span class="material-icons text-sm mr-1 align-middle">lock</span>Confirm Password
+                            </label>
+                            <input type="password" 
+                                   name="password" 
+                                   id="password"
+                                   class="w-full px-4 py-3 border-2 border-red-300 rounded-lg focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-200 transition-all duration-200 bg-white"
+                                   required
+                                   placeholder="Enter your password to confirm deletion">
+                        </div>
+                        <p class="text-sm text-gray-600 mt-2">
+                            Please enter your current password to confirm this action.
+                        </p>
+                    </div>
+
+                    <!-- Confirmation Text -->
+                    <div class="field-container">
+                        <div class="input-field relative">
+                            <label for="confirmation_text" class="absolute left-3 -top-2.5 bg-white px-2 text-sm font-medium text-red-600 transition-all">
+                                <span class="material-icons text-sm mr-1 align-middle">edit</span>Type "DELETE" to confirm
+                            </label>
+                            <input type="text" 
+                                   name="confirmation_text" 
+                                   id="confirmation_text"
+                                   class="w-full px-4 py-3 border-2 border-red-300 rounded-lg focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-200 transition-all duration-200 bg-white"
+                                   required
+                                   placeholder="Type DELETE in capital letters">
+                        </div>
+                        <p class="text-sm text-gray-600 mt-2">
+                            Type exactly "DELETE" (in capital letters) to proceed with account deletion.
+                        </p>
+                    </div>
+
+                    <!-- Final Confirmation Checkbox -->
+                    <div class="bg-red-100 border border-red-300 rounded-lg p-6">
+                        <div class="flex items-start space-x-3">
+                            <input type="checkbox" id="final_confirmation" name="final_confirmation" required
+                                   class="mt-1 h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded">
+                            <label for="final_confirmation" class="text-sm text-red-800">
+                                <strong>I understand that this action is permanent and cannot be undone.</strong> 
+                                I confirm that I want to permanently delete my account and all associated data from the Events Management System.
+                                <span class="text-red-600 font-bold">*</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4 pt-6">
+                        <a href="{% url 'events:index' %}" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-medium py-4 px-6 rounded-lg transition-all duration-300 text-center">
+                            <span class="material-icons mr-2 align-middle">arrow_back</span>Cancel & Go Back
+                        </a>
+                        <button type="submit" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-medium py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-red-200">
+                            <span class="material-icons mr-2 align-middle">delete_forever</span>Delete My Account Permanently
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Alternative Options -->
+            <section class="bg-gray-50 p-6 rounded-lg">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Need Help?</h3>
+                <div class="text-gray-700 space-y-2">
+                    <p>If you're having issues with your account, consider these alternatives:</p>
+                    <ul class="list-disc list-inside space-y-1 ml-4 text-sm">
+                        <li>Update your account settings and preferences</li>
+                        <li>Contact our support team for assistance</li>
+                        <li>Temporarily deactivate your account (feature not yet available)</li>
+                    </ul>
+                    <p class="mt-4">
+                        <strong>Contact Support:</strong> 
+                        <a href="mailto:events@nifty.co.tz" class="text-blue-600 font-semibold hover:underline">events@nifty.co.tz</a>
+                    </p>
+                </div>
+            </section>
+            {% endif %}
+
+            <!-- Contact Information -->
+            <section class="bg-gray-50 p-6 rounded-lg mt-8">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Need Help?</h3>
+                <div class="text-gray-700 space-y-2">
+                    <p>If you have questions about account deletion or data rights, please contact us:</p>
+                    <p><strong>Company:</strong> Nifty Technologies</p>
+                    <p><strong>Email:</strong> <a href="mailto:events@nifty.co.tz" class="text-blue-600 font-semibold hover:underline">events@nifty.co.tz</a></p>
+                    <p><strong>Location:</strong> Tanzania</p>
+                    <p class="text-sm text-gray-600 mt-4">
+                        <strong>Processing Time:</strong> Account deletion requests are processed immediately when done through your logged-in account, or within 30 business days for email requests.
+                    </p>
+                </div>
+            </section>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h3 class="text-2xl font-bold mb-4">📅 Events Management System</h3>
+                <p class="text-gray-400 mb-6">
+                    Streamline your event organization with our comprehensive management platform.
+                </p>
+                <div class="flex justify-center space-x-6">
+                    <a href="{% url 'events:privacy_policy' %}" class="text-gray-400 hover:text-white transition duration-300">Privacy Policy</a>
+                    <a href="{% url 'events:terms_of_service' %}" class="text-gray-400 hover:text-white transition duration-300">Terms of Service</a>
+                    <a href="{% url 'events:data_deletion_request' %}" class="text-gray-400 hover:text-white transition duration-300">Delete My Data</a>
+                    <a href="{% url 'events:landing_page' %}" class="text-gray-400 hover:text-white transition duration-300">Home</a>
+                </div>
+                <div class="mt-6 pt-6 border-t border-gray-800">
+                    <p class="text-gray-400">
+                        &copy; 2024 Nifty Technologies. All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
