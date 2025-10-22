@@ -1481,6 +1481,151 @@ def logout_view(request):
     return redirect('events:landing_page')
 
 
+def forgot_password_view(request):
+    """Handle forgot password requests"""
+    import logging
+    import uuid
+    from django.core.mail import send_mail
+    from django.conf import settings
+    from django.urls import reverse
+    from django.utils import timezone
+    
+    logger = logging.getLogger(__name__)
+    
+    if request.method == 'POST':
+        email = request.POST.get('email', '').strip()
+        
+        if not email:
+            messages.error(request, 'Please enter your email address.')
+            return redirect('events:forgot_password')
+        
+        try:
+            # Check if user exists
+            user = EventUser.objects.filter(email=email, is_verified=True).first()
+            
+            if user:
+                # Generate password reset token
+                reset_token = str(uuid.uuid4())
+                user.password_reset_token = reset_token
+                user.password_reset_expires = timezone.now() + timezone.timedelta(hours=24)
+                user.save()
+                
+                # Build reset link
+                reset_link = request.build_absolute_uri(
+                    reverse('events:reset_password', kwargs={'token': reset_token})
+                )
+                
+                # Send password reset email
+                subject = 'Password Reset - Events Management System'
+                message = f"""
+Dear {user.full_name},
+
+You have requested to reset your password for the Events Management System.
+
+Please click the link below to reset your password:
+{reset_link}
+
+This link will expire in 24 hours.
+
+If you did not request this password reset, please ignore this email or contact support.
+
+Best regards,
+Nifty Technologies Team
+events@nifty.co.tz
+                """
+                
+                send_mail(
+                    subject=subject,
+                    message=message,
+                    from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'events@nifty.co.tz'),
+                    recipient_list=[email],
+                    fail_silently=False,
+                )
+                
+                logger.info(f"Password reset email sent to {email}")
+                
+            # Always show success message for security (don't reveal if email exists)
+            messages.success(
+                request,
+                'If an account with that email address exists, we have sent you a password reset link. '
+                'Please check your email and click the link to reset your password.'
+            )
+            return redirect('events:forgot_password')
+            
+        except Exception as e:
+            logger.error(f"Error sending password reset email: {str(e)}")
+            messages.error(
+                request,
+                'There was an error sending the password reset email. Please try again later or contact support.'
+            )
+            return redirect('events:forgot_password')
+    
+    return render(request, 'events/forgot_password.html')
+
+
+def reset_password_view(request, token):
+    """Handle password reset with token"""
+    import logging
+    from django.contrib.auth.hashers import make_password
+    from django.utils import timezone
+    
+    logger = logging.getLogger(__name__)
+    
+    # Verify token and check expiration
+    try:
+        user = EventUser.objects.get(
+            password_reset_token=token,
+            password_reset_expires__gt=timezone.now(),
+            is_verified=True
+        )
+    except EventUser.DoesNotExist:
+        messages.error(
+            request,
+            'Invalid or expired password reset link. Please request a new password reset.'
+        )
+        return redirect('events:forgot_password')
+    
+    if request.method == 'POST':
+        password = request.POST.get('password', '')
+        password_confirm = request.POST.get('password_confirm', '')
+        
+        if not password or not password_confirm:
+            messages.error(request, 'Please fill in both password fields.')
+            return render(request, 'events/reset_password.html')
+        
+        if len(password) < 8:
+            messages.error(request, 'Password must be at least 8 characters long.')
+            return render(request, 'events/reset_password.html')
+        
+        if password != password_confirm:
+            messages.error(request, 'Passwords do not match.')
+            return render(request, 'events/reset_password.html')
+        
+        try:
+            # Update user password and clear reset token
+            user.password = make_password(password)
+            user.password_reset_token = None
+            user.password_reset_expires = None
+            user.save()
+            
+            logger.info(f"Password successfully reset for user {user.email}")
+            
+            messages.success(
+                request,
+                'Your password has been successfully reset! You can now log in with your new password.'
+            )
+            return redirect('events:login')
+            
+        except Exception as e:
+            logger.error(f"Error resetting password for {user.email}: {str(e)}")
+            messages.error(
+                request,
+                'There was an error resetting your password. Please try again or contact support.'
+            )
+    
+    return render(request, 'events/reset_password.html')
+
+
 @login_required
 def dashboard_view(request):
     """User dashboard - requires authentication"""

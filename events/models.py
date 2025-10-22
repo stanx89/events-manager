@@ -94,6 +94,19 @@ class EventUser(AbstractUser):
         verbose_name="Verification Sent At",
         help_text="When the verification email was last sent"
     )
+    password_reset_token = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name="Password Reset Token",
+        help_text="Token for password reset"
+    )
+    password_reset_expires = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name="Password Reset Expires",
+        help_text="When the password reset token expires"
+    )
     
     # Set email as the username field
     USERNAME_FIELD = 'email'

@@ -1369,3 +1369,11 @@ INFO 2025-10-22 04:58:09,803 views 22122 6203748352 ============================
 INFO 2025-10-22 04:58:09,803 views 22122 6203748352 🎉 REGISTRATION PROCESS COMPLETED SUCCESSFULLY
 INFO 2025-10-22 05:08:43,243 views 22502 6199914496 Data deletion request submitted for stankayombo@gmail.com - Stanslaus Kayombo
 INFO 2025-10-22 05:10:13,272 views 22502 6199914496 Data deletion request submitted for qweqw@SS.COM - aadwdeaw
+ERROR 2025-10-22 08:01:28,108 views 30534 6194343936 Error sending password reset email: column event_users.password_reset_token does not exist
+LINE 1: ...ion_token", "event_users"."verification_sent_at", "event_use...
+                                                             ^
+
+ERROR 2025-10-22 08:01:40,324 views 30534 6194343936 Error sending password reset email: column event_users.password_reset_token does not exist
+LINE 1: ...ion_token", "event_users"."verification_sent_at", "event_use...
+                                                             ^
+

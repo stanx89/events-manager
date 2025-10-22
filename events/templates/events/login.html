@@ -18,70 +18,77 @@
         }
     </script>
     <style>
-        /* Material Design Navigation Styles */
-        .material-nav {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #6366f1 100%);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        /* Tooltip Styles */
+        .tooltip {
             position: relative;
+            cursor: help;
         }
         
-        .material-nav::before {
+        .tooltip .tooltip-content {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            z-index: 1000;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            text-align: left;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 14px;
+            width: 280px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        .tooltip .tooltip-content::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-            pointer-events: none;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: rgba(0, 0, 0, 0.9) transparent transparent transparent;
         }
         
-        .material-nav-item {
-            color: white !important;
-            padding: 12px 16px;
-            border-radius: 8px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            z-index: 10;
+        .tooltip:hover .tooltip-content {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .tooltip .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .tooltip .contact-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .tooltip .contact-item .material-icons {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .tooltip .contact-link {
+            color: #60A5FA;
             text-decoration: none;
         }
-        
-        .material-nav-item:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-decoration: none;
-            color: white !important;
-        }
-        
-        .nav-logo {
-            color: white !important;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            position: relative;
-            z-index: 10;
-            text-decoration: none;
+
+        .tooltip .contact-link:hover {
+            color: #93C5FD;
+            text-decoration: underline;
         }
     </style>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body class="bg-gray-100 min-h-screen font-sans antialiased">
-    <!-- Material Navigation -->
-    <nav class="material-nav">
-        <div class="w-full px-6">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center">
-                    <a href="{% url 'events:landing_page' %}" class="nav-logo flex items-center text-white font-medium text-xl">
-                        <span class="material-icons mr-3 text-2xl">event</span>Events Manager
-                    </a>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <a href="{% url 'events:landing_page' %}" class="material-nav-item flex items-center">
-                        <span class="material-icons mr-2 text-lg">person_add</span>Register
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <!-- Include Reusable Navigation -->
+    {% include 'events/navbar.html' %}
 
     <!-- Login Section -->
     <section class="flex items-center justify-center py-12 px-6">
@@ -153,15 +160,9 @@
 
                     <!-- Remember me and Forgot password -->
                     <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                            <label for="remember-me" class="ml-2 block text-sm text-gray-700">
-                                Remember me
-                            </label>
-                        </div>
-
+    
                         <div class="text-sm">
-                            <a href="#" class="font-medium text-blue-600 hover:text-blue-700 transition-colors">
+                            <a href="{% url 'events:forgot_password' %}" class="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors flex items-center justify-center">
                                 Forgot your password?
                             </a>
                         </div>
@@ -183,8 +184,32 @@
                         <div class="w-full border-t border-gray-300"></div>
                     </div>
                     <div class="relative flex justify-center text-sm">
-                        <span class="px-4 bg-gray-100 text-gray-500 flex items-center">
+                        <span class="px-4 bg-gray-100 text-gray-500 flex items-center tooltip">
                             <span class="material-icons text-sm mr-1">help_outline</span>Need help?
+                            <div class="tooltip-content">
+                                <div style="font-weight: bold; margin-bottom: 8px; color: #93C5FD;">
+                                    Contact Support
+                                </div>
+                                <div class="contact-item">
+                                    <span class="material-icons text-blue-400">email</span>
+                                    <a href="mailto:events@nifty.co.tz" class="contact-link">events@nifty.co.tz</a>
+                                </div>
+                                <div class="contact-item">
+                                    <span class="material-icons text-green-400">phone</span>
+                                    <a href="tel:+255713241438" class="contact-link">+255 713 241 438</a>
+                                </div>
+                                <div class="contact-item">
+                                    <span class="material-icons text-orange-400">business</span>
+                                    <span>Nifty Technologies</span>
+                                </div>
+                                <div class="contact-item">
+                                    <span class="material-icons text-purple-400">location_on</span>
+                                    <span>Tanzania</span>
+                                </div>
+                                <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #374151; font-size: 12px; color: #D1D5DB;">
+                                    Hover over this icon for contact details
+                                </div>
+                            </div>
                         </span>
                     </div>
                 </div>
@@ -197,36 +222,12 @@
                             Sign up here
                         </a>
                     </p>
-                    <p class="text-sm text-gray-600 flex items-center justify-center">
-                        <span class="material-icons text-sm mr-1 text-gray-400">mark_email_unread</span>
-                        Didn't receive verification email? 
-                        <a href="{% url 'events:landing_page' %}#register" class="font-medium text-blue-600 hover:text-blue-700 ml-1 transition-colors">
-                            Resend verification
-                        </a>
-                    </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-8 mt-12">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center">
-                <div class="flex items-center justify-center mb-2">
-                    <span class="material-icons mr-2 text-blue-400">event</span>
-                    <h3 class="text-lg font-bold">Events Management System</h3>
-                </div>
-                <p class="text-gray-400">
-                    Secure login to manage your events and pledges.
-                </p>
-                <div class="mt-4 pt-4 border-t border-gray-800">
-                    <p class="text-gray-400 text-sm">
-                        &copy; 2025 Events Management System. All rights reserved.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <!-- Include Reusable Footer -->
+    {% include 'events/footer.html' %}
 </body>
 </html>
