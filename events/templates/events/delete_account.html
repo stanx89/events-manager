@@ -270,6 +270,31 @@
                         </p>
                     </div>
 
+                    <!-- Human Verification -->
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold text-yellow-900 mb-4 flex items-center">
+                            <span class="material-icons mr-2">security</span>Human Verification
+                        </h3>
+                        
+                        <div class="bg-white p-4 rounded border-2 border-yellow-300 text-center">
+                            <p class="text-lg font-bold text-gray-900 mb-2">
+                                Please solve this simple math problem to verify you're human:
+                            </p>
+                            <div class="text-3xl font-bold text-red-600 mb-4">
+                                {{ captcha_question }}
+                            </div>
+                            <input type="number" 
+                                   name="captcha_answer" 
+                                   id="captcha_answer"
+                                   class="w-32 px-4 py-2 text-center text-2xl border-2 border-gray-300 rounded-lg focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-200 transition-all duration-200"
+                                   required
+                                   placeholder="?">
+                        </div>
+                        <input type="hidden" name="captcha_num1" value="{{ captcha_num1 }}">
+                        <input type="hidden" name="captcha_num2" value="{{ captcha_num2 }}">
+                        <input type="hidden" name="captcha_operation" value="{{ captcha_operation }}">
+                    </div>
+
                     <!-- Final Confirmation Checkbox -->
                     <div class="bg-red-100 border border-red-300 rounded-lg p-6">
                         <div class="flex items-start space-x-3">

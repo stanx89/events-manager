@@ -1046,28 +1046,46 @@ def landing_page(request):
     """Landing page with service information and registration form"""
     from .forms import RegistrationForm
     import logging
+    import random
     
     logger = logging.getLogger(__name__)
     
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         
-        # Check privacy agreement checkbox
-        privacy_agreement = request.POST.get('privacy_agreement')
-        if not privacy_agreement:
-            messages.error(request, 'You must agree to the Privacy Policy and Terms of Service to register.')
-            
+        # Validate CAPTCHA
+        captcha_answer = request.POST.get('captcha_answer', '')
+        captcha_num1 = int(request.POST.get('captcha_num1', 0))
+        captcha_num2 = int(request.POST.get('captcha_num2', 0))
+        captcha_operation = request.POST.get('captcha_operation', '+')
+        
+        # Calculate correct answer
+        if captcha_operation == '+':
+            correct_answer = captcha_num1 + captcha_num2
+        elif captcha_operation == '-':
+            correct_answer = captcha_num1 - captcha_num2
+        else:
+            correct_answer = captcha_num1 + captcha_num2
+        
+        try:
+            captcha_answer_int = int(captcha_answer) if captcha_answer else 0
+        except ValueError:
+            captcha_answer_int = 0
+        
+        if not captcha_answer or captcha_answer_int != correct_answer:
+            messages.error(request, 'Please solve the math problem correctly to verify you are human.')
         elif form.is_valid():
             try:
-                # Save the registration request with privacy agreement info
+                # Save the registration request
                 registration_request = form.save(commit=False)
-                registration_request.privacy_agreement_accepted = True
-                registration_request.marketing_consent = bool(request.POST.get('marketing_consent'))
+                
+                # Set a default event date since it's not collected in the form anymore
+                from django.utils import timezone
+                registration_request.event_date = timezone.now() + timezone.timedelta(days=30)  # Default to 30 days from now
+                
                 registration_request.save()
                 
                 logger.info(f"Registration saved for {registration_request.email} (ID: {registration_request.id})")
-                logger.info(f"Privacy agreement: {registration_request.privacy_agreement_accepted}")
-                logger.info(f"Marketing consent: {registration_request.marketing_consent}")
                 
                 # Send verification email
                 logger.info("🚀 INITIATING REGISTRATION EMAIL PROCESS")
@@ -1103,7 +1121,13 @@ def landing_page(request):
                 
             return redirect('events:landing_page')
         else:
-            messages.error(request, 'Please correct the errors below.')
+            # Display form validation errors
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field.replace('_', ' ').title()}: {error}")
+            if not form.errors:
+                messages.error(request, 'Please correct the errors below.')
+            return redirect('events:landing_page')
     else:
         form = RegistrationForm()
     
@@ -1112,11 +1136,30 @@ def landing_page(request):
     total_users = EventUser.objects.filter(is_verified=True).count()
     total_pledges = Pledges.objects.count()
     
+    # Generate CAPTCHA
+    captcha_num1 = random.randint(1, 10)
+    captcha_num2 = random.randint(1, 10)
+    operations = ['+', '-']
+    captcha_operation = random.choice(operations)
+    
+    # Make sure subtraction doesn't result in negative numbers
+    if captcha_operation == '-' and captcha_num1 < captcha_num2:
+        captcha_num1, captcha_num2 = captcha_num2, captcha_num1
+    
+    if captcha_operation == '+':
+        captcha_question = f"{captcha_num1} + {captcha_num2} = ?"
+    else:
+        captcha_question = f"{captcha_num1} - {captcha_num2} = ?"
+    
     context = {
         'form': form,
         'total_events': total_events,
         'total_users': total_users,
         'total_pledges': total_pledges,
+        'captcha_num1': captcha_num1,
+        'captcha_num2': captcha_num2,
+        'captcha_operation': captcha_operation,
+        'captcha_question': captcha_question,
     }
     return render(request, 'events/landing_page.html', context)
 
@@ -1148,9 +1191,6 @@ def verify_email(request, token):
                 mobile_number=registration_request.mobile_number,
                 is_verified=True,
                 is_active=True,
-                privacy_agreement_accepted=getattr(registration_request, 'privacy_agreement_accepted', True),
-                marketing_consent=getattr(registration_request, 'marketing_consent', False),
-                privacy_accepted_at=timezone.now() if getattr(registration_request, 'privacy_agreement_accepted', True) else None
             )
             
             # Set the password using the hashed password from registration
@@ -1617,17 +1657,35 @@ def data_deletion_request(request):
     """
     Handle data deletion requests from users
     """
+    import random
+    
     if request.method == 'POST':
         full_name = request.POST.get('full_name', '').strip()
         email = request.POST.get('email', '').strip()
         reason = request.POST.get('reason', '').strip()
         confirm_deletion = request.POST.get('confirm_deletion')
         
+        # Validate CAPTCHA
+        captcha_answer = request.POST.get('captcha_answer', '')
+        captcha_num1 = int(request.POST.get('captcha_num1', 0))
+        captcha_num2 = int(request.POST.get('captcha_num2', 0))
+        captcha_operation = request.POST.get('captcha_operation', '+')
+        
+        # Calculate correct answer
+        if captcha_operation == '+':
+            correct_answer = captcha_num1 + captcha_num2
+        elif captcha_operation == '-':
+            correct_answer = captcha_num1 - captcha_num2
+        else:
+            correct_answer = captcha_num1 + captcha_num2
+        
         # Validate required fields
         if not full_name or not email:
             messages.error(request, 'Full name and email address are required.')
         elif not confirm_deletion:
             messages.error(request, 'You must confirm that you understand this action is permanent.')
+        elif not captcha_answer or int(captcha_answer) != correct_answer:
+            messages.error(request, 'Please solve the math problem correctly to verify you are human.')
         else:
             # Send email to privacy team
             try:
@@ -1659,8 +1717,8 @@ Note: Verify the user's identity before processing the deletion request.
                 """
                 
                 # Send to privacy team
-                privacy_email = getattr(settings, 'PRIVACY_EMAIL', 'privacy@ndondo.co.tz')
-                support_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'support@ndondo.co.tz')
+                privacy_email = getattr(settings, 'PRIVACY_EMAIL', 'events@nifty.co.tz')
+                support_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'events@nifty.co.tz')
                 
                 send_mail(
                     subject=subject,
@@ -1686,7 +1744,7 @@ What happens next:
 2. You will receive a confirmation email once your data has been permanently deleted
 3. After deletion, you will no longer be able to access your account or recover any data
 
-If you have any questions or did not submit this request, please contact us immediately at privacy@ndondo.co.tz
+If you have any questions or did not submit this request, please contact us immediately at events@nfity.co.tz
 
 Thank you,
 Events Management System Team
@@ -1714,12 +1772,34 @@ Events Management System Team
                 messages.error(
                     request,
                     'There was an error submitting your deletion request. '
-                    'Please try again or contact support@ndondo.co.tz directly.'
+                    'Please try again or contact events@nifty.co.tz directly.'
                 )
             
             return redirect('events:data_deletion_request')
     
-    return render(request, 'events/data_deletion.html')
+    # Generate CAPTCHA for GET request
+    captcha_num1 = random.randint(1, 10)
+    captcha_num2 = random.randint(1, 10)
+    operations = ['+', '-']
+    captcha_operation = random.choice(operations)
+    
+    # Make sure subtraction doesn't result in negative numbers
+    if captcha_operation == '-' and captcha_num1 < captcha_num2:
+        captcha_num1, captcha_num2 = captcha_num2, captcha_num1
+    
+    if captcha_operation == '+':
+        captcha_question = f"{captcha_num1} + {captcha_num2} = ?"
+    else:
+        captcha_question = f"{captcha_num1} - {captcha_num2} = ?"
+    
+    context = {
+        'captcha_num1': captcha_num1,
+        'captcha_num2': captcha_num2,
+        'captcha_operation': captcha_operation,
+        'captcha_question': captcha_question,
+    }
+    
+    return render(request, 'events/data_deletion.html', context)
 
 
 @login_required
@@ -1727,10 +1807,26 @@ def delete_account(request):
     """
     Allow logged-in users to delete their own account
     """
+    import random
+    
     if request.method == 'POST':
         password = request.POST.get('password', '').strip()
         confirmation_text = request.POST.get('confirmation_text', '').strip()
         final_confirmation = request.POST.get('final_confirmation')
+        
+        # Validate CAPTCHA
+        captcha_answer = request.POST.get('captcha_answer', '')
+        captcha_num1 = int(request.POST.get('captcha_num1', 0))
+        captcha_num2 = int(request.POST.get('captcha_num2', 0))
+        captcha_operation = request.POST.get('captcha_operation', '+')
+        
+        # Calculate correct answer
+        if captcha_operation == '+':
+            correct_answer = captcha_num1 + captcha_num2
+        elif captcha_operation == '-':
+            correct_answer = captcha_num1 - captcha_num2
+        else:
+            correct_answer = captcha_num1 + captcha_num2
         
         # Validate inputs
         if not password:
@@ -1739,6 +1835,8 @@ def delete_account(request):
             messages.error(request, 'You must type "DELETE" exactly to confirm deletion.')
         elif not final_confirmation:
             messages.error(request, 'You must check the final confirmation checkbox.')
+        elif not captcha_answer or int(captcha_answer) != correct_answer:
+            messages.error(request, 'Please solve the math problem correctly to verify you are human.')
         else:
             # Verify password
             from django.contrib.auth import authenticate
@@ -1840,11 +1938,19 @@ Nifty Technologies Team
     transactions_count = Transactions.objects.filter(pledge__event__created_by=request.user).count()
     messages_count = Messages.objects.filter(pledge__event__created_by=request.user).count()
     
+    # Generate CAPTCHA for the form
+    captcha_num1 = random.randint(1, 10)
+    captcha_num2 = random.randint(1, 10)
+    captcha_operation = random.choice(['+', '-'])
+    
     context = {
         'events_count': events_count,
         'pledges_count': pledges_count,
         'transactions_count': transactions_count,
         'messages_count': messages_count,
+        'captcha_num1': captcha_num1,
+        'captcha_num2': captcha_num2,
+        'captcha_operation': captcha_operation,
     }
     
     return render(request, 'events/delete_account.html', context)

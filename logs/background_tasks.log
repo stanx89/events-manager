@@ -1215,3 +1215,157 @@ INFO 2025-10-21 17:56:15,637 views 93193 6133772288    Registration ID: 22
 INFO 2025-10-21 17:56:15,637 views 93193 6133772288    Token: fb0e13c7-3bb6-4684-be87-60acb31b3f17
 INFO 2025-10-21 17:56:15,637 views 93193 6133772288 ============================================================
 INFO 2025-10-21 17:56:15,637 views 93193 6133772288 🎉 REGISTRATION PROCESS COMPLETED SUCCESSFULLY
+ERROR 2025-10-22 04:54:06,155 views 21918 6134575104 Registration process failed for dumangogolox89@gmail.com: column "privacy_agreement_accepted" of relation "registration_requests" does not exist
+LINE 1: ...event_date", "verification_token", "is_verified", "privacy_a...
+                                                             ^
+
+ERROR 2025-10-22 04:54:06,156 views 21918 6134575104 Error type: ProgrammingError
+ERROR 2025-10-22 04:54:06,161 views 21918 6134575104 Traceback: Traceback (most recent call last):
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.UndefinedColumn: column "privacy_agreement_accepted" of relation "registration_requests" does not exist
+LINE 1: ...event_date", "verification_token", "is_verified", "privacy_a...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/stan/Ndondo/events/events/views.py", line 1088, in landing_page
+    registration_request.save()
+  File "/Users/stan/Ndondo/events/events/models.py", line 744, in save
+    super().save(*args, **kwargs)
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/models/base.py", line 902, in save
+    self.save_base(
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/models/base.py", line 1008, in save_base
+    updated = self._save_table(
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/models/base.py", line 1169, in _save_table
+    results = self._do_insert(
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/models/base.py", line 1210, in _do_insert
+    return manager._insert(
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/models/query.py", line 1864, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1882, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.ProgrammingError: column "privacy_agreement_accepted" of relation "registration_requests" does not exist
+LINE 1: ...event_date", "verification_token", "is_verified", "privacy_a...
+                                                             ^
+
+
+ERROR 2025-10-22 04:55:31,359 views 21918 6134575104 Registration process failed for dumangogolox89@gmail.com: column "privacy_agreement_accepted" of relation "registration_requests" does not exist
+LINE 1: ...event_date", "verification_token", "is_verified", "privacy_a...
+                                                             ^
+
+ERROR 2025-10-22 04:55:31,361 views 21918 6134575104 Error type: ProgrammingError
+ERROR 2025-10-22 04:55:31,361 views 21918 6134575104 Traceback: Traceback (most recent call last):
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.UndefinedColumn: column "privacy_agreement_accepted" of relation "registration_requests" does not exist
+LINE 1: ...event_date", "verification_token", "is_verified", "privacy_a...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/stan/Ndondo/events/events/views.py", line 1088, in landing_page
+    registration_request.save()
+  File "/Users/stan/Ndondo/events/events/models.py", line 744, in save
+    super().save(*args, **kwargs)
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/models/base.py", line 902, in save
+    self.save_base(
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/models/base.py", line 1008, in save_base
+    updated = self._save_table(
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/models/base.py", line 1169, in _save_table
+    results = self._do_insert(
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/models/base.py", line 1210, in _do_insert
+    return manager._insert(
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/models/query.py", line 1864, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/models/sql/compiler.py", line 1882, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/Users/stan/.pyenv/versions/3.10.0/lib/python3.10/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.ProgrammingError: column "privacy_agreement_accepted" of relation "registration_requests" does not exist
+LINE 1: ...event_date", "verification_token", "is_verified", "privacy_a...
+                                                             ^
+
+
+INFO 2025-10-22 04:58:05,212 views 22122 6203748352 Registration saved for dumangogolox89@gmail.com (ID: 23)
+INFO 2025-10-22 04:58:05,212 views 22122 6203748352 🚀 INITIATING REGISTRATION EMAIL PROCESS
+INFO 2025-10-22 04:58:05,212 views 22122 6203748352    Registration ID: 23
+INFO 2025-10-22 04:58:05,212 views 22122 6203748352    User: Duma Ngogolo
+INFO 2025-10-22 04:58:05,212 views 22122 6203748352    Email: dumangogolox89@gmail.com
+INFO 2025-10-22 04:58:05,212 views 22122 6203748352    Event: Duma Harusi
+INFO 2025-10-22 04:58:05,212 views 22122 6203748352 ============================================================
+INFO 2025-10-22 04:58:05,213 views 22122 6203748352 📧 STARTING EMAIL SENDING PROCESS
+INFO 2025-10-22 04:58:05,213 views 22122 6203748352 ============================================================
+INFO 2025-10-22 04:58:05,213 views 22122 6203748352 📋 Email Configuration:
+INFO 2025-10-22 04:58:05,213 views 22122 6203748352    Backend: django.core.mail.backends.smtp.EmailBackend
+INFO 2025-10-22 04:58:05,213 views 22122 6203748352    Host: mail.nifty.co.tz
+INFO 2025-10-22 04:58:05,213 views 22122 6203748352    Port: 587
+INFO 2025-10-22 04:58:05,213 views 22122 6203748352    User: events@nifty.co.tz
+INFO 2025-10-22 04:58:05,213 views 22122 6203748352    From: events@nifty.co.tz
+INFO 2025-10-22 04:58:05,213 views 22122 6203748352    TLS: True
+INFO 2025-10-22 04:58:05,213 views 22122 6203748352    SSL: False
+INFO 2025-10-22 04:58:05,213 views 22122 6203748352    Timeout: 30
+INFO 2025-10-22 04:58:05,213 views 22122 6203748352 📤 Email Details:
+INFO 2025-10-22 04:58:05,213 views 22122 6203748352    To: dumangogolox89@gmail.com
+INFO 2025-10-22 04:58:05,213 views 22122 6203748352    User: Duma Ngogolo
+INFO 2025-10-22 04:58:05,213 views 22122 6203748352    Event: Duma Harusi
+INFO 2025-10-22 04:58:05,213 views 22122 6203748352    Token: e8b8c0ed-f081-48b0-8925-98853b72f05a
+INFO 2025-10-22 04:58:05,213 views 22122 6203748352    Created: 2025-10-22 04:58:05.195675+00:00
+INFO 2025-10-22 04:58:05,213 views 22122 6203748352    Expires: 2025-10-23 04:58:05.195468+00:00
+INFO 2025-10-22 04:58:05,213 views 22122 6203748352 🔗 Generating verification URL...
+INFO 2025-10-22 04:58:05,217 views 22122 6203748352    Using request.build_absolute_uri()
+INFO 2025-10-22 04:58:05,217 views 22122 6203748352    Generated URL: http://localhost:8000/verify-email/e8b8c0ed-f081-48b0-8925-98853b72f05a/
+INFO 2025-10-22 04:58:05,217 views 22122 6203748352 📝 Preparing email content...
+INFO 2025-10-22 04:58:05,217 views 22122 6203748352    Subject: Nifty Events -   Verify Your Email
+INFO 2025-10-22 04:58:05,218 views 22122 6203748352 🎨 Rendering HTML email template...
+INFO 2025-10-22 04:58:05,221 views 22122 6203748352    ✅ HTML template rendered successfully (4724 characters)
+INFO 2025-10-22 04:58:05,221 views 22122 6203748352 📨 SENDING EMAIL...
+INFO 2025-10-22 04:58:05,221 views 22122 6203748352    From: events@nifty.co.tz
+INFO 2025-10-22 04:58:05,221 views 22122 6203748352    To: [dumangogolox89@gmail.com]
+INFO 2025-10-22 04:58:05,221 views 22122 6203748352    Subject: Nifty Events -   Verify Your Email
+INFO 2025-10-22 04:58:05,221 views 22122 6203748352    Plain text length: 570 characters
+INFO 2025-10-22 04:58:05,221 views 22122 6203748352    HTML message: Yes
+INFO 2025-10-22 04:58:05,221 views 22122 6203748352    Fail silently: False
+INFO 2025-10-22 04:58:09,802 views 22122 6203748352 ============================================================
+INFO 2025-10-22 04:58:09,803 views 22122 6203748352 ✅ EMAIL SENT SUCCESSFULLY!
+INFO 2025-10-22 04:58:09,803 views 22122 6203748352 ============================================================
+INFO 2025-10-22 04:58:09,803 views 22122 6203748352 📊 Sending Statistics:
+INFO 2025-10-22 04:58:09,803 views 22122 6203748352    Duration: 4.58 seconds
+INFO 2025-10-22 04:58:09,803 views 22122 6203748352    Timestamp: 2025-10-22 04:58:09
+INFO 2025-10-22 04:58:09,803 views 22122 6203748352    Recipient: dumangogolox89@gmail.com
+INFO 2025-10-22 04:58:09,803 views 22122 6203748352    Registration ID: 23
+INFO 2025-10-22 04:58:09,803 views 22122 6203748352    Token: e8b8c0ed-f081-48b0-8925-98853b72f05a
+INFO 2025-10-22 04:58:09,803 views 22122 6203748352 ============================================================
+INFO 2025-10-22 04:58:09,803 views 22122 6203748352 🎉 REGISTRATION PROCESS COMPLETED SUCCESSFULLY
+INFO 2025-10-22 05:08:43,243 views 22502 6199914496 Data deletion request submitted for stankayombo@gmail.com - Stanslaus Kayombo
+INFO 2025-10-22 05:10:13,272 views 22502 6199914496 Data deletion request submitted for qweqw@SS.COM - aadwdeaw

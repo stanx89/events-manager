@@ -1,0 +1,44 @@
+<!-- Footer -->
+<footer class="bg-gray-900 text-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <h3 class="text-2xl font-bold mb-4">📅 Events Management System</h3>
+            <p class="text-gray-400 mb-6">
+                Streamline your event organization with our comprehensive management platform.
+            </p>
+            
+            <!-- Contact Information -->
+            <div class="bg-gray-800 rounded-lg p-6 mb-6 max-w-2xl mx-auto">
+                <h4 class="text-lg font-semibold text-white mb-4 flex items-center justify-center">
+                    <span class="material-icons mr-2">contact_support</span>Contact Us
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div class="flex items-center justify-center md:justify-end">
+                        <span class="material-icons mr-2 text-blue-400">email</span>
+                        <a href="mailto:events@nifty.co.tz" class="text-blue-400 hover:text-blue-300 transition duration-300">
+                            events@nifty.co.tz
+                        </a>
+                    </div>
+                    <div class="flex items-center justify-center md:justify-start">
+                        <span class="material-icons mr-2 text-green-400">phone</span>
+                        <a href="tel:+255713241438" class="text-green-400 hover:text-green-300 transition duration-300">
+                            +255 713 241 438
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-center space-x-6">
+                <a href="{% url 'events:privacy_policy' %}" class="text-gray-400 hover:text-white transition duration-300">Privacy Policy</a>
+                <a href="{% url 'events:terms_of_service' %}" class="text-gray-400 hover:text-white transition duration-300">Terms of Service</a>
+                <a href="{% url 'events:data_deletion_request' %}" class="text-gray-400 hover:text-white transition duration-300">Delete My Data</a>
+                <a href="{% url 'events:landing_page' %}" class="text-gray-400 hover:text-white transition duration-300">Home</a>
+            </div>
+            <div class="mt-6 pt-6 border-t border-gray-800">
+                <p class="text-gray-400">
+                    &copy; 2024 Nifty Technologies. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>

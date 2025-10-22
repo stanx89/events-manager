@@ -94,22 +94,6 @@ class EventUser(AbstractUser):
         verbose_name="Verification Sent At",
         help_text="When the verification email was last sent"
     )
-    privacy_agreement_accepted = models.BooleanField(
-        default=False,
-        verbose_name="Privacy Agreement Accepted",
-        help_text="Whether the user accepted the privacy policy and terms of service"
-    )
-    marketing_consent = models.BooleanField(
-        default=False,
-        verbose_name="Marketing Consent",
-        help_text="Whether the user consented to receive marketing communications"
-    )
-    privacy_accepted_at = models.DateTimeField(
-        null=True,
-        blank=True,
-        verbose_name="Privacy Accepted At",
-        help_text="When the user accepted the privacy policy"
-    )
     
     # Set email as the username field
     USERNAME_FIELD = 'email'
@@ -700,16 +684,6 @@ class RegistrationRequest(models.Model):
     is_verified = models.BooleanField(
         default=False,
         verbose_name="Is Verified"
-    )
-    privacy_agreement_accepted = models.BooleanField(
-        default=False,
-        verbose_name="Privacy Agreement Accepted",
-        help_text="Whether the user accepted the privacy policy and terms of service"
-    )
-    marketing_consent = models.BooleanField(
-        default=False,
-        verbose_name="Marketing Consent",
-        help_text="Whether the user consented to receive marketing communications"
     )
     created_at = models.DateTimeField(auto_now_add=True)
     expires_at = models.DateTimeField(

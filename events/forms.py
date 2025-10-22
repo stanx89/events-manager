@@ -284,7 +284,7 @@ class RegistrationForm(forms.ModelForm):
     
     class Meta:
         model = RegistrationRequest
-        fields = ['full_name', 'email', 'password', 'mobile_number', 'event_name', 'event_date']
+        fields = ['full_name', 'email', 'password', 'mobile_number', 'event_name']
         
         widgets = {
             'full_name': forms.TextInput(attrs={
@@ -303,10 +303,6 @@ class RegistrationForm(forms.ModelForm):
                 'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500',
                 'placeholder': 'Enter your event name'
             }),
-            'event_date': forms.DateTimeInput(attrs={
-                'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500',
-                'type': 'datetime-local'
-            }),
         }
         
         labels = {
@@ -314,7 +310,6 @@ class RegistrationForm(forms.ModelForm):
             'email': 'Email Address',
             'mobile_number': 'Mobile Number',
             'event_name': 'Event Name',
-            'event_date': 'Event Date & Time',
         }
         
         help_texts = {
@@ -322,7 +317,6 @@ class RegistrationForm(forms.ModelForm):
             'email': 'We will send a verification email to this address',
             'mobile_number': 'Tanzanian mobile number (e.g., +255123456789)',
             'event_name': 'Name of the event you want to organize',
-            'event_date': 'Date and time when your event will take place',
         }
 
     def clean_email(self):

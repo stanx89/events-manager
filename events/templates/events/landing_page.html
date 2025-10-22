@@ -217,9 +217,6 @@
                                     <span class="material-icons text-sm mr-1">error</span>{{ form.full_name.errors.0 }}
                                 </p>
                             {% endif %}
-                            {% if form.full_name.help_text %}
-                                <p class="field-hint mt-1 text-sm text-gray-500">{{ form.full_name.help_text }}</p>
-                            {% endif %}
                         </div>
 
                         <!-- Email -->
@@ -240,9 +237,6 @@
                                     <span class="material-icons text-sm mr-1">error</span>{{ form.email.errors.0 }}
                                 </p>
                             {% endif %}
-                            {% if form.email.help_text %}
-                                <p class="field-hint mt-1 text-sm text-gray-500">{{ form.email.help_text }}</p>
-                            {% endif %}
                         </div>
 
                         <!-- Password -->
@@ -262,9 +256,6 @@
                                     <span class="material-icons text-sm mr-1">error</span>{{ form.password.errors.0 }}
                                 </p>
                             {% endif %}
-                            {% if form.password.help_text %}
-                                <p class="field-hint mt-1 text-sm text-gray-500">{{ form.password.help_text }}</p>
-                            {% endif %}
                         </div>
 
                         <!-- Confirm Password -->
@@ -283,9 +274,6 @@
                                 <p class="field-error mt-2 text-sm text-red-600 flex items-center">
                                     <span class="material-icons text-sm mr-1">error</span>{{ form.password_confirm.errors.0 }}
                                 </p>
-                            {% endif %}
-                            {% if form.password_confirm.help_text %}
-                                <p class="field-hint mt-1 text-sm text-gray-500">{{ form.password_confirm.help_text }}</p>
                             {% endif %}
                         </div>
 
@@ -307,9 +295,6 @@
                                     <span class="material-icons text-sm mr-1">error</span>{{ form.mobile_number.errors.0 }}
                                 </p>
                             {% endif %}
-                            {% if form.mobile_number.help_text %}
-                                <p class="field-hint mt-1 text-sm text-gray-500">{{ form.mobile_number.help_text }}</p>
-                            {% endif %}
                         </div>
 
                         <!-- Event Name -->
@@ -329,89 +314,43 @@
                                     <span class="material-icons text-sm mr-1">error</span>{{ form.event_name.errors.0 }}
                                 </p>
                             {% endif %}
-                            {% if form.event_name.help_text %}
-                                <p class="field-hint mt-1 text-sm text-gray-500">{{ form.event_name.help_text }}</p>
-                            {% endif %}
                         </div>
                     </div>
-
-                    <!-- Event Date -->
-                    <div class="field-container">
-                        <div class="input-field relative">
-                            <label for="{{ form.event_date.id_for_label }}" class="absolute left-3 -top-2.5 bg-white px-2 text-sm font-medium text-blue-600 transition-all">
-                                <span class="material-icons text-sm mr-1 align-middle">calendar_today</span>{{ form.event_date.label }}
-                            </label>
-                            <input type="date" 
-                                   name="{{ form.event_date.name }}" 
-                                   id="{{ form.event_date.id_for_label }}"
-                                   {% if form.event_date.value %}value="{{ form.event_date.value|date:'Y-m-d' }}"{% endif %}
-                                   class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 bg-white"
-                                   {% if form.event_date.field.required %}required{% endif %}>
-                        </div>
-                        {% if form.event_date.errors %}
-                            <p class="field-error mt-2 text-sm text-red-600 flex items-center">
-                                <span class="material-icons text-sm mr-1">error</span>{{ form.event_date.errors.0 }}
-                            </p>
-                        {% endif %}
-                        {% if form.event_date.help_text %}
-                            <p class="field-hint mt-1 text-sm text-gray-500">{{ form.event_date.help_text }}</p>
-                        {% endif %}
                     </div>
 
-                    <!-- Privacy Policy Agreement -->
-                    <div class="pt-6 border-t border-gray-200">
-                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 space-y-4">
-                            <h3 class="text-lg font-semibold text-blue-900 flex items-center">
-                                <span class="material-icons mr-2">security</span>Privacy & Data Protection
+
+                    <!-- Human Verification -->
+                    <div class="pt-6 border-t border-gray-200 w-full">
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 w-full">
+                            <h3 class="text-lg font-semibold text-yellow-900 mb-4 flex items-center">
+                                <span class="material-icons mr-2">security</span>Human Verification
                             </h3>
                             
-                            <!-- Privacy Agreement Checkbox -->
-                            <div class="flex items-start space-x-3">
-                                <input type="checkbox" id="privacy_agreement" name="privacy_agreement" required
-                                       class="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                                <label for="privacy_agreement" class="text-sm text-gray-700">
-                                    I agree to the 
-                                    <a href="{% url 'events:privacy_policy' %}" target="_blank" class="text-blue-600 font-semibold hover:underline">Privacy Policy</a> 
-                                    and 
-                                    <a href="{% url 'events:terms_of_service' %}" target="_blank" class="text-blue-600 font-semibold hover:underline">Terms of Service</a>
-                                    <span class="text-red-500">*</span>
-                                </label>
-                            </div>
-                            
-                            <!-- Data Usage Notice -->
-                            <div class="text-sm text-gray-600 bg-white p-4 rounded border-l-4 border-blue-400">
-                                <p class="mb-2"><strong>How we use your data:</strong></p>
-                                <ul class="space-y-1 text-xs">
-                                    <li>• Account creation and event management</li>
-                                    <li>• Sending verification emails and notifications</li>
-                                    <li>• WhatsApp and SMS reminders (with your consent)</li>
-                                    <li>• Improving our services and user experience</li>
-                                </ul>
-                            </div>
-                            
-                            <!-- Data Deletion Notice -->
-                            <div class="text-sm text-gray-600 bg-white p-4 rounded border-l-4 border-green-400">
-                                <p class="mb-2"><strong>Your data rights:</strong></p>
-                                <p class="text-xs">
-                                    You can request deletion of your personal data at any time by contacting us at 
-                                    <a href="mailto:support@ndondo.co.tz" class="text-blue-600 font-semibold hover:underline">support@ndondo.co.tz</a>. 
-                                    We will process your request within 30 days and confirm completion.
-                                </p>
-                            </div>
-                            
-                            <!-- Marketing Consent (Optional) -->
-                            <div class="flex items-start space-x-3">
-                                <input type="checkbox" id="marketing_consent" name="marketing_consent"
-                                       class="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                                <label for="marketing_consent" class="text-sm text-gray-700">
-                                    I would like to receive promotional emails about new features and updates (optional)
-                                </label>
+                            <!-- Simple Math CAPTCHA -->
+                            <div class="space-y-4 w-full">
+                                <div class="bg-white p-4 rounded border-2 border-yellow-300 text-center w-full">
+                                    <p class="text-lg font-bold text-gray-900 mb-2">
+                                        Please solve this simple math problem to verify you're human:
+                                    </p>
+                                    <div class="text-3xl font-bold text-blue-600 mb-4">
+                                        {{ captcha_question }}
+                                    </div>
+                                    <input type="number" 
+                                           name="captcha_answer" 
+                                           id="captcha_answer"
+                                           class="w-full px-4 py-2 text-center text-2xl border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                                           required
+                                           placeholder="?">
+                                </div>
+                                <input type="hidden" name="captcha_num1" value="{{ captcha_num1 }}">
+                                <input type="hidden" name="captcha_num2" value="{{ captcha_num2 }}">
+                                <input type="hidden" name="captcha_operation" value="{{ captcha_operation }}">
                             </div>
                         </div>
                     </div>
 
-                    <!-- Submit Button -->
-                    <div class="pt-6">
+                                  <!-- Submit Button -->
+                    <div class="pt-4">
                         <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-200 flex items-center justify-center">
                             <span class="material-icons mr-2">rocket_launch</span>Create My Event Account
                         </button>
@@ -458,28 +397,7 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h3 class="text-2xl font-bold mb-4">📅 Events Management System</h3>
-                <p class="text-gray-400 mb-6">
-                    Streamline your event organization with our comprehensive management platform.
-                </p>
-                <div class="flex justify-center space-x-6">
-                    <a href="{% url 'events:privacy_policy' %}" class="text-gray-400 hover:text-white transition duration-300">Privacy Policy</a>
-                    <a href="{% url 'events:terms_of_service' %}" class="text-gray-400 hover:text-white transition duration-300">Terms of Service</a>
-                    <a href="{% url 'events:data_deletion_request' %}" class="text-gray-400 hover:text-white transition duration-300">Delete My Data</a>
-                    <a href="mailto:support@ndondo.co.tz" class="text-gray-400 hover:text-white transition duration-300">Support</a>
-                </div>
-                <div class="mt-6 pt-6 border-t border-gray-800">
-                    <p class="text-gray-400">
-                        &copy; 2024 Events Management System. All rights reserved.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </footer>
+    {% include 'events/footer.html' %}
 
     <!-- Smooth scrolling script -->
     <script>
@@ -494,6 +412,23 @@
                     });
                 }
             });
+        });
+
+        // Auto-scroll to registration form if there are messages (form was submitted)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if there are any message elements on the page
+            const messageElements = document.querySelectorAll('.alert');
+            if (messageElements.length > 0) {
+                const registerSection = document.querySelector('#register');
+                if (registerSection) {
+                    setTimeout(function() {
+                        registerSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }, 100); // Small delay to ensure page is fully loaded
+                }
+            }
         });
     </script>
 </body>
